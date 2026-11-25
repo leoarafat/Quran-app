@@ -43,6 +43,7 @@ writeFileSync(new URL("TANZIL-NOTICE.txt", out), uthmani.notice + "\n");
 
 let cursor = 0;
 let total = 0;
+const searchRows = [];
 const alignment = [];
 for (const surah of meta.surahs) {
   const translation = JSON.parse(source(`quranenc/bengali_rwwad/${surah.n}.json`)).result;
@@ -85,6 +86,7 @@ for (const surah of meta.surahs) {
     };
   });
   const basmalahTr = basmalah ? uccharon(basmalah) : null;
+  for (const x of ayahs) searchRows.push([surah.n, x.a, x.juz, x.ar, x.arPlain, x.tr, x.bn]);
   writeFileSync(new URL(`${surah.n}.json`, out), JSON.stringify({ n: surah.n, basmalah, basmalahTr, ayahs }));
 }
 check(total === TOTAL_AYAHS, "Total ayah count");
@@ -110,4 +112,12 @@ const index = {
   },
 };
 writeFileSync(new URL("index.json", out), JSON.stringify(index));
+
+// One file for searching, downloaded only when someone first searches.
+writeFileSync(new URL("search.json", out), JSON.stringify({
+  notice: uthmani.notice,
+  translation: `${index.sources.translation.name}, ${index.sources.translation.publisher} v${index.sources.translation.version}`,
+  revelation: meta.surahs.map((s) => s.revelation),
+  rows: searchRows,
+}));
 console.log(`built ${meta.surahs.length} surahs, ${total} ayahs`);

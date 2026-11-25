@@ -2,10 +2,12 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { Check, ChevronLeft, Copy, Pause, Play, Share2 } from "lucide-react";
+import { Bookmark, Check, ChevronLeft, Copy, Pause, Play, Share2 } from "lucide-react";
 import { toAsciiDigits, toBnDigits } from "@/lib/bn";
 import { playAyah, toggle, usePlayerValue, type Track } from "@/lib/audio/player";
 import { saveLastRead } from "@/lib/quran/lastRead";
+import { add as addBookmark, remove as removeBookmark } from "@/lib/bookmarks/model";
+import { getLibrary, update as updateBookmarks, useIsBookmarked } from "@/lib/bookmarks/store";
 import type { Ayah, SurahData } from "@/lib/quran/types";
 import { SCALE_MAX, SCALE_MIN } from "@/lib/settings";
 import { updateSettings, useSettings } from "@/lib/useSettings";
@@ -20,6 +22,7 @@ function AyahCard({ ayah, track, layers, credit }: { ayah: Ayah; track: Track; l
   const here = usePlayerValue((s) => s.track?.surah === track.surah && s.position.ayah === ayah.a);
   const sounding = usePlayerValue((s) => s.track?.surah === track.surah && s.position.ayah === ayah.a && (s.status === "playing" || s.status === "loading" || s.status === "waiting"));
   const [notice, setNotice] = useState("");
+  const bookmarked = useIsBookmarked(track.surah, ayah.a);
 
   const say = (message: string) => {
     setNotice(message);
@@ -42,8 +45,16 @@ function AyahCard({ ayah, track, layers, credit }: { ayah: Ayah; track: Track; l
     }
   };
 
+  const toggleBookmark = () => {
+    const existing = getLibrary().items.find((b) => b.s === track.surah && b.a === ayah.a);
+    // A note would be lost with the bookmark, so that is removed only from the bookmarks page.
+    if (existing?.note) return say("এতে নোট আছে, মুছতে বুকমার্ক পাতায় যান");
+    const saved = updateBookmarks((library) => (existing ? removeBookmark(library, track.surah, ayah.a) : addBookmark(library, track.surah, ayah.a, Date.now())));
+    say(!saved ? "ফোনে সেভ করা যায়নি" : existing ? "বুকমার্ক সরানো হয়েছে" : "বুকমার্ক হয়েছে");
+  };
+
   const action = "grid size-11 shrink-0 place-items-center rounded-full text-muted hover:text-accent";
-  const line = <span aria-hidden className="h-px min-w-2 flex-1 bg-line-strong" />;
+  const line = <span aria-hidden className="h-px min-w-0 flex-1 bg-line-strong" />;
 
   return (
     <li
@@ -51,7 +62,7 @@ function AyahCard({ ayah, track, layers, credit }: { ayah: Ayah; track: Track; l
       data-ayah={ayah.a}
       className="scroll-mt-24 [content-visibility:auto] [contain-intrinsic-size:auto_18rem]"
     >
-      <div className="flex items-center gap-1 py-1">
+      <div className="flex items-center gap-1 py-1 max-[22.4rem]:-mx-2 max-[22.4rem]:gap-0.5">
         {line}
         <button
           type="button"
@@ -66,6 +77,9 @@ function AyahCard({ ayah, track, layers, credit }: { ayah: Ayah; track: Track; l
           <span className="sr-only">আয়াত </span>{toBnDigits(ayah.a)}
         </span>
         {line}
+        <button type="button" aria-pressed={bookmarked} className={bookmarked ? action.replace("text-muted", "text-accent") : action} onClick={toggleBookmark} aria-label={`আয়াত ${toBnDigits(ayah.a)} বুকমার্ক`}>
+          <Bookmark aria-hidden className="size-[1.1875rem]" fill={bookmarked ? "currentColor" : "none"} />
+        </button>
         <button type="button" className={action} onClick={copy} aria-label={`আয়াত ${toBnDigits(ayah.a)} কপি করুন`}>
           {notice === "কপি হয়েছে" ? <Check aria-hidden className="size-5" /> : <Copy aria-hidden className="size-[1.125rem]" />}
         </button>

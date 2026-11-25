@@ -18,8 +18,8 @@ export const FEATURE_GROUPS: FeatureGroup[] = [
   {
     title: "কুরআন ও হাদিস",
     items: [
-      { title: "কুরআন", hint: "আরবি, অনুবাদ, তিলাওয়াত", icon: BookOpen, href: "/quran/" },
-      { title: "বুকমার্ক", hint: "সংরক্ষিত আয়াত", icon: BookMarked },
+      { title: "কুরআন", hint: "আরবি, উচ্চারণ, অর্থ", icon: BookOpen, href: "/quran/" },
+      { title: "বুকমার্ক", hint: "আয়াত ও নোট", icon: BookMarked, href: "/bookmarks/" },
       { title: "হাদিস", hint: "রেফারেন্সসহ", icon: ScrollText },
       { title: "আরবি শিখুন", hint: "হরফ থেকে তাজবিদ", icon: GraduationCap },
     ],
