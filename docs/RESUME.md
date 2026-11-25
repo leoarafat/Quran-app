@@ -34,6 +34,7 @@
 - `npm test` · `npm run typecheck` · `npm run lint` · `npm run build` (ফল `out/`)
 - UI যাচাই **প্রোডাকশন বিল্ডে**, বিল্ট-ইন ব্রাউজারে: `preview_start {name: "noor-quran-static"}` → http://localhost:5361 (কনফিগ `~/Projects/.claude/launch.json`)। মাপ ৩২০×৫৬৮, ৩৯০×৮৪৪, ১২৮০×৮০০।
 - ফাঁদ: পোর্ট ৩০০০-এর পুরোনো `next dev` একবার পুরোনো CSS দিয়েছিল। পাইথন প্রিভিউ সার্ভার মাঝে মাঝে `ERR_CONNECTION_RESET` দেয়; রিলোড করলে ঠিক হয়।
+- **বিল্ড দুবার চালিয়ে দেখুন:** `tsconfig.json`-এ `out` বাদ রাখা আছে; না থাকলে দ্বিতীয় বিল্ড ভাঙত। (`out/_next/static/media/`-এ ওয়ার্কারের একটি অব্যবহৃত `.ts` কপি থাকে; ব্রাউজার `turbopack-worker-*.js` লোড করে।)
 - Next.js 16: কোড লেখার আগে `node_modules/next/dist/docs/` দেখুন (AGENTS.md)।
 
 ## কোডের মানচিত্র
