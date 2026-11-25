@@ -75,6 +75,9 @@
   --bn-scale: 1;
 }
 
+/* Short phones, such as 320 x 568. */
+@custom-variant short (@media (max-height: 640px));
+
 @theme inline {
   --color-bg: var(--bg);
   --color-surface: var(--surface);

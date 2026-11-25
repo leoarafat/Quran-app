@@ -24,7 +24,7 @@ function ScaleSlider({ id, label, value, onChange }: { id: string; label: string
 
 export function SettingsForm() {
   const settings = useSettings();
-  const card = "rounded-2xl border border-line bg-surface p-4";
+  const card = "rounded-[1.375rem] border border-line bg-surface p-4";
   return (
     <div className="max-w-xl space-y-4">
       <fieldset className={card}>

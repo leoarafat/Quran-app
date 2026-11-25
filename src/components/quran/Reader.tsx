@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { Check, Copy, Pause, Play, Share2, Type } from "lucide-react";
+import { Check, ChevronLeft, Copy, Pause, Play, Share2 } from "lucide-react";
 import { toAsciiDigits, toBnDigits } from "@/lib/bn";
 import { playAyah, toggle, usePlayerValue, type Track } from "@/lib/audio/player";
 import { saveLastRead } from "@/lib/quran/lastRead";
@@ -41,55 +42,65 @@ function AyahCard({ ayah, track, layers, credit }: { ayah: Ayah; track: Track; l
     }
   };
 
-  const action = "grid size-11 place-items-center rounded-full text-brand hover:bg-surface-2";
+  const action = "grid size-11 shrink-0 place-items-center rounded-full text-muted hover:text-accent";
+  const line = <span aria-hidden className="h-px min-w-2 flex-1 bg-line-strong" />;
 
   return (
     <li
       id={`a${ayah.a}`}
       data-ayah={ayah.a}
-      className={`scroll-mt-20 rounded-2xl border p-4 [content-visibility:auto] [contain-intrinsic-size:auto_18rem] ${here ? "border-brand bg-accent-soft/40" : "border-line bg-surface"}`}
+      className="scroll-mt-24 [content-visibility:auto] [contain-intrinsic-size:auto_18rem]"
     >
-      <div className="mb-2 flex items-center gap-1">
-        <span className="rounded-full bg-surface-2 px-3 py-1 text-sm font-semibold text-brand">{toBnDigits(track.surah)}:{toBnDigits(ayah.a)}</span>
-        {ayah.sajdah && <span className="rounded-full bg-accent-soft px-3 py-1 text-sm font-semibold text-accent">সিজদার আয়াত</span>}
-        <span role="status" className="flex-1 truncate text-right text-sm text-muted">{notice}</span>
-        <button type="button" className={action} onClick={copy} aria-label={`আয়াত ${toBnDigits(ayah.a)} কপি করুন`}>
-          {notice === "কপি হয়েছে" ? <Check aria-hidden className="size-5" /> : <Copy aria-hidden className="size-5" />}
-        </button>
-        <button type="button" className={action} onClick={share} aria-label={`আয়াত ${toBnDigits(ayah.a)} শেয়ার করুন`}><Share2 aria-hidden className="size-5" /></button>
+      <div className="flex items-center gap-1 py-1">
+        {line}
         <button
           type="button"
-          className="grid size-12 place-items-center rounded-full bg-brand text-on-brand"
+          className={`grid size-11 shrink-0 place-items-center rounded-full border ${sounding ? "border-gold bg-gold text-on-gold" : "border-line-strong text-accent"}`}
           onClick={() => (here ? toggle() : playAyah(track, ayah.a))}
           aria-label={`আয়াত ${toBnDigits(ayah.a)} ${sounding ? "থামান" : "শুনুন"}`}
         >
-          {sounding ? <Pause aria-hidden className="size-6" /> : <Play aria-hidden className="size-6" />}
+          {sounding ? <Pause aria-hidden className="size-5" fill="currentColor" strokeWidth={0} /> : <Play aria-hidden className="size-[1.125rem]" fill="currentColor" />}
         </button>
+        {line}
+        <span className="grid size-[2.125rem] shrink-0 place-items-center rounded-full border border-gold text-sm text-accent">
+          <span className="sr-only">আয়াত </span>{toBnDigits(ayah.a)}
+        </span>
+        {line}
+        <button type="button" className={action} onClick={copy} aria-label={`আয়াত ${toBnDigits(ayah.a)} কপি করুন`}>
+          {notice === "কপি হয়েছে" ? <Check aria-hidden className="size-5" /> : <Copy aria-hidden className="size-[1.125rem]" />}
+        </button>
+        <button type="button" className={action} onClick={share} aria-label={`আয়াত ${toBnDigits(ayah.a)} শেয়ার করুন`}><Share2 aria-hidden className="size-[1.125rem]" /></button>
+        {line}
       </div>
-      {layers.arabic && (
-        <p lang="ar" dir="rtl" className="mb-3 text-right font-arabic text-[calc(1.875rem*var(--ar-scale))] leading-[2.3]">{ayah.ar}</p>
-      )}
-      {layers.pronunciation && (
-        <p className="mb-3 border-l-4 border-accent pl-3 text-[calc(1.125rem*var(--bn-scale))] font-medium leading-relaxed text-brand">
-          <span className="sr-only">উচ্চারণ: </span>{ayah.tr}
-        </p>
-      )}
-      {layers.translation && (
-        <>
-          <p className="text-[calc(1.0625rem*var(--bn-scale))] leading-relaxed">{ayah.bn}</p>
-          {ayah.fn && (
-            <details className="mt-2 text-muted">
-              <summary className="min-h-11 cursor-pointer py-2 font-semibold text-brand">টীকা দেখুন</summary>
-              <p className="whitespace-pre-line text-[calc(0.9375rem*var(--bn-scale))]">{ayah.fn}</p>
-            </details>
-          )}
-        </>
-      )}
+      <p role="status" className="text-center text-sm text-muted empty:hidden">{notice}</p>
+
+      <div className={`-mx-3 rounded-3xl px-3 pb-3.5 pt-1 text-center ${here ? "bg-active" : ""}`}>
+        {ayah.sajdah && <p className="mx-auto mt-1 w-fit rounded-full bg-accent-soft px-3 text-sm font-semibold text-accent">সিজদার আয়াত</p>}
+        {layers.arabic && (
+          <p lang="ar" dir="rtl" className="font-arabic text-[calc(2.0625rem*var(--ar-scale))] leading-[2.15]">{ayah.ar}</p>
+        )}
+        {layers.pronunciation && (
+          <p className="font-display text-[calc(1.1875rem*var(--bn-scale))] font-medium leading-[1.75] text-accent">
+            <span className="sr-only">উচ্চারণ: </span>{ayah.tr}
+          </p>
+        )}
+        {layers.translation && (
+          <>
+            <p className="mt-1.5 text-[calc(1.0625rem*var(--bn-scale))] leading-[1.7] text-soft">{ayah.bn}</p>
+            {ayah.fn && (
+              <details className="mt-1 text-muted">
+                <summary className="mx-auto min-h-11 w-fit cursor-pointer py-2 text-sm font-semibold text-accent">টীকা দেখুন</summary>
+                <p className="whitespace-pre-line text-left text-[calc(0.9375rem*var(--bn-scale))]">{ayah.fn}</p>
+              </details>
+            )}
+          </>
+        )}
+      </div>
     </li>
   );
 }
 
-export function Reader({ data, surahName, credit }: { data: SurahData; surahName: string; credit: string }) {
+export function Reader({ data, surahName, meta, credit }: { data: SurahData; surahName: string; /** "মাক্কি · ৭ আয়াত" */ meta: string; credit: string }) {
   const track: Track = { surah: data.n, surahName, total: data.ayahs.length };
   const [layers, setLayers] = useState<Layers>({ arabic: true, pronunciation: true, translation: true });
   const [panel, setPanel] = useState(false);
@@ -139,54 +150,71 @@ export function Reader({ data, surahName, credit }: { data: SurahData; surahName
     });
   };
 
-  const chip = (active: boolean) => `min-h-11 rounded-full border px-4 ${active ? "border-brand bg-brand font-semibold text-on-brand" : "border-line bg-surface"}`;
+  const chip = (active: boolean) => `min-h-11 rounded-full border px-4 ${active ? "border-brand bg-brand font-semibold text-on-brand" : "border-line-strong"}`;
 
   return (
     <>
-      <div className="sticky top-0 z-20 -mx-4 mb-3 border-b border-line bg-bg px-4 py-2">
-        <div className="flex items-center gap-2">
-          <button type="button" className={chip(false) + " flex-1 !border-brand font-semibold text-brand"} onClick={() => playAyah(track, 1)}>পুরো সূরা শুনুন</button>
-          <form onSubmit={goTo} className="flex gap-1">
-            <label className="sr-only" htmlFor="jump">আয়াত নম্বর</label>
-            <input id="jump" inputMode="numeric" value={jump} onChange={(e) => setJump(e.target.value)} placeholder="আয়াত" className="min-h-11 w-20 rounded-full border border-line bg-surface px-3 text-center" />
-            <button type="submit" className={chip(false)}>যান</button>
-          </form>
-          <button type="button" aria-expanded={panel} aria-label="লেখার অপশন" className="grid size-11 shrink-0 place-items-center rounded-full border border-line bg-surface" onClick={() => setPanel((v) => !v)}>
-            <Type aria-hidden className="size-5" />
+      <header className="sticky top-0 z-20 -mx-[1.375rem] -mt-6 border-b border-line bg-bg px-4 pb-2.5 pt-[calc(0.75rem+env(safe-area-inset-top))]">
+        <div className="flex items-center gap-2.5">
+          <Link href="/quran/" aria-label="সূরা তালিকায় ফিরে যান" className="grid size-11 shrink-0 place-items-center rounded-full text-accent">
+            <ChevronLeft aria-hidden className="size-6" />
+          </Link>
+          <div className="min-w-0 flex-1 text-center">
+            <h1 className="truncate font-display text-xl font-semibold leading-snug">{surahName}</h1>
+            <p className="truncate text-[0.8125rem] text-muted">{meta}</p>
+          </div>
+          <button type="button" aria-expanded={panel} aria-label="লেখার সাইজ ও অপশন" className={`grid size-11 shrink-0 place-items-center rounded-full border font-display text-[1.0625rem] text-accent ${panel ? "border-gold bg-active" : "border-line-strong"}`} onClick={() => setPanel((v) => !v)}>
+            অ
           </button>
         </div>
-        {jumpError && <p role="alert" className="pt-1 text-sm text-accent">{jumpError}</p>}
         {panel && (
-          <div className="space-y-2 pt-3">
-            <div className="flex gap-2">
+          <div className="max-h-[70dvh] space-y-3 overflow-y-auto pt-3">
+            <div role="group" aria-label="কী কী দেখাবে" className="grid grid-cols-3 gap-2">
               <button type="button" aria-pressed={layers.arabic} className={chip(layers.arabic)} onClick={() => toggleLayer("arabic")}>আরবি</button>
               <button type="button" aria-pressed={layers.pronunciation} className={chip(layers.pronunciation)} onClick={() => toggleLayer("pronunciation")}>উচ্চারণ</button>
               <button type="button" aria-pressed={layers.translation} className={chip(layers.translation)} onClick={() => toggleLayer("translation")}>অর্থ</button>
             </div>
+            <div role="group" aria-label="থিম" className="grid grid-cols-3 gap-2">
+              {([["dark", "রাত"], ["light", "দিন"], ["sepia", "সেপিয়া"]] as const).map(([theme, label]) => (
+                <button key={theme} type="button" aria-pressed={settings.theme === theme} className={chip(settings.theme === theme)} onClick={() => updateSettings({ theme })}>{label}</button>
+              ))}
+            </div>
             {([["arScale", "আরবি সাইজ"], ["bnScale", "বাংলা সাইজ"]] as const).map(([key, label]) => (
               <label key={key} className="flex items-center gap-3">
                 <span className="w-24 shrink-0 text-sm">{label}</span>
-                <input type="range" min={SCALE_MIN} max={SCALE_MAX} step={0.1} value={settings[key]} onChange={(e) => updateSettings({ [key]: Number(e.target.value) })} className="h-11 flex-1 accent-[var(--brand)]" />
+                <input type="range" min={SCALE_MIN} max={SCALE_MAX} step={0.1} value={settings[key]} onChange={(e) => updateSettings({ [key]: Number(e.target.value) })} className="h-11 min-w-0 flex-1 accent-[var(--brand)]" />
               </label>
             ))}
+            <form onSubmit={goTo} className="flex gap-2">
+              <label className="sr-only" htmlFor="jump">আয়াত নম্বর</label>
+              <input id="jump" inputMode="numeric" value={jump} onChange={(e) => setJump(e.target.value)} placeholder={`আয়াত নম্বর (১-${toBnDigits(data.ayahs.length)})`} className="min-h-11 min-w-0 flex-1 rounded-full border border-line-strong bg-surface px-4" />
+              <button type="submit" className={chip(false)}>যান</button>
+            </form>
+            {jumpError && <p role="alert" className="text-sm text-accent">{jumpError}</p>}
           </div>
         )}
-      </div>
-
-      {layers.pronunciation && (
-        <p className="mb-4 rounded-2xl bg-accent-soft px-4 py-2 text-sm">
-          বাংলা উচ্চারণ স্বয়ংক্রিয়ভাবে তৈরি, ক্বারীর যাচাই এখনো বাকি। বাংলা হরফে আরবির সব ধ্বনি ঠিকভাবে লেখা যায় না, তাই তিলাওয়াত শুনে মিলিয়ে পড়ুন।
-        </p>
-      )}
+      </header>
 
       {data.basmalah && (
-        <div className="mb-4 text-center">
-          {layers.arabic && <p lang="ar" dir="rtl" className="font-arabic text-[calc(1.75rem*var(--ar-scale))] leading-[2.2] text-brand">{data.basmalah}</p>}
-          {layers.pronunciation && <p className="text-[calc(1.0625rem*var(--bn-scale))] text-muted">{data.basmalahTr}</p>}
+        <div className="pt-3 text-center">
+          {layers.arabic && <p lang="ar" dir="rtl" className="font-arabic text-[calc(1.5625rem*var(--ar-scale))] leading-[2.1] text-accent">{data.basmalah}</p>}
+          {layers.pronunciation && <p className="text-[calc(0.9375rem*var(--bn-scale))] text-muted">{data.basmalahTr}</p>}
         </div>
       )}
 
-      <ol ref={listRef} className="space-y-3">
+      <div className="my-3 flex justify-center">
+        <button type="button" className="flex min-h-11 items-center gap-2 rounded-full border border-line-strong bg-surface px-5 font-semibold text-accent" onClick={() => playAyah(track, 1)}>
+          <Play aria-hidden className="size-4" fill="currentColor" /> পুরো সূরা শুনুন
+        </button>
+      </div>
+
+      {layers.pronunciation && (
+        <p className="mb-2 text-center text-[0.8125rem] leading-relaxed text-muted">
+          বাংলা উচ্চারণ স্বয়ংক্রিয়, ক্বারীর যাচাই বাকি। তিলাওয়াত শুনে মিলিয়ে পড়ুন। <Link href="/about/" className="text-accent underline">বিস্তারিত</Link>
+        </p>
+      )}
+
+      <ol ref={listRef} className="space-y-1">
         {data.ayahs.map((ayah) => <AyahCard key={ayah.a} ayah={ayah} track={track} layers={layers} credit={credit} />)}
       </ol>
     </>

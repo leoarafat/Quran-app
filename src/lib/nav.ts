@@ -6,3 +6,8 @@ export function isActivePath(href: string, pathname: string): boolean {
   if (target === "/") return path === "/";
   return path === target || path.startsWith(`${target}/`);
 }
+
+/** A surah page, where the reader takes the whole phone screen. */
+export function isReaderPath(pathname: string): boolean {
+  return /^\/quran\/\d+\/?$/.test(pathname);
+}

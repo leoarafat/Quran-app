@@ -32,7 +32,7 @@ export function SurahBrowser({ surahs, juzs, sajdas }: { surahs: SurahInfo[]; ju
   const reference = parseReference(query, surahs);
   const list = filterSurahs(surahs, query).filter((s) => type === "all" || s.revelation === type);
 
-  const chip = (active: boolean) => `min-h-11 rounded-full border px-4 ${active ? "border-brand bg-brand font-semibold text-on-brand" : "border-line bg-surface"}`;
+  const chip = (active: boolean) => `min-h-11 rounded-full border px-4 ${active ? "border-brand bg-brand font-semibold text-on-brand" : "border-line-strong bg-surface"}`;
 
   return (
     <div className="space-y-4">
@@ -47,7 +47,7 @@ export function SurahBrowser({ surahs, juzs, sajdas }: { surahs: SurahInfo[]; ju
           <label className="relative block">
             <span className="sr-only">সূরা খুঁজুন</span>
             <Search aria-hidden className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted" />
-            <input type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="সূরার নাম, নম্বর বা ২:২৫৫" className="min-h-13 w-full rounded-2xl border border-line bg-surface pl-12 pr-4" />
+            <input type="search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="সূরার নাম, নম্বর বা ২:২৫৫" className="min-h-13 w-full rounded-full border border-line-strong bg-surface pl-12 pr-4" />
           </label>
           <div role="group" aria-label="মাক্কি বা মাদানি" className="flex gap-2">
             {(Object.keys(TYPES) as (keyof typeof TYPES)[]).map((k) => (
@@ -64,13 +64,13 @@ export function SurahBrowser({ surahs, juzs, sajdas }: { surahs: SurahInfo[]; ju
           <ul className="grid gap-2 md:grid-cols-2">
             {list.map((s) => (
               <li key={s.n}>
-                <Link href={`/quran/${s.n}/`} prefetch={false} className="flex min-h-18 items-center gap-3 rounded-2xl border border-line bg-surface px-3 py-2 hover:border-brand">
-                  <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-surface-2 font-semibold text-brand">{toBnDigits(s.n)}</span>
+                <Link href={`/quran/${s.n}/`} prefetch={false} className="flex min-h-18 items-center gap-3.5 rounded-[1.375rem] border border-line bg-surface px-3 py-2 hover:border-brand">
+                  <span className="grid size-12 shrink-0 place-items-center rounded-t-[1.5rem] rounded-b-xl border border-line-strong font-semibold text-accent">{toBnDigits(s.n)}</span>
                   <span className="min-w-0 flex-1">
-                    <span className="block truncate font-semibold">{s.bangla}</span>
+                    <span className="block truncate font-display font-semibold">{s.bangla}</span>
                     <span className="block truncate text-sm text-muted">{TYPES[s.revelation]} · {toBnDigits(s.ayahs)} আয়াত</span>
                   </span>
-                  <span lang="ar" dir="rtl" className="font-arabic text-2xl text-brand">{s.arabic}</span>
+                  <span lang="ar" dir="rtl" className="font-arabic text-2xl text-accent">{s.arabic}</span>
                 </Link>
               </li>
             ))}

@@ -31,6 +31,26 @@ let restored = false;
 let element: HTMLAudioElement | null = null;
 let gapTimer: ReturnType<typeof setTimeout> | undefined;
 const listeners = new Set<() => void>();
+// Progress changes many times a second, so it has its own subscribers.
+const progressListeners = new Set<() => void>();
+let progress = 0;
+
+function setProgress(value: number) {
+  const next = Math.round(Math.min(1, Math.max(0, value)) * 200) / 200;
+  if (next === progress) return;
+  progress = next;
+  progressListeners.forEach((l) => l());
+}
+
+const subscribeProgress = (listener: () => void) => {
+  progressListeners.add(listener);
+  return () => { progressListeners.delete(listener); };
+};
+
+/** How far the current ayah has been recited, 0..1. */
+export function useProgress(): number {
+  return useSyncExternalStore(subscribeProgress, () => progress, () => 0);
+}
 
 function set(patch: Partial<PlayerState>) {
   state = { ...state, ...patch };
@@ -79,6 +99,9 @@ function audio(): HTMLAudioElement {
   });
   element.addEventListener("error", () => { if (state.track) set({ status: "error" }); });
   element.addEventListener("ended", advance);
+  element.addEventListener("timeupdate", () => {
+    if (Number.isFinite(element!.duration) && element!.duration > 0) setProgress(element!.currentTime / element!.duration);
+  });
   setupMediaSession();
   return element;
 }
@@ -98,6 +121,7 @@ function load(position: Position) {
   clearTimeout(gapTimer);
   const el = audio();
   set({ position, status: "loading" });
+  setProgress(0);
   el.src = ayahAudioUrl(reciter, track.surah, position.ayah);
   el.defaultPlaybackRate = state.options.rate;
   updateMetadata();
@@ -150,6 +174,7 @@ export function stop() {
     element.load();
   }
   set({ track: null, status: "idle", position: { ayah: 1, plays: 1 } });
+  setProgress(0);
   if (typeof navigator !== "undefined" && "mediaSession" in navigator) navigator.mediaSession.metadata = null;
 }
 

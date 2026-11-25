@@ -1,24 +1,39 @@
 import Link from "next/link";
-import { Settings as SettingsIcon } from "lucide-react";
-import { FeatureGrid } from "@/components/FeatureGrid";
+import { Search } from "lucide-react";
+import { DailyAyah, type DailyItem } from "@/components/home/DailyAyah";
+import { PrayerArch } from "@/components/home/PrayerArch";
+import { QuickTiles } from "@/components/home/QuickTiles";
 import { ContinueReading } from "@/components/quran/ContinueReading";
 import { TodayDate } from "@/components/TodayDate";
-import { getIndex } from "@/lib/quran/server";
+import { Welcome } from "@/components/Welcome";
+import { DAILY_REFS } from "@/lib/quran/daily";
+import { getIndex, getSurah } from "@/lib/quran/server";
 
 export default function HomePage() {
+  const { surahs } = getIndex();
+  const daily: DailyItem[] = DAILY_REFS.map(([s, a]) => {
+    const { ar, tr, bn } = getSurah(s).ayahs[a - 1];
+    return { s, a, surah: surahs[s - 1].bangla, ar, tr, bn };
+  });
+
   return (
-    <div className="space-y-6">
-      <header className="flex items-start justify-between gap-3 rounded-3xl bg-hero p-5 text-on-hero">
-        <div>
-          <h1 className="text-2xl font-bold leading-snug">আসসালামু আলাইকুম</h1>
-          <TodayDate />
-        </div>
-        <Link href="/settings/" aria-label="সেটিংস" className="grid size-11 shrink-0 place-items-center rounded-full border border-on-hero/30">
-          <SettingsIcon aria-hidden className="size-6" />
-        </Link>
-      </header>
-      <ContinueReading names={getIndex().surahs.map((s) => s.bangla)} />
-      <FeatureGrid />
-    </div>
+    <>
+      <Welcome />
+      <div className="mx-auto max-w-md space-y-3.5">
+        <header className="flex items-center justify-between gap-3">
+          <h1>
+            <span className="block text-sm text-muted">আসসালামু আলাইকুম</span>
+            <TodayDate className="font-display text-[1.3125rem] font-semibold" />
+          </h1>
+          <Link href="/search/" aria-label="সার্চ" className="grid size-[2.875rem] shrink-0 place-items-center rounded-full border border-line bg-surface text-accent">
+            <Search aria-hidden className="size-[1.3125rem]" strokeWidth={1.8} />
+          </Link>
+        </header>
+        <PrayerArch />
+        <ContinueReading names={surahs.map((s) => s.bangla)} />
+        <div className="pt-1"><QuickTiles /></div>
+        <DailyAyah items={daily} />
+      </div>
+    </>
   );
 }
