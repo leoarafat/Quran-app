@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: "হিজরি ক্যালে�
 
 export default function CalendarPage() {
   return (
-    <div className="mx-auto max-w-md">
+    <div className="mx-auto max-w-md lg:max-w-5xl">
       <PageHeader title="হিজরি ক্যালেন্ডার" subtitle="তারিখ ও বিশেষ দিন" />
       <HijriCalendar />
     </div>

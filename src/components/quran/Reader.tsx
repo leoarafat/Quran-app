@@ -196,7 +196,7 @@ export function Reader({ data, surahName, meta, credit }: { data: SurahData; sur
 
   return (
     <>
-      <header className="sticky top-0 z-20 -mx-[1.375rem] -mt-[calc(1.5rem+var(--safe-top))] border-b border-line bg-bg px-4 pb-2.5 pt-[calc(0.75rem+var(--safe-top))]">
+      <header className="sticky top-0 z-20 lg:mx-0 lg:rounded-b-2xl lg:border-x -mx-[1.375rem] -mt-[calc(1.5rem+var(--safe-top))] border-b border-line bg-bg px-4 pb-2.5 pt-[calc(0.75rem+var(--safe-top))]">
         <div className="flex items-center gap-2.5">
           <Link href="/quran/" aria-label="সূরা তালিকায় ফিরে যান" className="grid size-11 shrink-0 place-items-center rounded-full text-accent">
             <ChevronLeft aria-hidden className="size-6" />

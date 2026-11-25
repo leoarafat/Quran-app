@@ -29,7 +29,7 @@ export default function HadithPage() {
 
   const link = "flex min-h-14 flex-1 items-center justify-center gap-2 rounded-full border border-line-strong bg-surface px-3 font-semibold text-accent";
   return (
-    <div className="mx-auto max-w-2xl space-y-4">
+    <div className="mx-auto max-w-2xl lg:max-w-5xl space-y-4">
       <PageHeader title="হাদিস" subtitle={`${toBnDigits(index.meta.total)}টি সহিহ ও হাসান হাদিস, ব্যাখ্যাসহ`} />
       <div className="flex gap-2">
         <Link href="/search/?scope=hadith" className={link}><Search aria-hidden className="size-5" /> হাদিস খুঁজুন</Link>

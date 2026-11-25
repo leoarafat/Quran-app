@@ -11,7 +11,7 @@ const walk = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((e) => (
 const toUrl = (file) => file.slice(out.length).split("\\").join("/");
 const pathOf = (url) => join(out, url.endsWith("/") ? `${url}index.html` : url);
 
-const PAGES = ["/", "/quran/", "/amal/", "/amal/quran/", "/amal/daily/", "/amal/khatm/", "/amal/fasting/", "/amal/after-salah/", "/namaz/", "/ramadan/", "/hajj/", "/prophets/", "/zakat/", "/arabic/", "/hadith/", "/search/", "/more/", "/bookmarks/", "/settings/", "/about/", "/me/", "/quiz/", "/data/", "/tasbih/", "/prayer-times/", "/qibla/", "/calendar/", "/offline/"];
+const PAGES = ["/", "/quran/", "/amal/", "/amal/quran/", "/amal/daily/", "/amal/khatm/", "/amal/fasting/", "/amal/after-salah/", "/namaz/", "/namaz/waqt/", "/namaz/oju/", "/namaz/foroj/", "/namaz/niyom/", "/namaz/rakat/", "/namaz/surah/", "/namaz/doa/", "/namaz/masala/", "/ramadan/", "/hajj/", "/prophets/", "/zakat/", "/arabic/", "/arabic/makhraj/", "/arabic/joda/", "/arabic/horkot/", "/arabic/tanween/", "/arabic/sakin/", "/arabic/tashdid/", "/arabic/madd/", "/arabic/leen/", "/arabic/qalqalah/", "/arabic/gunnah/", "/arabic/noon/", "/arabic/meem/", "/arabic/mota/", "/arabic/waqf/", "/hadith/", "/search/", "/more/", "/bookmarks/", "/settings/", "/about/", "/me/", "/quiz/", "/data/", "/tasbih/", "/prayer-times/", "/qibla/", "/calendar/", "/offline/"];
 const shell = [
   ...PAGES,
   // what the in-app router fetches when moving between those pages

@@ -87,7 +87,7 @@ export function MiniPlayer() {
       <div aria-hidden className={open ? "h-[28rem]" : "h-28"} />
       <section
         aria-label="তিলাওয়াত প্লেয়ার"
-        className={`fixed inset-x-3.5 z-30 mx-auto max-w-lg rounded-[1.875rem] border border-line-strong bg-raised px-3 py-3 shadow-[0_-10px_40px_rgba(0,0,0,0.4)] lg:bottom-5 lg:left-56 ${reading ? "bottom-[calc(1rem+env(safe-area-inset-bottom))]" : "bottom-[calc(6rem+env(safe-area-inset-bottom))]"}`}
+        className={`fixed inset-x-3.5 z-30 mx-auto max-w-lg rounded-[1.875rem] border border-line-strong bg-raised px-3 py-3 shadow-[0_-10px_40px_rgba(0,0,0,0.4)] lg:bottom-5 ${reading ? "bottom-[calc(1rem+env(safe-area-inset-bottom))]" : "bottom-[calc(6rem+env(safe-area-inset-bottom))]"}`}
       >
         {open && (
           <div className="mb-3 max-h-[48dvh] overflow-y-auto border-b border-line-strong pb-3">

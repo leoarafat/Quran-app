@@ -3,6 +3,7 @@
  * groups (shown under the publisher's names) and Quran passages, chosen here by reference
  * as [surah, first ayah, last ayah]. No ruling, step, story or virtue is written by us.
  * The choice of references and groups still awaits a scholar's review.
+ * (The step-by-step prayer lessons are our own writing and live apart, in lib/namaz.)
  */
 export type Passage = readonly [surah: number, from: number, to: number];
 
@@ -20,7 +21,7 @@ const topic = (t: Topic) => t;
 export const TOPICS = {
   namaz: topic({
     title: "নামাজ শিক্ষা",
-    subtitle: "পবিত্রতা থেকে জানাজা: হাদিস ও আয়াত",
+    subtitle: "ধাপে ধাপে পাঠ, ভিডিও, হাদিস ও আয়াত",
     groups: [
       { title: "পবিত্রতা", categories: [437, 438, 439] },
       { title: "সালাত", categories: [458, 460, 461, 463, 464, 465, 466, 468, 469] },
@@ -29,8 +30,9 @@ export const TOPICS = {
     ],
     passages: [[5, 6, 6], [4, 43, 43], [2, 238, 238], [17, 78, 79], [20, 14, 14], [29, 45, 45]],
     pending: [
-      "ছবিসহ ধাপে ধাপে অজু ও পাঁচ ওয়াক্ত নামাজ শেখা, দুই পদ্ধতিতেই (হানাফি ও সহিহ হাদিসভিত্তিক)। দুই ঈদ ও জানাজার ভিডিও দেওয়া হয়েছে; সেগুলোর আলেম যাচাই বাকি।",
-      "নিচের হাদিসগুলো থেকে নিজে নিয়ম বের করবেন না। নিজের নামাজের পদ্ধতি আলেমের কাছে শিখুন।",
+      "পাঠগুলোর আলেম যাচাই এবং আরবি উচ্চারণের ক্বারী যাচাই বাকি। দুই ঈদ ও জানাজার ভিডিওরও তাই।",
+      "দোয়া কুনুত ও দোয়া মাসুরার যাচাই করা আরবি এখনো যোগ হয়নি।",
+      "নিচের হাদিসগুলো থেকে নিজে নিয়ম বের করবেন না; সন্দেহ হলে আলেমের কাছে জেনে নিন।",
     ],
   }),
   afterSalah: topic({

@@ -1,29 +1,44 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ArabicLessons, type ShownExample } from "@/components/arabic/ArabicLessons";
 import { PageHeader } from "@/components/PageHeader";
 import { PendingNote } from "@/components/PendingNote";
 import { findExamples } from "@/lib/arabic/letters";
-import { getIndex, getSurah } from "@/lib/quran/server";
+import { QAIDA, qaidaPath } from "@/lib/arabic/qaida";
+import { exampleAyahs } from "@/lib/arabic/server";
+import { toBnDigits } from "@/lib/bn";
+import { getIndex } from "@/lib/quran/server";
 
 export const metadata: Metadata = { title: "আরবি শিখুন" };
 
 export default function ArabicPage() {
   const { surahs } = getIndex();
-  // Al-Fatiha first, then from the last surah backwards: the short surahs most people know.
-  function* ayahs() {
-    for (const n of [1, ...Array.from({ length: 113 }, (_, i) => 114 - i)]) {
-      for (const x of getSurah(n).ayahs) yield { s: n, a: x.a, ar: x.ar };
-    }
-  }
   const examples: Record<string, ShownExample[]> = Object.fromEntries(
-    Object.entries(findExamples(ayahs())).map(([letter, list]) => [letter, list.map((e) => ({ ...e, surahName: surahs[e.s - 1].bangla }))]),
+    Object.entries(findExamples(exampleAyahs())).map(([letter, list]) => [letter, list.map((e) => ({ ...e, surahName: surahs[e.s - 1].bangla }))]),
   );
 
   return (
-    <div className="mx-auto max-w-2xl space-y-4">
+    <div className="mx-auto max-w-2xl lg:max-w-5xl space-y-4">
       <PageHeader title="আরবি শিখুন" subtitle="হরফ, হরকত ও চেনার অনুশীলন" />
       <ArabicLessons examples={examples} />
-      <PendingNote title="যা এখনো নেই" items={["হরফের উচ্চারণ শোনা, মাখরাজ ও তাজবিদ: ক্বারী ছাড়া শেখানো ঠিক হবে না। উচ্চারণ কোনো শিক্ষকের কাছে শুনে শিখুন।", "হরফের বাংলা নাম প্রচলিত বানানে লেখা; ক্বারীর যাচাই বাকি।"]} />
+      <section aria-labelledby="qaida" className="space-y-2">
+        <h2 id="qaida" className="font-display text-lg font-semibold">ধাপে ধাপে কুরআন পড়া শিখুন</h2>
+        <p className="text-sm leading-relaxed text-muted">আগে ওপরের হরফ ও হরকত চিনুন, তারপর পাঠগুলো ক্রমানুসারে পড়ুন। একটি পাঠ ভালোভাবে আয়ত্ত করে পরেরটিতে যান।</p>
+        <ol className="grid gap-2 lg:grid-cols-2">
+          {QAIDA.map((lesson, i) => (
+            <li key={lesson.slug}>
+              <Link href={qaidaPath(lesson.slug)} className="flex min-h-16 items-center gap-3 rounded-[1.375rem] border border-line-strong bg-surface px-4 py-2 hover:border-brand">
+                <span aria-hidden className="flex size-9 shrink-0 items-center justify-center rounded-full border border-line-strong font-semibold text-accent">{toBnDigits(i + 1)}</span>
+                <span className="min-w-0 flex-1">
+                  <span className="block font-display font-semibold leading-snug">{lesson.title}</span>
+                  <span className="block text-sm text-muted">{lesson.hint}</span>
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ol>
+      </section>
+      <PendingNote title="যা এখনো নেই" items={["আলাদা হরফ ও অনুশীলনের অডিও নেই। উচ্চারণ কোনো শিক্ষকের কাছে শুনে শিখুন।", "হরফের বাংলা নাম, মাখরাজ ও তাজবিদের বর্ণনা: ক্বারীর যাচাই বাকি।"]} />
     </div>
   );
 }

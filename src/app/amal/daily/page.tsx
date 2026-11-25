@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: "সারাদিনের আম�
 
 export default function DailyAmalPage() {
   return (
-    <div className="mx-auto max-w-md space-y-4">
+    <div className="mx-auto max-w-md lg:max-w-2xl space-y-4">
       <PageHeader title="সারাদিনের আমল" subtitle="আমার আমলের খাতা" />
       <DailyRoutine />
       <Link href="/amal/" className="flex min-h-12 items-center justify-center rounded-full border border-line-strong bg-surface px-4 text-center font-semibold text-accent">সকাল-সন্ধ্যা, ঘুম ও অন্য দোয়া-যিকির</Link>

@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "খতম ও দৈনিক লক
 
 export default function KhatmPage() {
   return (
-    <div className="mx-auto max-w-md space-y-4">
+    <div className="mx-auto max-w-md lg:max-w-2xl space-y-4">
       <PageHeader title="খতম ও দৈনিক লক্ষ্য" subtitle="নিজের তিলাওয়াতের হিসাব" />
       <KhatmTracker starts={getIndex().pages} />
     </div>

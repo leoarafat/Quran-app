@@ -30,7 +30,7 @@ export default async function SurahPage({ params }: PageProps<"/quran/[surah]">)
   const nav = "flex min-h-14 flex-1 items-center gap-2 rounded-full border border-line-strong bg-surface px-4 font-display font-semibold hover:border-brand";
 
   return (
-    <article className="mx-auto max-w-2xl">
+    <article className="mx-auto max-w-2xl lg:max-w-3xl">
       <Reader key={info.n} data={getSurah(info.n)} surahName={info.bangla} meta={meta} credit={credit} />
 
       <nav aria-label="অন্য সূরা" className="mt-6 flex gap-3">

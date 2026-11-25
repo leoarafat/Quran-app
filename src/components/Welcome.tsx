@@ -13,8 +13,8 @@ export function Welcome() {
 
   return (
     <div role="dialog" aria-modal="true" aria-labelledby="welcome-title" className="welcome fixed inset-0 z-50 justify-center overflow-y-auto bg-[#f5f7f3] text-[#10231c]">
-      <div className="flex min-h-full w-full max-w-[26rem] flex-col px-5 pb-[calc(2.25rem+env(safe-area-inset-bottom))] pt-[calc(2.25rem+var(--safe-top))] short:pb-3 short:pt-[calc(0.75rem+var(--safe-top))]">
-        <div className="relative h-[max(17rem,min(26.875rem,51dvh))] short:h-[43dvh] shrink-0 overflow-hidden rounded-t-[11rem] rounded-b-[1.75rem] bg-[#0d3b30]">
+      <div className="flex min-h-full w-full max-w-[26rem] flex-col lg:max-w-6xl lg:flex-row lg:items-center lg:gap-16 px-5 pb-[calc(2.25rem+env(safe-area-inset-bottom))] pt-[calc(2.25rem+var(--safe-top))] short:pb-3 short:pt-[calc(0.75rem+var(--safe-top))]">
+        <div className="relative h-[max(17rem,min(26.875rem,51dvh))] short:h-[43dvh] lg:h-[min(38rem,80dvh)] lg:w-[30rem] shrink-0 overflow-hidden rounded-t-[11rem] rounded-b-[1.75rem] bg-[#0d3b30]">
           <svg aria-hidden="true" viewBox="0 0 350 430" preserveAspectRatio="xMidYMax slice" className="absolute inset-0 size-full">
             {/* On short screens the sun sits lower so it never rises behind the greeting. */}
             <g className="short:translate-y-[68px]">
@@ -35,16 +35,18 @@ export function Welcome() {
           </p>
         </div>
 
+        <div className="contents lg:block lg:min-w-0 lg:flex-1">
         <div className="mt-8 px-2.5 short:mt-3 [animation:rise_1s_.7s_ease-out_both]">
           <h2 id="welcome-title" className="font-welcome text-[2.375rem] leading-[1.35] short:text-[1.625rem]">আসসালামু <br className="short:hidden" />আলাইকুম</h2>
-          <p className="mt-3.5 text-lg leading-[1.75] text-[#3c5249] short:mt-1 short:text-base short:leading-[1.6]">আপনার ওপর শান্তি, রহমত ও বরকত বর্ষিত হোক। নতুন একটি ভোরের মতো, আজ কুরআন দিয়েই শুরু হোক।</p>
+          <p className="mt-3.5 text-lg leading-[1.75] text-[#3c5249] short:mt-1 short:text-base short:leading-[1.6] lg:text-xl">আপনার ওপর শান্তি, রহমত ও বরকত বর্ষিত হোক। নতুন একটি ভোরের মতো, আজ কুরআন দিয়েই শুরু হোক।</p>
         </div>
 
-        <div className="mt-auto flex justify-end px-2.5 pt-6 short:pt-2 [animation:rise_1s_.9s_ease-out_both]">
+        <div className="mt-auto flex justify-end lg:mt-8 lg:justify-start px-2.5 pt-6 short:pt-2 [animation:rise_1s_.9s_ease-out_both]">
           <button ref={button} type="button" onClick={dismissWelcome} className="flex h-[3.75rem] items-center gap-[1.125rem] rounded-full bg-[#10231c] pl-7 pr-2.5 text-lg font-semibold text-[#f5f7f3]">
             বিসমিল্লাহ
             <span className="grid size-[2.625rem] place-items-center rounded-full bg-[#f4c375] text-[#10231c]"><ArrowRight aria-hidden className="size-5" strokeWidth={2.4} /></span>
           </button>
+        </div>
         </div>
       </div>
     </div>

@@ -77,8 +77,12 @@
   --safe-top: env(safe-area-inset-top, 0px);
 }
 
-/* An anchor or a scrolled-to ayah must not stop behind the status bar. */
-html { scroll-padding-top: var(--safe-top); }
+/* The height of the website's top bar; phones have none. */
+:root { --header-h: 0px; }
+@media (min-width: 64rem) { :root { --header-h: 4.5rem; } }
+
+/* An anchor or a scrolled-to ayah must not stop behind the status bar or the top bar. */
+html { scroll-padding-top: calc(var(--safe-top) + var(--header-h)); }
 
 /*
  * A solid strip behind the status bar, so scrolled text never mixes with the clock and battery.
@@ -134,7 +138,7 @@ html { scroll-padding-top: var(--safe-top); }
 /* Printing a page, such as the monthly prayer timetable, uses plain black on white. */
 @media print {
   :root, :root[data-theme] { --bg: #fff; --surface: #fff; --text: #000; --soft: #000; --muted: #333; --line: #999; --line-strong: #666; --accent: #000; --active: #eee; color-scheme: light; }
-  nav[aria-label="প্রধান মেনু"], section[aria-label="তিলাওয়াত প্লেয়ার"] { display: none !important; }
+  nav[aria-label="প্রধান মেনু"], [data-site], section[aria-label="তিলাওয়াত প্লেয়ার"] { display: none !important; }
 }
 
 /* Senior ("easy") mode enlarges the whole UI because all sizes are in rem. */

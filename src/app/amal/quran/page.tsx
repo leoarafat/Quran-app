@@ -15,7 +15,7 @@ export default function QuranDuasPage() {
   const rabbana = passages.flatMap((p, i) => (p.ayahs.some((a) => skeleton(a.ar).split(" ").some((w: string) => /^[وف]?ربنا$/.test(w))) ? [i] : []));
 
   return (
-    <div className="mx-auto max-w-2xl">
+    <div className="mx-auto max-w-2xl lg:max-w-5xl">
       <header className="mb-4 flex items-center gap-2.5">
         <Link href="/amal/" aria-label="দোয়া ও যিকিরে ফিরে যান" className="-ml-2 grid size-11 shrink-0 place-items-center rounded-full text-accent">
           <ChevronLeft aria-hidden className="size-6" />

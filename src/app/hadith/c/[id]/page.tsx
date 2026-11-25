@@ -28,7 +28,7 @@ export default async function CategoryPage({ params }: PageProps<"/hadith/c/[id]
   const video = videoFor(category.id);
 
   return (
-    <div className="mx-auto max-w-2xl space-y-4">
+    <div className="mx-auto max-w-2xl lg:max-w-5xl space-y-4">
       <nav aria-label="বিষয়ের পথ" className="flex flex-wrap items-center gap-x-2 text-sm">
         <Link href="/hadith/" className="inline-flex min-h-11 items-center text-accent underline">হাদিস</Link>
         {trail.map((c) => <span key={c.id} className="flex items-center gap-2"><span aria-hidden>›</span><Link href={`/hadith/c/${c.id}/`} className="inline-flex min-h-11 items-center text-accent underline">{c.title}</Link></span>)}

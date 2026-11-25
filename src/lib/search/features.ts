@@ -1,10 +1,18 @@
 // Finding the app's own pages from the search box.
 import { FEATURE_GROUPS } from "@/lib/features";
 import { foldName } from "@/lib/quran/find";
+import { QAIDA, qaidaPath } from "@/lib/arabic/qaida";
+import { LESSONS, lessonPath } from "@/lib/namaz";
 
 type Page = { title: string; href: string; words: string };
 
+const LESSON_WORDS: Record<string, string> = {
+  waqt: "ওয়াক্ত রাকাত ফজর যোহর আসর মাগরিব এশা জুমা", oju: "অজু ওযু গোসল তায়াম্মুম oju wudu", niyom: "রুকু সিজদা বৈঠক তাশাহহুদ niyom", rakat: "বিতর রাকাত rakat", surah: "ফাতিহা সূরা", doa: "সানা দরুদ তাসবিহ", masala: "সাহু কাজা কসর মাসবুক সফর",
+};
+
 const EXTRA: Page[] = [
+  ...LESSONS.map((l) => ({ title: l.title, href: lessonPath(l.slug), words: `${l.hint} নামাজ ${LESSON_WORDS[l.slug] ?? ""}` })),
+  ...QAIDA.map((l) => ({ title: l.title, href: qaidaPath(l.slug), words: `${l.hint} আরবি কায়দা তাজবিদ qaida` })),
   { title: "রোজার খাতা", href: "/amal/fasting/", words: "রোজা সিয়াম ফাস্টিং roza" },
   { title: "কুরআনের দোয়া", href: "/amal/quran/", words: "রব্বানা rabbana dua" },
   { title: "অ্যাপ ইনস্টল ও অফলাইন", href: "/offline/", words: "ডাউনলোড offline install" },

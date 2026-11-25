@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: "তাসবিহ" };
 
 export default function TasbihPage() {
   return (
-    <div className="mx-auto max-w-md">
+    <div className="mx-auto max-w-md lg:max-w-2xl">
       <PageHeader title="তাসবিহ" subtitle="আপনার গণনা এই ফোনেই থাকে" />
       <TasbihCounter />
     </div>

@@ -9,7 +9,7 @@ export const metadata: Metadata = { title: "যাকাত হিসাব" };
 
 export default function ZakatPage() {
   return (
-    <div className="mx-auto max-w-2xl space-y-4">
+    <div className="mx-auto max-w-2xl lg:max-w-3xl space-y-4">
       <PageHeader title="যাকাত হিসাব" subtitle="আপনার লেখা সংখ্যা কোথাও পাঠানো বা সেভ করা হয় না" />
       <PendingNote
         title="আলেমের যাচাই বাকি"

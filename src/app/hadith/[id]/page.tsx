@@ -31,7 +31,7 @@ export default async function HadithDetailPage({ params }: PageProps<"/hadith/[i
   const card = "rounded-[1.375rem] border border-line bg-surface p-4";
 
   return (
-    <article className="mx-auto max-w-2xl space-y-4">
+    <article className="mx-auto max-w-2xl lg:max-w-3xl space-y-4">
       <div className="flex items-center justify-between gap-3">
         <Link href={h.categories[0] ? `/hadith/c/${h.categories[0]}/` : "/hadith/"} className="inline-flex min-h-11 min-w-0 items-center gap-1 text-accent">
           <ChevronLeft aria-hidden className="size-5 shrink-0" /> <span className="line-clamp-2">{categories.get(h.categories[0])?.title ?? "হাদিস"}</span>

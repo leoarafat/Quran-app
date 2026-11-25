@@ -22,7 +22,7 @@ export default function AmalPage() {
   const topics = TOPICS.flatMap(([id, icon]) => (categories.has(id) ? [{ ...categories.get(id)!, icon }] : []));
 
   return (
-    <div className="mx-auto max-w-2xl space-y-4">
+    <div className="mx-auto max-w-2xl lg:max-w-5xl space-y-4">
       <PageHeader title="দোয়া ও যিকির" subtitle="কুরআন ও হাদিস থেকে, রেফারেন্সসহ" />
       <Link href="/amal/quran/" className="flex min-h-20 items-center gap-3.5 rounded-[1.375rem] border border-line-strong bg-surface p-4 hover:border-brand">
         <span className="grid size-14 shrink-0 place-items-center rounded-t-[1.75rem] rounded-b-2xl border border-line-strong text-accent"><BookOpen aria-hidden className="size-6" strokeWidth={1.6} /></span>
@@ -32,7 +32,7 @@ export default function AmalPage() {
         </span>
         <ChevronRight aria-hidden className="size-5 shrink-0 text-accent" />
       </Link>
-      <ul className="grid grid-cols-2 gap-3 [&>li:last-child:nth-child(odd)]:col-span-2">
+      <ul className="grid grid-cols-2 gap-3 lg:grid-cols-4 [&>li:last-child:nth-child(odd)]:col-span-2">
         {([["/amal/khatm/", "খতম ও দৈনিক লক্ষ্য", "তিলাওয়াতের হিসাব"], ["/amal/fasting/", "রোজার খাতা", "নিজের রোজার হিসাব"], ["/amal/daily/", "সারাদিনের আমল", "আমার আমলের খাতা"], ["/amal/after-salah/", "নামাজের পরের আমল", "হাদিস ও আয়াত"]] as const).map(([href, title, hint]) => (
           <li key={href}>
             <Link href={href} className="flex h-full min-h-20 flex-col items-center justify-center rounded-[1.375rem] border border-line bg-surface p-3 text-center hover:border-brand">
@@ -43,7 +43,7 @@ export default function AmalPage() {
         ))}
       </ul>
       <h2 className="pt-1 font-display text-lg font-semibold">হাদিস থেকে</h2>
-      <ul className="grid grid-cols-2 gap-3 md:grid-cols-3">
+      <ul className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5">
         {topics.map(({ id, title, count, icon: Icon }) => (
           <li key={id}>
             <Link href={`/hadith/c/${id}/`} prefetch={false} className="flex h-full flex-col items-center gap-2 rounded-[1.375rem] border border-line bg-surface p-4 text-center hover:border-brand">
@@ -59,7 +59,7 @@ export default function AmalPage() {
         <p className="text-sm leading-relaxed text-muted">এই ভাগগুলো উৎস প্রকাশকের; এতে দোয়ার পাশাপাশি আদব ও বিধানের হাদিসও আছে। ঘুম থেকে ওঠা থেকে রাত পর্যন্ত সাজানো আমলের রুটিন, গণনা ও দোয়ার বাংলা উচ্চারণ আলেমের যাচাইয়ের পর যোগ হবে।</p>
       </div>
       <h2 className="pt-1 font-display text-lg font-semibold">দৈনন্দিন আদব</h2>
-      <ul className="grid gap-2 md:grid-cols-2">
+      <ul className="grid gap-2 md:grid-cols-2 lg:grid-cols-3">
         {MANNERS.flatMap((id) => categories.get(id) ?? []).map(({ id, title, count }) => (
           <li key={id}>
             <Link href={`/hadith/c/${id}/`} prefetch={false} className="flex h-full min-h-14 items-center justify-between gap-3 rounded-[1.375rem] border border-line bg-surface px-4 py-2 hover:border-brand">

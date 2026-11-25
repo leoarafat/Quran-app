@@ -32,7 +32,7 @@ export const FEATURE_GROUPS: FeatureGroup[] = [
     items: [
       { title: "সারাদিনের আমল", hint: "আমলের খাতা", icon: Sunrise, href: "/amal/daily/", badge: "আংশিক" },
       { title: "নামাজের পরের আমল", hint: "যিকির ও আয়াত", icon: Repeat, href: "/amal/after-salah/", badge: "আংশিক" },
-      { title: "নামাজ শিক্ষা", hint: "হাদিস ও আয়াত", icon: PersonStanding, href: "/namaz/", badge: "আংশিক" },
+      { title: "নামাজ শিক্ষা", hint: "ধাপে ধাপে, ছবিসহ", icon: PersonStanding, href: "/namaz/", badge: "যাচাই বাকি" },
       { title: "দোয়া", hint: "কুরআন ও হাদিস", icon: Heart, href: "/amal/" },
       { title: "রমজান", hint: "আয়াত ও হাদিস", icon: Moon, href: "/ramadan/", badge: "আংশিক" },
       { title: "নবী ও সাহাবি", hint: "আয়াত ও হাদিস", icon: Users, href: "/prophets/", badge: "আংশিক" },

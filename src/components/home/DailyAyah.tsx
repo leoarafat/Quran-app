@@ -14,11 +14,11 @@ export function DailyAyah({ items }: { items: DailyItem[] }) {
   const item = items[index];
   if (!item) return <div className="min-h-44 rounded-[1.375rem] border border-line bg-surface" />;
   return (
-    <Link href={`/quran/${item.s}/#a${item.a}`} className="block rounded-[1.375rem] border border-line bg-surface px-[1.125rem] py-3">
+    <Link href={`/quran/${item.s}/#a${item.a}`} className="block rounded-[1.375rem] border border-line bg-surface px-[1.125rem] py-3 hover:border-brand lg:px-8 lg:py-6">
       <span className="block text-[0.8125rem] text-accent">আজকের আয়াত · সূরা {item.surah} {toBnDigits(item.s)}:{toBnDigits(item.a)}</span>
-      <span lang="ar" dir="rtl" className="block font-arabic text-[1.5625rem] leading-[2]">{item.ar}</span>
+      <span lang="ar" dir="rtl" className="block font-arabic text-[1.5625rem] leading-[2] lg:py-2 lg:text-[2.25rem]">{item.ar}</span>
       <span className="block text-[0.9375rem] text-accent">{item.tr}</span>
-      <span className="mt-0.5 block text-[0.9375rem] leading-relaxed">{item.bn}</span>
+      <span className="mt-0.5 block text-[0.9375rem] leading-relaxed lg:text-lg">{item.bn}</span>
     </Link>
   );
 }

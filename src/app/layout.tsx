@@ -11,6 +11,8 @@ import "@fontsource/noto-serif-bengali/700.css";
 import "@fontsource/tiro-bangla/400.css";
 import "./globals.css";
 import { AppNav } from "@/components/AppNav";
+import { SiteFooter } from "@/components/SiteFooter";
+import { SiteHeader } from "@/components/SiteHeader";
 import { PwaManager } from "@/components/offline/PwaManager";
 import { MiniPlayer } from "@/components/quran/MiniPlayer";
 import { ReminderRunner } from "@/components/tools/ReminderRunner";
@@ -38,12 +40,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-[calc(0.5rem+var(--safe-top))] focus:z-50 focus:rounded-lg focus:bg-surface focus:p-3">
           মূল অংশে যান
         </a>
-        <div className="lg:pl-56">
-          <main id="main" className="mx-auto max-w-5xl px-[1.375rem] pb-32 pt-[calc(1.5rem+var(--safe-top))] lg:px-8 lg:pb-10">
+        <SiteHeader />
+        <div className="lg:min-h-[calc(100dvh-var(--header-h))]">
+          <main id="main" className="mx-auto max-w-5xl px-[1.375rem] pb-32 pt-[calc(1.5rem+var(--safe-top))] lg:max-w-[80rem] lg:px-8 lg:pb-16">
             {children}
           </main>
           <MiniPlayer />
         </div>
+        <SiteFooter />
         <AppNav />
         <PwaManager />
         <ReminderRunner />

@@ -7,7 +7,7 @@ export const metadata: Metadata = { title: "আমার পাতা" };
 
 export default function MePage() {
   return (
-    <div className="mx-auto max-w-md space-y-4">
+    <div className="mx-auto max-w-md lg:max-w-5xl space-y-4">
       <PageHeader title="আমার পাতা" subtitle="আপনার আমল ও পড়ার অগ্রগতি" />
       <MyPage names={getIndex().surahs.map((s) => s.bangla)} />
     </div>
