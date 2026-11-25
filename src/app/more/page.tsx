@@ -16,6 +16,7 @@ export default function MorePage() {
         <ChevronRight aria-hidden className="size-5 text-muted" />
       </Link>
       <FeatureGrid />
+      <Link href="/about/" className="mt-6 flex min-h-12 items-center justify-center font-semibold text-brand underline">উৎস ও শর্ত</Link>
     </>
   );
 }

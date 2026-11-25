@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
-import { ComingSoon } from "@/components/ComingSoon";
+import { ContinueReading } from "@/components/quran/ContinueReading";
+import { SurahBrowser } from "@/components/quran/SurahBrowser";
 import { PageHeader } from "@/components/PageHeader";
+import { getIndex } from "@/lib/quran/server";
 
 export const metadata: Metadata = { title: "কুরআন" };
 
 export default function QuranPage() {
+  const { surahs, juzs, sajdas } = getIndex();
   return (
-    <>
-      <PageHeader title="কুরআন" />
-      <ComingSoon>সূরা তালিকা ও রিডার পরের ধাপে যাচাই করা উৎস থেকে যোগ হবে।</ComingSoon>
-    </>
+    <div className="space-y-4">
+      <PageHeader title="আল-কুরআন" subtitle="১১৪টি সূরা, অনুবাদ ও তিলাওয়াতসহ" />
+      <ContinueReading names={surahs.map((s) => s.bangla)} />
+      <SurahBrowser surahs={surahs} juzs={juzs} sajdas={sajdas} />
+    </div>
   );
 }

@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { Settings as SettingsIcon } from "lucide-react";
 import { FeatureGrid } from "@/components/FeatureGrid";
+import { ContinueReading } from "@/components/quran/ContinueReading";
 import { TodayDate } from "@/components/TodayDate";
+import { getIndex } from "@/lib/quran/server";
 
 export default function HomePage() {
   return (
@@ -15,6 +17,7 @@ export default function HomePage() {
           <SettingsIcon aria-hidden className="size-6" />
         </Link>
       </header>
+      <ContinueReading names={getIndex().surahs.map((s) => s.bangla)} />
       <FeatureGrid />
     </div>
   );

@@ -37,12 +37,7 @@ describe("built Quran data", () => {
     for (const s of surahs) {
       for (const x of s.ayahs) {
         const shown = x.a === 1 && s.basmalah ? `${s.basmalah} ${x.ar}` : x.ar;
-        // The two surahs that spell their Basmalah with a shadda keep it in their own data.
-        const expected = original[cursor++].text;
-        if (x.a === 1 && s.basmalah) {
-          expect(expected.endsWith(x.ar)).toBe(true);
-          expect(shown.slice(shown.indexOf(" "))).toBe(expected.slice(expected.indexOf(" ")));
-        } else expect(shown).toBe(expected);
+        expect(shown).toBe(original[cursor++].text);
       }
     }
     expect(cursor).toBe(6236);

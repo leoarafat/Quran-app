@@ -6,6 +6,7 @@ import "@fontsource/hind-siliguri/700.css";
 import "@fontsource/amiri-quran/400.css";
 import "./globals.css";
 import { AppNav } from "@/components/AppNav";
+import { MiniPlayer } from "@/components/quran/MiniPlayer";
 import { SettingsBootScript } from "@/components/SettingsBootScript";
 
 export const metadata: Metadata = {
@@ -32,6 +33,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <main id="main" className="mx-auto max-w-5xl px-4 pb-28 pt-5 lg:px-8 lg:pb-10">
             {children}
           </main>
+          <MiniPlayer />
         </div>
         <AppNav />
       </body>
