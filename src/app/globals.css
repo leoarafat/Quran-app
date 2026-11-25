@@ -1,26 +1,80 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #f8f5ec;
+  --surface: #fffdf7;
+  --surface-2: #efeadb;
+  --text: #17241f;
+  --muted: #56655e;
+  --line: #e3dcc8;
+  --brand: #0b5d47;
+  --brand-strong: #084634;
+  --on-brand: #fffdf5;
+  --accent: #8a5f0a;
+  --accent-soft: #f3e6c4;
+  --ar-scale: 1;
+  --bn-scale: 1;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --bg: #0b1411;
+  --surface: #121e1a;
+  --surface-2: #1a2a24;
+  --text: #e9efe9;
+  --muted: #a1b3aa;
+  --line: #243730;
+  --brand: #4fbf96;
+  --brand-strong: #7ad4b1;
+  --on-brand: #06140f;
+  --accent: #e2bd68;
+  --accent-soft: #33301c;
+  color-scheme: dark;
+}
+
+:root[data-theme="sepia"] {
+  --bg: #f1e4ca;
+  --surface: #f8eed9;
+  --surface-2: #e8d8b8;
+  --text: #33271a;
+  --muted: #66543d;
+  --line: #d8c49e;
+  --brand: #5c4a14;
+  --brand-strong: #45370e;
+  --on-brand: #fff8e8;
+  --accent: #7d4a0e;
+  --accent-soft: #ead5a8;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-on-brand: var(--on-brand);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --font-sans: "Hind Siliguri", system-ui, sans-serif;
+  --font-arabic: "Amiri Quran", "Amiri", serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* Senior ("easy") mode enlarges the whole UI because all sizes are in rem. */
+html { font-size: 100%; -webkit-text-size-adjust: 100%; }
+html[data-easy="true"] { font-size: 118.75%; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.65;
+}
+
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }
