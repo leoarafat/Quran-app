@@ -700,5 +700,13 @@
     "fetched": "2026-11-25",
     "bytes": 3170,
     "sha256": "54f4047208c4ffeb7b3362881c73d4a081153e5de6f27a3bee11210b99872cf4"
+  },
+  "hadeethenc/hadeethenc-bn-sqlite.zip": {
+    "url": "https://hadeethenc.com/bn/browse/download/bn/sqlite",
+    "fetched": "2026-11-25",
+    "bytes": 2191269,
+    "sha256": "95c4526e34c7efff8969e0d89379d44bec7f471c0992e4ecb86e2200a0c724a1",
+    "fileDate": "2026-11-20",
+    "version": null
   }
 }

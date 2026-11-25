@@ -20,7 +20,7 @@ export const FEATURE_GROUPS: FeatureGroup[] = [
     items: [
       { title: "কুরআন", hint: "আরবি, উচ্চারণ, অর্থ", icon: BookOpen, href: "/quran/" },
       { title: "বুকমার্ক", hint: "আয়াত ও নোট", icon: BookMarked, href: "/bookmarks/" },
-      { title: "হাদিস", hint: "রেফারেন্সসহ", icon: ScrollText },
+      { title: "হাদিস", hint: "ব্যাখ্যাসহ", icon: ScrollText, href: "/hadith/" },
       { title: "আরবি শিখুন", hint: "হরফ থেকে তাজবিদ", icon: GraduationCap },
     ],
   },
@@ -30,7 +30,7 @@ export const FEATURE_GROUPS: FeatureGroup[] = [
       { title: "সারাদিনের আমল", hint: "সকাল থেকে রাত", icon: Sunrise },
       { title: "নামাজের পরের আমল", hint: "পাঁচ ওয়াক্ত", icon: Repeat },
       { title: "নামাজ শিক্ষা", hint: "অজু থেকে জানাজা", icon: PersonStanding },
-      { title: "দোয়া", hint: "প্রয়োজন অনুযায়ী", icon: Heart },
+      { title: "দোয়া", hint: "হাদিস থেকে", icon: Heart, href: "/amal/" },
       { title: "রমজান", hint: "গুরুত্ব ও আমল", icon: Moon },
       { title: "নবী ও সাহাবি", hint: "জীবনের ঘটনা", icon: Users },
     ],

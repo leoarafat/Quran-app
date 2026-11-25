@@ -14,7 +14,7 @@ const surahs: { n: number; basmalah: string | null; ayahs: Ayah[] }[] = index.su
 
 describe("source files", () => {
   it("are byte-for-byte what was downloaded", () => {
-    expect(Object.keys(manifest)).toHaveLength(117);
+    expect(Object.keys(manifest).filter((k) => !k.startsWith("hadeethenc/"))).toHaveLength(117);
     for (const [path, info] of Object.entries(manifest)) {
       expect(sha256(readFileSync(new URL(`data/raw/${path}`, root))), path).toBe(info.sha256);
     }

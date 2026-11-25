@@ -14,6 +14,7 @@
 | হাদিস (আরবি ও বাংলা) | [fawazahmed0/hadith-api](https://github.com/fawazahmed0/hadith-api) | রিপো Unlicense, তবে **মূল অনুবাদের স্বত্ব এতে পরিষ্কার হয় না**; বাংলা লেখার মানও যাচাই দরকার | ⚠️ অনুবাদক/প্রকাশক শনাক্ত করতে হবে |
 | দোয়া (বাংলা) | [riadmonir/dua-api](https://github.com/riadmonir/dua-api) | README-তে MIT বলা, LICENSE ফাইল নেই; বাংলা কীভাবে যাচাই হয়েছে লেখা নেই | ⚠️ খসড়া হিসেবেও যাচাই ছাড়া নয় |
 | আরবি ফন্ট | Amiri Quran | SIL OFL | ✅ |
+| হাদিস ও দোয়া (প্রস্তাবিত) | [HadeethEnc.com](https://hadeethenc.com/bn/home) | QuranEnc-এর মতো ৭ শর্ত; বিস্তারিত `AMAL-SOURCES.md` | ⏳ ডাউনলোডের অনুমতি বাকি |
 | ইন্দো-পাক ফন্ট | [QUL ইস্যু](https://github.com/TarteelAI/quranic-universal-library/issues/1108) | লিখিত অনুমতি লাগতে পারে | ⏳ |
 
 ## যাচাই করা ক্বারী ফোল্ডার (everyayah.com)

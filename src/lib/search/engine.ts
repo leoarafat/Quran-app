@@ -46,7 +46,7 @@ const ARABIC_PREFIXES = ["", "ال", "و", "ف", "ب", "ك", "ل", "وال", "ف
 
 type Term = { text: string; /** added by the app, so only matched at the start of a word */ synonym: boolean };
 
-function termGroups(query: string, script: Script): { groups: Term[][]; synonyms: string[] } {
+export function termGroups(query: string, script: Script): { groups: Term[][]; synonyms: string[] } {
   const synonyms: string[] = [];
   const groups = query.split(" ").filter(Boolean).map((token) => {
     const terms: Term[] = [{ text: token, synonym: false }];
@@ -76,12 +76,20 @@ function wordMatches(word: string, term: Term, mode: Mode, script: Script): bool
 }
 
 /** Same test against a whole " word word " string, written to be fast over 6236 rows. */
-function lineMatches(line: string, term: Term, mode: Mode, script: Script): boolean {
+export function lineMatches(line: string, term: Term, mode: Mode, script: Script): boolean {
   if (mode === "word") return line.includes(` ${term.text} `);
   if (term.synonym) return line.includes(` ${term.text}`);
   if (mode === "any") return line.includes(term.text);
   if (script === "arabic") return line.includes(term.text) && ARABIC_PREFIXES.some((p) => line.includes(` ${p}${term.text}`));
   return line.includes(` ${term.text}`);
+}
+
+/** Indexes of the space-separated words that matched, for highlighting. */
+export function markWords(text: string, script: Script, groups: Term[][], mode: Mode): number[] {
+  return text.split(" ").flatMap((word, i) => {
+    const parts = fold(word, script).split(" ").filter(Boolean);
+    return parts.some((part) => groups.some((g) => g.some((t) => wordMatches(part, t, mode, script)))) ? [i] : [];
+  });
 }
 
 type Joined = { text: string; starts: Set<number>; ends: Set<number> };
@@ -117,13 +125,6 @@ export function createIndex(rows: Row[], revelation: ("meccan" | "medinan")[]) {
     tr: joinWords(row[5]),
     bn: ` ${fold(row[6], "bangla")} `,
   }));
-
-  function markWords(text: string, script: Script, groups: Term[][], mode: Mode): number[] {
-    return text.split(" ").flatMap((word, i) => {
-      const parts = fold(word, script).split(" ").filter(Boolean);
-      return parts.some((part) => groups.some((g) => g.some((t) => wordMatches(part, t, mode, script)))) ? [i] : [];
-    });
-  }
 
   function markSound(text: string, needle: string, mode: Mode): number[] {
     const words = text.split(" ");

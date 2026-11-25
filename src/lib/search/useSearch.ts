@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { HadithFilters, HadithFound } from "@/lib/hadith/search";
 import type { Filters, Found } from "./engine";
 import type { SearchReply, SearchRequest } from "./search.worker";
 
@@ -8,7 +9,9 @@ let worker: Worker | null = null;
 let lastId = 0;
 const waiting = new Map<number, (reply: SearchReply) => void>();
 
-function ask(request: Omit<SearchRequest, "id">, done: (reply: SearchReply) => void): () => void {
+type Ask = SearchRequest extends infer R ? (R extends SearchRequest ? Omit<R, "id"> : never) : never;
+
+function ask(request: Ask, done: (reply: SearchReply) => void): () => void {
   const id = ++lastId;
   const fail = () => {
     worker?.terminate();
@@ -26,7 +29,7 @@ function ask(request: Omit<SearchRequest, "id">, done: (reply: SearchReply) => v
       worker.onerror = fail;
     }
     waiting.set(id, done);
-    worker.postMessage({ ...request, id } satisfies SearchRequest);
+    worker.postMessage({ ...request, id } as SearchRequest);
   } catch {
     waiting.set(id, done);
     queueMicrotask(fail);
@@ -34,20 +37,20 @@ function ask(request: Omit<SearchRequest, "id">, done: (reply: SearchReply) => v
   return () => { waiting.delete(id); };
 }
 
-export type SearchState = { status: "idle" | "searching" | "done" | "error"; found: Found | null; retry: () => void };
+export type SearchState<T> = { status: "idle" | "searching" | "done" | "error"; found: T | null; retry: () => void };
 
-export function useSearch(query: string, filters: Filters, limit: number): SearchState {
+function useWorkerSearch<T>(request: Ask): SearchState<T> {
   const [attempt, setAttempt] = useState(0);
-  const [answer, setAnswer] = useState<{ key: string; base: string; found: Found | null } | null>(null);
+  const [answer, setAnswer] = useState<{ key: string; base: string; found: T | null } | null>(null);
   // "base" ignores the page size, so asking for more keeps the current results on screen.
-  const base = JSON.stringify([query, filters]);
-  const key = `${base}|${limit}|${attempt}`;
-  const active = query.trim().length > 0;
+  const base = JSON.stringify([request.scope, request.query, request.filters]);
+  const key = `${base}|${request.limit}|${attempt}`;
+  const active = request.query.trim().length > 0;
 
   useEffect(() => {
     if (!active) return;
-    return ask({ query, filters, limit }, (reply) => setAnswer({ key, base, found: reply.failed ? null : reply.found! }));
-    // "key" covers query, filters and limit.
+    return ask(request, (reply) => setAnswer({ key, base, found: reply.failed ? null : (reply.found as T) }));
+    // "key" covers every part of the request.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key, active]);
 
@@ -56,3 +59,6 @@ export function useSearch(query: string, filters: Filters, limit: number): Searc
   if (answer?.key === key) return { status: answer.found ? "done" : "error", found: answer.found, retry };
   return { status: "searching", found: answer?.base === base ? answer.found : null, retry };
 }
+
+export const useSearch = (query: string, filters: Filters, limit: number) => useWorkerSearch<Found>({ scope: "quran", query, filters, limit });
+export const useHadithSearch = (query: string, filters: HadithFilters, limit: number) => useWorkerSearch<HadithFound>({ scope: "hadith", query, filters, limit });

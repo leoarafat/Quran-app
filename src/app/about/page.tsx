@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { PageHeader } from "@/components/PageHeader";
 import { toBnDigits } from "@/lib/bn";
+import { getHadithIndex } from "@/lib/hadith/server";
 import { getIndex } from "@/lib/quran/server";
 
 export const metadata: Metadata = { title: "উৎস ও শর্ত" };
 
 export default function AboutPage() {
   const { sources } = getIndex();
+  const hadith = getHadithIndex().index.meta;
   const card = "rounded-2xl border border-line bg-surface p-4";
   const link = "font-semibold text-brand underline";
   return (
@@ -28,6 +30,11 @@ export default function AboutPage() {
           <h2 className="font-bold">বাংলা উচ্চারণ</h2>
           <p>আরবি লেখার হরকত ও তাজবিদের কিছু নিয়ম ধরে এই অ্যাপের নিজস্ব প্রোগ্রাম দিয়ে তৈরি। আয়াতের শেষে থামলে যেভাবে পড়া হয় সেভাবে লেখা। ক্বারীর যাচাই এখনো বাকি।</p>
           <p>ح ও ه দুটিই “হ”; س, ص ও ش যথাক্রমে “স, স, শ”; ذ, ز ও ظ “য”; ت ও ط “ত”; د ও ض “দ”; ق ও ك “ক”। ঠিক ধ্বনি শিখতে তিলাওয়াত শুনুন বা একজন ক্বারীর সাহায্য নিন।</p>
+        </section>
+        <section className={card}>
+          <h2 className="font-bold">হাদিস ও দোয়া</h2>
+          <p><a className={link} href="https://hadeethenc.com/bn/home">HadeethEnc.com</a>-এর অফিসিয়াল বাংলা ডেটা, ফাইলের তারিখ {toBnDigits(hadith.fileDate)}। ফাইলে অনুবাদের ভার্সন নম্বর উল্লেখ নেই।</p>
+          <p>লেখায় পরিবর্তন করা হয়নি। দুর্বল বা অস্পষ্ট মানের বর্ণনা দেখানো হয় না। বুখারীর নম্বর যন্ত্রে আলাদা সংকলনের সাথে মিলিয়ে পাওয়া। এই মিলানো আলেমের যাচাই নয়।</p>
         </section>
         <section className={card}>
           <h2 className="font-bold">তিলাওয়াত</h2>

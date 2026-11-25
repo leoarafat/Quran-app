@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Hadith collections used only to cross-check references (about 42 MB, never published)
+/data/verify/*.json
