@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // the video project has its own dependencies and type settings
+    "video/**",
   ]),
 ]);
 

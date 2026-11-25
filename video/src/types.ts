@@ -1,0 +1,27 @@
+export type Clip = { lang: "bn" | "ar"; text: string; file: string; from: number; dur: number; trim: number };
+export type Pose = "stand" | "takbir" | "fold" | "ruku" | "sujud" | "sit" | "salamR" | "salamL";
+export type Scene = {
+  id: string;
+  kind: "title" | "info" | "step" | "dua" | "rows" | "overview" | "compare" | "end";
+  chapter: string;
+  heading: string;
+  from: number;
+  dur: number;
+  clips: Clip[];
+  sub?: string;
+  note?: string;
+  icon?: "info" | "sun" | "sparkle";
+  points?: string[];
+  pose?: Pose | null;
+  then?: Pose;
+  count?: number;
+  countFrom?: number;
+  ar?: string;
+  pron?: string;
+  meaning?: string;
+  repeat?: string | null;
+  groups?: { title: string; items: string[] }[];
+  columns?: { title: string; lines: string[] }[];
+  footer?: string;
+};
+export type Lesson = { total: number; chapters: { title: string; from: number }[]; scenes: Scene[] };

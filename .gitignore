@@ -45,3 +45,8 @@ next-env.d.ts
 
 # Generated from data/raw by "npm run data:build" (also runs before test, dev and build)
 /public/data/hadith/
+
+# Lesson video project: dependencies, generated voice clips and renders (the videos live on R2)
+/video/node_modules
+/video/public/vo/
+/video/out/

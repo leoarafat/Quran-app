@@ -1,0 +1,68 @@
+[
+ {
+  "id": "eid",
+  "category": 486,
+  "title": "দুই ঈদের নামাজ: নিয়ম ও দোয়া",
+  "url": "https://pub-a7c1ec99a8e8435295b5a8e58ff4bd29.r2.dev/noor-quran/videos/eid-779fd3dbf2.mp4",
+  "bytes": 22661159,
+  "poster": "https://pub-a7c1ec99a8e8435295b5a8e58ff4bd29.r2.dev/noor-quran/videos/eid-95201fdce9.jpg",
+  "seconds": 383,
+  "chapters": [
+   {
+    "title": "পরিচিতি ও প্রস্তুতি",
+    "at": 8
+   },
+   {
+    "title": "প্রথম রাকাত",
+    "at": 100
+   },
+   {
+    "title": "দ্বিতীয় রাকাত",
+    "at": 197
+   },
+   {
+    "title": "বৈঠক ও সালাম",
+    "at": 224
+   },
+   {
+    "title": "আরও জেনে রাখুন",
+    "at": 343
+   }
+  ]
+ },
+ {
+  "id": "janaza",
+  "category": 495,
+  "title": "জানাজার নামাজ: নিয়ম ও দোয়া",
+  "url": "https://pub-a7c1ec99a8e8435295b5a8e58ff4bd29.r2.dev/noor-quran/videos/janaza-06ea188259.mp4",
+  "bytes": 17546064,
+  "poster": "https://pub-a7c1ec99a8e8435295b5a8e58ff4bd29.r2.dev/noor-quran/videos/janaza-6c4106898c.jpg",
+  "seconds": 303,
+  "chapters": [
+   {
+    "title": "পরিচিতি ও প্রস্তুতি",
+    "at": 11
+   },
+   {
+    "title": "প্রথম তাকবির",
+    "at": 65
+   },
+   {
+    "title": "দ্বিতীয় তাকবির",
+    "at": 103
+   },
+   {
+    "title": "তৃতীয় তাকবির",
+    "at": 160
+   },
+   {
+    "title": "চতুর্থ তাকবির ও সালাম",
+    "at": 254
+   },
+   {
+    "title": "আরও জেনে রাখুন",
+    "at": 269
+   }
+  ]
+ }
+]
