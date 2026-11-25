@@ -1,3 +1,4 @@
+import { BOOKS, DEFAULT_HADITH_FILTERS, type HadithFilters } from "@/lib/hadith/search";
 import { filterSurahs, foldName, parseReference } from "@/lib/quran/find";
 import type { SurahInfo } from "@/lib/quran/types";
 import { DEFAULT_FILTERS, type Filters } from "./engine";
@@ -39,6 +40,28 @@ export function fromParams(search: string): { query: string; filters: Filters } 
       surah: number("surah", 114),
       juz: number("juz", 30),
       revelation: pick("revelation", ["all", "meccan", "medinan"], "all"),
+    },
+  };
+}
+
+export function hadithToParams(query: string, filters: HadithFilters): string {
+  const params = new URLSearchParams({ scope: "hadith" });
+  if (query) params.set("q", query);
+  for (const key of Object.keys(DEFAULT_HADITH_FILTERS) as (keyof HadithFilters)[]) {
+    if (filters[key] !== DEFAULT_HADITH_FILTERS[key]) params.set(key, filters[key]);
+  }
+  return `?${params.toString()}`;
+}
+
+export function hadithFromParams(search: string): { query: string; filters: HadithFilters } {
+  const params = new URLSearchParams(search);
+  const pick = <T extends string>(key: string, choices: readonly T[], fallback: T) => (choices.includes(params.get(key) as T) ? (params.get(key) as T) : fallback);
+  return {
+    query: (params.get("q") ?? "").slice(0, 200),
+    filters: {
+      grade: pick("grade", ["all", "sahih", "hasan"], "all"),
+      book: pick("book", ["all", ...BOOKS.map((b) => b[0])], "all"),
+      mode: pick("mode", ["start", "word", "any"], "start"),
     },
   };
 }

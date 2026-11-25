@@ -9,6 +9,7 @@ import { DEFAULT_FILTERS, type Filters, type Result } from "@/lib/search/engine"
 import { clearHistory, remember, useHistory } from "@/lib/search/history";
 import { directMatches, fromParams, toParams } from "@/lib/search/query";
 import { useSearch } from "@/lib/search/useSearch";
+import { HadithSearch } from "./HadithSearch";
 import { Highlight } from "./Highlight";
 
 const PAGE = 30;
@@ -134,7 +135,7 @@ function SearchBox({ surahs, juzs }: Props) {
             <h2 className="mb-2 font-display font-semibold">এভাবে খুঁজে দেখুন</h2>
             <div className="flex flex-wrap gap-2">{EXAMPLES.map((x) => <button key={x} type="button" className={chip(false)} onClick={() => choose(x)}>{x}</button>)}</div>
           </section>
-          <p className="text-sm text-muted">প্রথমবার আয়াত খোঁজার সময় প্রায় ১.৫ MB ডেটা নামবে। হাদিস ও দোয়া যোগ হলে সেগুলোও এখানেই খোঁজা যাবে।</p>
+          <p className="text-sm text-muted">প্রথমবার আয়াত খোঁজার সময় প্রায় ১.৫ MB ডেটা নামবে।</p>
         </div>
       )}
 
@@ -189,8 +190,34 @@ function SearchBox({ surahs, juzs }: Props) {
 
 const never = () => () => {};
 
+const SCOPES = [["quran", "কুরআন"], ["hadith", "হাদিস"]] as const;
+
+function Scoped(props: Props) {
+  const [scope, setScope] = useState<(typeof SCOPES)[number][0]>(() => (new URLSearchParams(window.location.search).get("scope") === "hadith" ? "hadith" : "quran"));
+  const switchTo = (next: typeof scope) => {
+    if (next === scope) return;
+    // Carry the typed words across, but not the other side's filters.
+    const q = new URLSearchParams(window.location.search).get("q");
+    const params = new URLSearchParams();
+    if (next === "hadith") params.set("scope", "hadith");
+    if (q) params.set("q", q);
+    window.history.replaceState(window.history.state, "", `${window.location.pathname}${params.size ? `?${params}` : ""}`);
+    setScope(next);
+  };
+  return (
+    <div className="space-y-4">
+      <div role="group" aria-label="কোথায় খুঁজবেন" className="grid grid-cols-2 gap-1 rounded-full border border-line bg-surface p-1">
+        {SCOPES.map(([key, label]) => (
+          <button key={key} type="button" aria-pressed={scope === key} onClick={() => switchTo(key)} className={`min-h-11 rounded-full ${scope === key ? "bg-brand font-semibold text-on-brand" : "text-muted"}`}>{label}</button>
+        ))}
+      </div>
+      {scope === "quran" ? <SearchBox {...props} /> : <HadithSearch />}
+    </div>
+  );
+}
+
 /** The address is only known in the browser, so the box mounts there. */
 export function SearchExperience(props: Props) {
   const ready = useSyncExternalStore(never, () => true, () => false);
-  return ready ? <SearchBox {...props} /> : <div className="min-h-13 rounded-full border border-line bg-surface" />;
+  return ready ? <Scoped {...props} /> : <div className="min-h-13 rounded-full border border-line bg-surface" />;
 }

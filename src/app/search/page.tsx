@@ -9,7 +9,7 @@ export default function SearchPage() {
   const { surahs, juzs } = getIndex();
   return (
     <div className="mx-auto max-w-2xl">
-      <PageHeader title="সার্চ" subtitle="কুরআনের অর্থ, উচ্চারণ, আরবি, সূরা ও আয়াত" />
+      <PageHeader title="সার্চ" subtitle="কুরআনের আয়াত ও হাদিস" />
       <SearchExperience surahs={surahs} juzs={juzs} />
     </div>
   );

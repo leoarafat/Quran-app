@@ -33,7 +33,10 @@ for (const row of readHadithSource().hadiths) {
     }
     best = Math.max(best, match.score);
     // A number is offered only for a strong match on a long enough text that points to a few places.
-    if (book === "bukhari" && match.score >= STRONG && match.grams >= 6 && match.numbers.length <= 6) bukhari = match.numbers.slice(0, 3);
+    if (book === "bukhari" && match.score >= STRONG && match.grams >= 6 && match.numbers.length <= 6) {
+      // The collection writes a second wording of hadith 5051 as 5051.2; the printed number is 5051.
+      bukhari = [...new Set(match.numbers.map(Math.floor))].slice(0, 3);
+    }
   }
   checks[row.id] = {
     match: best >= STRONG ? "strong" : best >= PARTIAL ? "partial" : "none",
