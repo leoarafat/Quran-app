@@ -30,6 +30,9 @@ check(meta.surahs.every((s) => s.revelation), "Unknown revelation type");
 check(meta.juzs.length === 30, "Juz count");
 check(meta.pages.length === 604, "Page count");
 check(meta.sajdas.length === 15, "Sajdah count");
+check(meta.rukus.length === 556, "Ruku count");
+check(meta.quarters.length === 240, "Hizb quarter count");
+check(meta.manzils.length === 7, "Manzil count");
 check(names.length === TOTAL_SURAHS && new Set(names).size === TOTAL_SURAHS, "Bangla surah names");
 check(uthmani.notice.includes("Tanzil Project"), "Tanzil copyright notice missing");
 
@@ -100,6 +103,11 @@ const index = {
   surahs: meta.surahs.map((s) => ({ ...s, bangla: names[s.n - 1] })),
   juzs: meta.juzs,
   sajdas: meta.sajdas,
+  pages: meta.pages,
+  rukus: meta.rukus,
+  // four quarters make one hizb
+  hizbs: meta.quarters.filter((_, i) => i % 4 === 0),
+  manzils: meta.manzils,
   sources: {
     arabic: { name: "Tanzil Quran Text (Uthmani, Version 1.1)", url: "https://tanzil.net", license: "CC BY 3.0" },
     translation: {

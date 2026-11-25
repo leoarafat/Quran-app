@@ -9,8 +9,10 @@ import { DEFAULT_FILTERS, type Filters, type Result } from "@/lib/search/engine"
 import { clearHistory, remember, useHistory } from "@/lib/search/history";
 import { directMatches, fromParams, toParams } from "@/lib/search/query";
 import { useSearch } from "@/lib/search/useSearch";
+import { findPages } from "@/lib/search/features";
 import { HadithSearch } from "./HadithSearch";
 import { Highlight } from "./Highlight";
+import { VoiceButton } from "./VoiceButton";
 
 const PAGE = 30;
 const EXAMPLES = ["ধৈর্য", "নামাজ", "ইয়াসিন", "২:২৫৫", "আয়াতুল কুরসি", "রাব্বিল আলামিন"];
@@ -77,20 +79,22 @@ function SearchBox({ surahs, juzs }: Props) {
   const direct = directMatches(query, surahs);
   const hasDirect = Boolean(direct.named || direct.reference || direct.surahs.length);
   const total = found?.total ?? 0;
+  const pages = findPages(query);
 
   return (
     <div className="space-y-4">
-      <form role="search" onSubmit={(e) => { e.preventDefault(); const value = text.trim(); setQuery(value); remember(value); (document.activeElement as HTMLElement | null)?.blur(); }} className="flex gap-2">
+      <form role="search" onSubmit={(e) => { e.preventDefault(); const value = text.trim(); setQuery(value); remember(value); (document.activeElement as HTMLElement | null)?.blur(); }} className="flex flex-wrap gap-2">
         <label className="relative block min-w-0 flex-1">
           <span className="sr-only">কুরআনে খুঁজুন</span>
           <Search aria-hidden className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted" />
-          <input type="text" enterKeyHint="search" autoComplete="off" maxLength={200} value={text} onChange={(e) => type(e.target.value)} placeholder="অর্থ, উচ্চারণ, আরবি বা ২:২৫৫" className="min-h-13 w-full rounded-full border border-line-strong bg-surface pl-12 pr-12" />
+          <input type="text" enterKeyHint="search" autoComplete="off" maxLength={200} value={text} onChange={(e) => type(e.target.value)} placeholder="খুঁজুন" className="min-h-13 w-full rounded-full border border-line-strong bg-surface pl-12 pr-12" />
           {text && (
             <button type="button" aria-label="লেখা মুছুন" onClick={() => choose("")} className="absolute right-1.5 top-1/2 grid size-11 -translate-y-1/2 place-items-center rounded-full text-muted">
               <X aria-hidden className="size-5" />
             </button>
           )}
         </label>
+        <VoiceButton onText={(heard) => { choose(heard); remember(heard); }} />
         <button type="button" aria-expanded={panel} aria-label={`ফিল্টার${activeFilters ? `, ${toBnDigits(activeFilters)}টি চালু` : ""}`} onClick={() => setPanel((v) => !v)} className={`relative grid size-13 shrink-0 place-items-center rounded-full border text-accent ${panel ? "border-gold bg-active" : "border-line-strong bg-surface"}`}>
           <SlidersHorizontal aria-hidden className="size-5" />
           {activeFilters > 0 && <span aria-hidden className="absolute -right-0.5 -top-0.5 grid size-5 place-items-center rounded-full bg-gold text-xs font-bold text-on-gold">{toBnDigits(activeFilters)}</span>}
@@ -151,6 +155,15 @@ function SearchBox({ surahs, juzs }: Props) {
             <li key={s.n}><Link href={`/quran/${s.n}/`} onClick={open} className={rowLink}><span className="font-display font-semibold">সূরা {s.bangla}<span className="block font-sans text-sm font-normal text-muted">{toBnDigits(s.n)} · {toBnDigits(s.ayahs)} আয়াত</span></span><span lang="ar" dir="rtl" className="font-arabic text-2xl text-accent">{s.arabic}</span></Link></li>
           ))}
         </ul>
+      )}
+
+      {pages.length > 0 && (
+        <section aria-label="অ্যাপের পাতা">
+          <h2 className="mb-2 text-sm text-muted">অ্যাপের পাতা</h2>
+          <ul className="flex flex-wrap gap-2">
+            {pages.map((p) => <li key={p.href}><Link href={p.href} onClick={open} className="flex min-h-11 items-center rounded-full border border-gold bg-surface px-4 font-semibold text-accent">{p.title}</Link></li>)}
+          </ul>
+        </section>
       )}
 
       {query && (

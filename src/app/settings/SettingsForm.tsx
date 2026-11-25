@@ -1,7 +1,8 @@
 "use client";
 
 import { toBnDigits } from "@/lib/bn";
-import { SCALE_MAX, SCALE_MIN, THEMES, type Theme } from "@/lib/settings";
+import { BN_FONTS, SCALE_MAX, SCALE_MIN, THEMES, type Theme } from "@/lib/settings";
+import { BN_FONT_LABELS } from "@/lib/reader/prefs";
 import { updateSettings, useSettings } from "@/lib/useSettings";
 
 const THEME_LABELS: Record<Theme, string> = { light: "দিন", sepia: "সেপিয়া", dark: "রাত" };
@@ -51,7 +52,13 @@ export function SettingsForm() {
       <div className={`${card} space-y-3`}>
         <ScaleSlider id="ar-scale" label="আরবি লেখার সাইজ" value={settings.arScale} onChange={(arScale) => updateSettings({ arScale })} />
         <ScaleSlider id="bn-scale" label="কুরআনের বাংলা লেখার সাইজ" value={settings.bnScale} onChange={(bnScale) => updateSettings({ bnScale })} />
-        <p className="text-sm text-muted">এই দুটি সাইজ কুরআন রিডারে কাজ করবে।</p>
+        <div role="group" aria-label="কুরআনের বাংলা ফন্ট" className="grid grid-cols-3 gap-2">
+          {BN_FONTS.map((font) => (
+            <button key={font} type="button" aria-pressed={settings.bnFont === font} onClick={() => updateSettings({ bnFont: font })} className={`min-h-12 rounded-xl border px-1 text-sm ${settings.bnFont === font ? "border-brand bg-brand text-on-brand" : "border-line"}`}>{BN_FONT_LABELS[font]}</button>
+          ))}
+        </div>
+        <p className="reading text-center text-lg">বাংলা লেখাটি এমন দেখাবে। ১২৩৪৫</p>
+        <p className="text-sm text-muted">সাইজ ও ফন্ট কুরআন রিডারে কাজ করবে।</p>
       </div>
     </div>
   );

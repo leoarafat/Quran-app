@@ -75,6 +75,11 @@
   --bn-scale: 1;
 }
 
+/* The visitor's choice of Bangla typeface for Quran pronunciation and translation. */
+.reading { font-family: var(--font-sans); }
+:root[data-bnfont="noto"] .reading { font-family: var(--font-display); }
+:root[data-bnfont="tiro"] .reading { font-family: var(--font-welcome); }
+
 /* Short phones, such as 320 x 568. */
 @custom-variant short (@media (max-height: 640px));
 
@@ -100,10 +105,16 @@
   --color-on-gold: var(--on-gold);
   --color-hero-accent: var(--hero-accent);
   --color-hero-muted: var(--hero-muted);
-  --font-sans: "Hind Siliguri", system-ui, sans-serif;
-  --font-display: "Noto Serif Bengali", "Hind Siliguri", serif;
+  --font-sans: "Hind Siliguri", "Amiri Quran", system-ui, sans-serif;
+  --font-display: "Noto Serif Bengali", "Hind Siliguri", "Amiri Quran", serif;
   --font-welcome: "Tiro Bangla", "Noto Serif Bengali", serif;
   --font-arabic: "Amiri Quran", "Amiri", serif;
+}
+
+/* Printing a page, such as the monthly prayer timetable, uses plain black on white. */
+@media print {
+  :root, :root[data-theme] { --bg: #fff; --surface: #fff; --text: #000; --soft: #000; --muted: #333; --line: #999; --line-strong: #666; --accent: #000; --active: #eee; color-scheme: light; }
+  nav[aria-label="প্রধান মেনু"], section[aria-label="তিলাওয়াত প্লেয়ার"] { display: none !important; }
 }
 
 /* Senior ("easy") mode enlarges the whole UI because all sizes are in rem. */

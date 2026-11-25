@@ -7,7 +7,16 @@ import { toBnDigits } from "@/lib/bn";
 import { ayahAudioUrl, RECITERS } from "./reciters";
 import { DEFAULT_OPTIONS, GAP_CHOICES, nextStep, RATE_CHOICES, REPEAT_CHOICES, type PlayOptions, type Position } from "./sequence";
 
-export type Track = { surah: number; surahName: string; total: number };
+export type Track = {
+  surah: number;
+  surahName: string;
+  /** last ayah this track may reach: the end of the surah, or of a chosen passage */
+  total: number;
+  /** first ayah of a chosen passage; the whole surah when absent */
+  first?: number;
+  /** set when the visitor asked to hear first..total repeatedly; 0 means until stopped */
+  loop?: number;
+};
 
 export type PlayerState = {
   track: Track | null;
@@ -15,6 +24,8 @@ export type PlayerState = {
   status: "idle" | "loading" | "playing" | "paused" | "waiting" | "error";
   reciter: string;
   options: PlayOptions;
+  /** sleep timer: when to pause by itself, and the choice that set it */
+  sleep: { at: number; minutes: number } | null;
 };
 
 const KEY = "noor.audio.v1";
@@ -24,12 +35,14 @@ const INITIAL: PlayerState = {
   status: "idle",
   reciter: RECITERS[0].id,
   options: DEFAULT_OPTIONS,
+  sleep: null,
 };
 
 let state: PlayerState = INITIAL;
 let restored = false;
 let element: HTMLAudioElement | null = null;
 let gapTimer: ReturnType<typeof setTimeout> | undefined;
+let sleepTimer: ReturnType<typeof setTimeout> | undefined;
 const listeners = new Set<() => void>();
 // Progress changes many times a second, so it has its own subscribers.
 const progressListeners = new Set<() => void>();
@@ -128,10 +141,36 @@ function load(position: Position) {
   start(el);
 }
 
+function sleepNow() {
+  clearTimeout(sleepTimer);
+  clearTimeout(gapTimer);
+  set({ sleep: null });
+  if (!state.track || state.status === "paused") return;
+  if (state.status === "waiting") element?.removeAttribute("src");
+  set({ status: "paused" });
+  element?.pause();
+}
+
+/** Locked phones may delay timers, so the deadline is also checked between ayahs. */
+export function setSleep(minutes: number) {
+  clearTimeout(sleepTimer);
+  if (!minutes) return set({ sleep: null });
+  set({ sleep: { at: Date.now() + minutes * 60_000, minutes } });
+  sleepTimer = setTimeout(sleepNow, minutes * 60_000);
+}
+
 function advance() {
   if (!state.track) return;
-  const next = nextStep(state.position, state.track.total, state.options);
+  const { total, first = 1, loop } = state.track;
+  const next = nextStep(state.position, total, state.options, loop === undefined ? undefined : { first, times: loop });
   if (!next) return stop();
+  if (state.sleep && Date.now() >= state.sleep.at) {
+    // Ready to carry on from the next ayah when the listener returns.
+    element?.removeAttribute("src");
+    set({ position: next, status: "paused", sleep: null });
+    clearTimeout(sleepTimer);
+    return;
+  }
   if (state.options.gap === 0) return load(next);
   set({ status: "waiting", position: next });
   gapTimer = setTimeout(() => load(next), state.options.gap * 1000);
@@ -163,17 +202,18 @@ export function toggle() {
 export function skip(delta: 1 | -1) {
   if (!state.track) return;
   const ayah = state.position.ayah + delta;
-  if (ayah >= 1 && ayah <= state.track.total) load({ ayah, plays: 1 });
+  if (ayah >= (state.track.first ?? 1) && ayah <= state.track.total) load({ ayah, plays: 1, round: state.position.round });
 }
 
 export function stop() {
   clearTimeout(gapTimer);
+  clearTimeout(sleepTimer);
   if (element) {
     element.pause();
     element.removeAttribute("src");
     element.load();
   }
-  set({ track: null, status: "idle", position: { ayah: 1, plays: 1 } });
+  set({ track: null, status: "idle", position: { ayah: 1, plays: 1 }, sleep: null });
   setProgress(0);
   if (typeof navigator !== "undefined" && "mediaSession" in navigator) navigator.mediaSession.metadata = null;
 }

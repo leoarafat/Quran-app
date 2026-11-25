@@ -1,8 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { ChevronDown, LocateFixed, X } from "lucide-react";
 import { CITIES, clockTime, countdown, nextPrayer, PRAYERS, timesFor, calendarDay, type Place } from "@/lib/prayer";
+import { describePrefs } from "@/lib/tools/timetable";
+import { usePrayerPrefs } from "@/lib/usePrayerPrefs";
 import { useNow } from "@/lib/useNow";
 import { savePlace, usePlace } from "@/lib/usePlace";
 
@@ -15,7 +18,8 @@ export function arcPoint(progress: number): { x: number; y: number } {
 
 function PlacePicker({ place, now, onClose }: { place: Place; now: number; onClose: () => void }) {
   const [message, setMessage] = useState("");
-  const times = timesFor(place, calendarDay(new Date(now), place.timeZone));
+  const prefs = usePrayerPrefs();
+  const times = timesFor(place, calendarDay(new Date(now), place.timeZone), prefs);
 
   const locate = () => {
     if (!navigator.geolocation) return setMessage("এই ব্রাউজারে অবস্থান পাওয়া যায় না।");
@@ -52,7 +56,8 @@ function PlacePicker({ place, now, onClose }: { place: Place; now: number; onClo
         <LocateFixed aria-hidden className="size-5" /> আমার অবস্থান ব্যবহার করুন
       </button>
       <p role="status" className="mt-2 min-h-6 text-sm text-accent">{message}</p>
-      <p className="text-sm text-muted">ফোনেই হিসাব করা (করাচি পদ্ধতি, হানাফি আসর)। সেহরি-ইফতারসহ আমলের আগে স্থানীয় মসজিদ বা ইসলামিক ফাউন্ডেশনের সময়ের সাথে মিলিয়ে নিন। আপনার অবস্থান এই ফোনের বাইরে যায় না।</p>
+      <p className="text-sm text-muted">ফোনেই হিসাব করা ({describePrefs(prefs)})। সেহরি-ইফতারসহ আমলের আগে স্থানীয় মসজিদ বা ইসলামিক ফাউন্ডেশনের সময়ের সাথে মিলিয়ে নিন। আপনার অবস্থান এই ফোনের বাইরে যায় না।</p>
+      <Link href="/prayer-times/" className="mt-3 flex min-h-11 items-center justify-center rounded-full border border-line-strong font-semibold text-accent">মাসিক সূচি, হিসাবের নিয়ম ও রিমাইন্ডার</Link>
     </div>
   );
 }
@@ -60,8 +65,9 @@ function PlacePicker({ place, now, onClose }: { place: Place; now: number; onClo
 export function PrayerArch() {
   const now = useNow();
   const place = usePlace();
+  const prefs = usePrayerPrefs();
   const [open, setOpen] = useState(false);
-  const state = now === null ? null : nextPrayer(place, new Date(now));
+  const state = now === null ? null : nextPrayer(place, new Date(now), prefs);
   const progress = state ? (now! - state.previous.at.getTime()) / (state.next.at.getTime() - state.previous.at.getTime()) : 0;
   const dot = arcPoint(progress);
 

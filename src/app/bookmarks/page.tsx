@@ -8,7 +8,7 @@ export const metadata: Metadata = { title: "বুকমার্ক" };
 export default function BookmarksPage() {
   return (
     <div className="mx-auto max-w-2xl">
-      <PageHeader title="বুকমার্ক" subtitle="সংরক্ষিত আয়াত ও আপনার নোট" />
+      <PageHeader title="বুকমার্ক" subtitle="সংরক্ষিত আয়াত, হাদিস ও আপনার নোট" />
       <Bookmarks surahs={getIndex().surahs} />
     </div>
   );

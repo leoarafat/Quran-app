@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { FEATURE_GROUPS, type Feature } from "@/lib/features";
 
-function Tile({ title, hint, icon: Icon, href }: Feature) {
+function Tile({ title, hint, icon: Icon, href, badge }: Feature) {
   const body = (
     <>
       <span className="grid size-11 place-items-center rounded-t-[1.5rem] rounded-b-xl border border-line-strong text-accent">
@@ -9,7 +9,7 @@ function Tile({ title, hint, icon: Icon, href }: Feature) {
       </span>
       <span className="font-display font-semibold leading-snug">{title}</span>
       <span className="text-sm leading-snug text-muted">{hint}</span>
-      {!href && <span className="mt-auto rounded-full bg-accent-soft px-2 text-xs text-accent">শীঘ্রই</span>}
+      {(badge || !href) && <span className="mt-auto rounded-full bg-accent-soft px-2 text-xs text-accent">{href ? badge : "শীঘ্রই"}</span>}
     </>
   );
   const base = "flex h-full flex-col items-center gap-1.5 rounded-[1.375rem] border border-line bg-surface p-3 text-center";

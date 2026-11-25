@@ -1,5 +1,6 @@
 import { CalculationMethod, Coordinates, Madhab, PrayerTimes } from "adhan";
 import { toBnDigits } from "./bn";
+import { ADJUSTABLE, DEFAULT_PRAYER_PREFS, type MethodId, type PrayerPrefs } from "./prayerPrefs";
 
 export type Place = { id: string; name: string; lat: number; lng: number; timeZone: string };
 
@@ -31,16 +32,25 @@ export function calendarDay(now: Date, timeZone: string, offset = 0): Date {
   return new Date(y, m - 1, d + offset, 12);
 }
 
-/** University of Islamic Sciences (Karachi) angles with the Hanafi Asr, as commonly used in Bangladesh. */
-export function timesFor(place: Place, day: Date): PrayerTimes {
-  const method = CalculationMethod.Karachi();
-  method.madhab = Madhab.Hanafi;
+const METHOD_PARAMS: Record<MethodId, () => ReturnType<typeof CalculationMethod.Karachi>> = {
+  karachi: () => CalculationMethod.Karachi(),
+  mwl: () => CalculationMethod.MuslimWorldLeague(),
+  egyptian: () => CalculationMethod.Egyptian(),
+  ummalqura: () => CalculationMethod.UmmAlQura(),
+  isna: () => CalculationMethod.NorthAmerica(),
+};
+
+/** By default: University of Islamic Sciences (Karachi) angles with the Hanafi Asr, as commonly used in Bangladesh. */
+export function timesFor(place: Place, day: Date, prefs: PrayerPrefs = DEFAULT_PRAYER_PREFS): PrayerTimes {
+  const method = METHOD_PARAMS[prefs.method]();
+  method.madhab = prefs.asr === "hanafi" ? Madhab.Hanafi : Madhab.Shafi;
+  for (const id of ADJUSTABLE) method.adjustments[id] = prefs.adjust[id];
   return new PrayerTimes(new Coordinates(place.lat, place.lng), day, method);
 }
 
-export function nextPrayer(place: Place, now: Date): { previous: Moment; next: Moment } {
+export function nextPrayer(place: Place, now: Date, prefs: PrayerPrefs = DEFAULT_PRAYER_PREFS): { previous: Moment; next: Moment } {
   const moments: Moment[] = [-1, 0, 1].flatMap((offset) => {
-    const times = timesFor(place, calendarDay(now, place.timeZone, offset));
+    const times = timesFor(place, calendarDay(now, place.timeZone, offset), prefs);
     return PRAYERS.map(([id, name]) => ({ id, name, at: times[id] }));
   });
   const index = moments.findIndex((m) => m.at.getTime() > now.getTime());

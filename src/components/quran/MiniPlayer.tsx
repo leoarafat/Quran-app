@@ -5,9 +5,9 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ChevronUp, LoaderCircle, Pause, Play, Repeat, RotateCcw, SkipBack, SkipForward, X } from "lucide-react";
 import { toBnDigits } from "@/lib/bn";
-import { setOptions, setReciter, skip, stop, toggle, usePlayer, useProgress, type PlayerState } from "@/lib/audio/player";
+import { setOptions, setReciter, setSleep, skip, stop, toggle, usePlayer, useProgress, type PlayerState } from "@/lib/audio/player";
 import { RECITERS } from "@/lib/audio/reciters";
-import { GAP_CHOICES, RATE_CHOICES, REPEAT_CHOICES } from "@/lib/audio/sequence";
+import { GAP_CHOICES, RATE_CHOICES, REPEAT_CHOICES, SLEEP_CHOICES } from "@/lib/audio/sequence";
 import { isReaderPath } from "@/lib/nav";
 
 /** Keeps the screen awake while reciting, where the browser allows it. */
@@ -67,7 +67,7 @@ const STATUS_TEXT: Record<PlayerState["status"], string> = {
 };
 
 export function MiniPlayer() {
-  const { track, position, status, reciter, options } = usePlayer();
+  const { track, position, status, reciter, options, sleep } = usePlayer();
   const [open, setOpen] = useState(false);
   const reading = isReaderPath(usePathname());
   const busy = status === "playing" || status === "loading" || status === "waiting";
@@ -78,6 +78,8 @@ export function MiniPlayer() {
   const times = (n: number) => (n === 0 ? "বারবার" : `${toBnDigits(n)} বার`);
   const reciterName = RECITERS.find((r) => r.id === reciter)!.name;
   const looping = options.repeatEach !== 1;
+  const round = toBnDigits(position.round ?? 1);
+  const passage = track.loop === undefined ? "" : `আয়াত ${toBnDigits(track.first ?? 1)}-${toBnDigits(track.total)} · ${track.loop === 0 ? `${round} বার` : `${round}/${toBnDigits(track.loop)} বার`}`;
 
   return (
     <>
@@ -93,11 +95,16 @@ export function MiniPlayer() {
               <div className="col-span-2">
                 <Choice label="ক্বারী" value={reciter} options={RECITERS.map((r) => r.id)} text={(id) => RECITERS.find((r) => r.id === id)!.name} onChange={setReciter} />
               </div>
-              <Choice label="চালানোর ধরন" value={options.mode} options={["continue", "single"] as const} text={(m) => (m === "continue" ? "পরপর সব আয়াত" : "শুধু এই আয়াত")} onChange={(mode) => setOptions({ mode })} />
+              {passage
+                ? <p className="flex flex-col gap-1 text-sm text-muted">বাছাই করা অংশ<span className="flex min-h-11 items-center text-base leading-snug text-text">{passage}</span></p>
+                : <Choice label="চালানোর ধরন" value={options.mode} options={["continue", "single"] as const} text={(m) => (m === "continue" ? "পরপর সব আয়াত" : "শুধু এই আয়াত")} onChange={(mode) => setOptions({ mode })} />}
               <Choice label="প্রতি আয়াত" value={options.repeatEach} options={REPEAT_CHOICES} text={times} onChange={(repeatEach) => setOptions({ repeatEach })} />
               <Choice label="মাঝে বিরতি" value={options.gap} options={GAP_CHOICES} text={(g) => (g === 0 ? "নেই" : `${toBnDigits(g)} সেকেন্ড`)} onChange={(gap) => setOptions({ gap })} />
               <Choice label="গতি" value={options.rate} options={RATE_CHOICES} text={(r) => `${toBnDigits(r)}×`} onChange={(rate) => setOptions({ rate })} />
-              <button type="button" className="col-span-2 flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-line-strong disabled:opacity-35" onClick={() => skip(-1)} disabled={position.ayah <= 1}>
+              <div className="col-span-2">
+                <Choice label="ঘুমের টাইমার (নিজে থেকে থামবে)" value={sleep?.minutes ?? 0} options={SLEEP_CHOICES} text={(m) => (m === 0 ? "বন্ধ" : `${toBnDigits(m)} মিনিট পর`)} onChange={setSleep} />
+              </div>
+              <button type="button" className="col-span-2 flex min-h-11 items-center justify-center gap-2 rounded-2xl border border-line-strong disabled:opacity-35" onClick={() => skip(-1)} disabled={position.ayah <= (track.first ?? 1)}>
                 <SkipBack aria-hidden className="size-5" fill="currentColor" /> আগের আয়াত
               </button>
               <Link href={`/quran/${track.surah}/#a${position.ayah}`} onClick={() => setOpen(false)} className="flex min-h-11 items-center justify-center rounded-2xl border border-line-strong">চলমান আয়াতে যান</Link>
@@ -114,7 +121,7 @@ export function MiniPlayer() {
           <button type="button" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-label="অডিও অপশন" className="flex min-h-11 min-w-0 flex-1 items-center gap-1 pl-1 text-left leading-snug">
             <span className="min-w-0">
               <span className="block truncate text-[0.9375rem] font-semibold">আয়াত {toBnDigits(position.ayah)} {STATUS_TEXT[status]}</span>
-              <span className="block truncate text-[0.8125rem] text-muted">{reading ? reciterName : `${track.surahName} · ${reciterName}`}</span>
+              <span className="block truncate text-[0.8125rem] text-muted">{passage || (reading ? reciterName : `${track.surahName} · ${reciterName}`)}</span>
             </span>
             <ChevronUp aria-hidden className={`size-4 shrink-0 text-muted ${open ? "rotate-180" : ""}`} />
           </button>

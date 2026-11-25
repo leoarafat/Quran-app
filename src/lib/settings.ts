@@ -1,11 +1,16 @@
 export const THEMES = ["light", "sepia", "dark"] as const;
 export type Theme = (typeof THEMES)[number];
 
+/** Bangla typefaces bundled with the app, for the Quran's pronunciation and translation. */
+export const BN_FONTS = ["hind", "noto", "tiro"] as const;
+export type BnFont = (typeof BN_FONTS)[number];
+
 export type Settings = {
   theme: Theme;
   easyMode: boolean;
   arScale: number;
   bnScale: number;
+  bnFont: BnFont;
 };
 
 export const SETTINGS_KEY = "noor.settings.v1";
@@ -17,6 +22,7 @@ export const DEFAULT_SETTINGS: Settings = {
   easyMode: false,
   arScale: 1,
   bnScale: 1,
+  bnFont: "hind",
 };
 
 function clampScale(value: unknown): number {
@@ -36,6 +42,7 @@ export function parseSettings(raw: string | null): Settings {
       easyMode: d.easyMode === true,
       arScale: clampScale(d.arScale),
       bnScale: clampScale(d.bnScale),
+      bnFont: BN_FONTS.includes(d.bnFont as BnFont) ? (d.bnFont as BnFont) : DEFAULT_SETTINGS.bnFont,
     };
   } catch {
     return DEFAULT_SETTINGS;
@@ -45,6 +52,7 @@ export function parseSettings(raw: string | null): Settings {
 export function applySettings(s: Settings, root: HTMLElement): void {
   root.dataset.theme = s.theme;
   root.dataset.easy = String(s.easyMode);
+  root.dataset.bnfont = s.bnFont;
   root.style.setProperty("--ar-scale", String(s.arScale));
   root.style.setProperty("--bn-scale", String(s.bnScale));
 }

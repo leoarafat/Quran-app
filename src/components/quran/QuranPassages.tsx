@@ -1,0 +1,39 @@
+"use client";
+
+import Link from "next/link";
+import { toBnDigits } from "@/lib/bn";
+import type { Ayah } from "@/lib/quran/types";
+import { PinchArea } from "./PinchArea";
+import { AyahCard } from "./Reader";
+
+export type ShownPassage = { surah: number; surahName: string; ayahs: Ayah[] };
+
+const ALL_LAYERS = { arabic: true, pronunciation: true, translation: true };
+
+/** Chosen passages, each with the same controls as in the reader. */
+export function QuranPassages({ passages, credit }: { passages: ShownPassage[]; credit: string }) {
+  return (
+    <PinchArea>
+      <ol className="space-y-4">
+        {passages.map(({ surah, surahName, ayahs }) => {
+          const first = ayahs[0].a;
+          const last = ayahs[ayahs.length - 1].a;
+          const reference = `${toBnDigits(surah)}:${toBnDigits(first)}${last > first ? `-${toBnDigits(last)}` : ""}`;
+          // Playback stays inside the passage: it never runs on into the rest of the surah.
+          const track = { surah, surahName, first, total: last };
+          return (
+            <li key={`${surah}:${first}`} id={`d${surah}-${first}`} className="scroll-mt-4 rounded-[1.375rem] border border-line bg-surface px-3 pb-2 pt-1">
+              <div className="flex items-center justify-between gap-2 px-1">
+                <h2 className="min-w-0 truncate font-display font-semibold">সূরা {surahName} {reference}</h2>
+                <Link href={`/quran/${surah}/#a${first}`} prefetch={false} aria-label={`সূরা ${surahName} ${reference} সূরায় পড়ুন`} className="flex min-h-11 shrink-0 items-center text-sm font-semibold text-accent underline">সূরায় পড়ুন</Link>
+              </div>
+              <ol>
+                {ayahs.map((ayah) => <AyahCard key={ayah.a} ayah={ayah} track={track} layers={ALL_LAYERS} credit={credit} anchor={`d${surah}-a${ayah.a}`} />)}
+              </ol>
+            </li>
+          );
+        })}
+      </ol>
+    </PinchArea>
+  );
+}

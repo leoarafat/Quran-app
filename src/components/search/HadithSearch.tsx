@@ -9,6 +9,7 @@ import { BOOKS, DEFAULT_HADITH_FILTERS, type HadithFilters } from "@/lib/hadith/
 import { clearHistory, remember, useHistory } from "@/lib/search/history";
 import { hadithFromParams, hadithToParams } from "@/lib/search/query";
 import { useHadithSearch } from "@/lib/search/useSearch";
+import { VoiceButton } from "./VoiceButton";
 import { Highlight } from "./Highlight";
 
 const PAGE = 20;
@@ -43,13 +44,14 @@ export function HadithSearch() {
 
   return (
     <div className="space-y-4">
-      <form role="search" onSubmit={(e) => { e.preventDefault(); const value = text.trim(); setQuery(value); remember(value); (document.activeElement as HTMLElement | null)?.blur(); }} className="flex gap-2">
+      <form role="search" onSubmit={(e) => { e.preventDefault(); const value = text.trim(); setQuery(value); remember(value); (document.activeElement as HTMLElement | null)?.blur(); }} className="flex flex-wrap gap-2">
         <label className="relative block min-w-0 flex-1">
           <span className="sr-only">হাদিসে খুঁজুন</span>
           <Search aria-hidden className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-muted" />
-          <input type="text" enterKeyHint="search" autoComplete="off" maxLength={200} value={text} onChange={(e) => { setText(e.target.value); setLimit(PAGE); }} placeholder="বাংলা বা আরবি শব্দ" className="min-h-13 w-full rounded-full border border-line-strong bg-surface pl-12 pr-12" />
+          <input type="text" enterKeyHint="search" autoComplete="off" maxLength={200} value={text} onChange={(e) => { setText(e.target.value); setLimit(PAGE); }} placeholder="খুঁজুন" className="min-h-13 w-full rounded-full border border-line-strong bg-surface pl-12 pr-12" />
           {text && <button type="button" aria-label="লেখা মুছুন" onClick={() => choose("")} className="absolute right-1.5 top-1/2 grid size-11 -translate-y-1/2 place-items-center rounded-full text-muted"><X aria-hidden className="size-5" /></button>}
         </label>
+        <VoiceButton onText={(heard) => { choose(heard); remember(heard); }} />
         <button type="button" aria-expanded={panel} aria-label={`ফিল্টার${active ? `, ${toBnDigits(active)}টি চালু` : ""}`} onClick={() => setPanel((v) => !v)} className={`relative grid size-13 shrink-0 place-items-center rounded-full border text-accent ${panel ? "border-gold bg-active" : "border-line-strong bg-surface"}`}>
           <SlidersHorizontal aria-hidden className="size-5" />
           {active > 0 && <span aria-hidden className="absolute -right-0.5 -top-0.5 grid size-5 place-items-center rounded-full bg-gold text-xs font-bold text-on-gold">{toBnDigits(active)}</span>}

@@ -14,6 +14,11 @@ export type QuranIndex = {
   surahs: SurahInfo[];
   juzs: Place[];
   sajdas: Place[];
+  /** where each Madani mushaf page, ruku, hizb and manzil begins */
+  pages: Place[];
+  rukus: Place[];
+  hizbs: Place[];
+  manzils: Place[];
   sources: {
     arabic: { name: string; url: string; license: string };
     translation: { name: string; publisher: string; url: string; version: string; fetched: string };

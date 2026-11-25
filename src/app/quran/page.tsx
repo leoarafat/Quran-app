@@ -9,7 +9,7 @@ import { getIndex } from "@/lib/quran/server";
 export const metadata: Metadata = { title: "কুরআন" };
 
 export default function QuranPage() {
-  const { surahs, juzs, sajdas } = getIndex();
+  const { surahs, juzs, sajdas, pages, rukus, hizbs, manzils } = getIndex();
   return (
     <div className="space-y-4">
       <div className="flex items-start justify-between gap-3">
@@ -19,7 +19,7 @@ export default function QuranPage() {
         </Link>
       </div>
       <ContinueReading names={surahs.map((s) => s.bangla)} />
-      <SurahBrowser surahs={surahs} juzs={juzs} sajdas={sajdas} />
+      <SurahBrowser surahs={surahs} juzs={juzs} sajdas={sajdas} pages={pages} rukus={rukus} hizbs={hizbs} manzils={manzils} />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { ayahAudioUrl, RECITERS } from "@/lib/audio/reciters";
-import { DEFAULT_OPTIONS, nextStep, type PlayOptions, type Position } from "@/lib/audio/sequence";
+import { DEFAULT_OPTIONS, nextStep, readRange, type PlayOptions, type Position } from "@/lib/audio/sequence";
 
 function run(start: number, total: number, options: Partial<PlayOptions>, limit = 50): number[] {
   const heard: number[] = [];
@@ -26,5 +26,40 @@ describe("audio addresses", () => {
   });
   it("lists unique reciters", () => {
     expect(new Set(RECITERS.map((r) => r.id)).size).toBe(15);
+  });
+});
+
+describe("repeating a chosen passage", () => {
+  const options = { ...DEFAULT_OPTIONS, repeatEach: 1 };
+
+  /** Everything that gets recited, as "ayah" strings, until it stops or `limit` is reached. */
+  function recite(last: number, loop: { first: number; times: number }, over: Partial<typeof options> = {}, limit = 50) {
+    const heard: number[] = [];
+    for (let at: Position | null = { ayah: loop.first, plays: 1 }; at && heard.length < limit; at = nextStep(at, last, { ...options, ...over }, loop)) heard.push(at.ayah);
+    return heard;
+  }
+
+  it("hears the passage the chosen number of times and never leaves it", () => {
+    expect(recite(5, { first: 3, times: 3 })).toEqual([3, 4, 5, 3, 4, 5, 3, 4, 5]);
+  });
+  it("repeats each ayah inside every round", () => {
+    expect(recite(4, { first: 3, times: 2 }, { repeatEach: 2 })).toEqual([3, 3, 4, 4, 3, 3, 4, 4]);
+  });
+  it("plays the whole passage even if the player is set to a single ayah", () => {
+    expect(recite(5, { first: 3, times: 1 }, { mode: "single" })).toEqual([3, 4, 5]);
+  });
+  it("works for one ayah, and goes on until stopped when asked", () => {
+    expect(recite(7, { first: 7, times: 3 })).toEqual([7, 7, 7]);
+    expect(recite(2, { first: 1, times: 0 }, {}, 9)).toEqual([1, 2, 1, 2, 1, 2, 1, 2, 1]);
+  });
+  it("counts the rounds", () => {
+    expect(nextStep({ ayah: 5, plays: 1, round: 2 }, 5, options, { first: 3, times: 3 })).toEqual({ ayah: 3, plays: 1, round: 3 });
+    expect(nextStep({ ayah: 4, plays: 1, round: 2 }, 5, options, { first: 3, times: 3 })).toEqual({ ayah: 5, plays: 1, round: 2 });
+    expect(nextStep({ ayah: 5, plays: 1, round: 3 }, 5, options, { first: 3, times: 3 })).toBeNull();
+  });
+  it("accepts only a passage that exists", () => {
+    expect(readRange("3", " 7 ", 7)).toEqual({ from: 3, to: 7 });
+    expect(readRange("4", "4", 7)).toEqual({ from: 4, to: 4 });
+    for (const [a, b] of [["0", "3"], ["5", "4"], ["1", "8"], ["", "3"], ["1.5", "3"], ["-1", "3"], ["abc", "3"], ["1e0", "3"]]) expect(readRange(a, b, 7), `${a}-${b}`).toBeNull();
   });
 });

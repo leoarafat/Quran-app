@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { add, addFolder, change, EMPTY, find, folderNameError, fromBackup, isAyah, merge, readLibrary, remove, removeFolder, renameFolder, restore, toBackup, type Library } from "@/lib/bookmarks/model";
+import { add, addFolder, addHadith, change, changeHadith, findHadith, removeHadith, restoreHadith, EMPTY, find, folderNameError, fromBackup, isAyah, merge, readLibrary, remove, removeFolder, renameFolder, restore, toBackup, type Library } from "@/lib/bookmarks/model";
 
 const base = () => add(add(addFolder(EMPTY, "f1", "মুখস্থ"), 2, 255, 100), 1, 5, 200);
 
@@ -64,6 +64,39 @@ describe("backup", () => {
     const result = merge(base(), other).library;
     expect(result.folders).toHaveLength(1);
     expect(find(result, 4, 1)!.folder).toBe("f1");
+  });
+});
+
+describe("hadith bookmarks", () => {
+  const withHadith = () => changeHadith(addHadith(base(), 5503, 300), 5503, { folder: "f1", note: "নোট" }, 400);
+
+  it("adds once, never invalid ids, removes and restores", () => {
+    const lib = withHadith();
+    expect(addHadith(lib, 5503, 999)).toBe(lib);
+    for (const bad of [0, -1, 1.5, Number.NaN]) expect(addHadith(lib, bad, 1)).toBe(lib);
+    const gone = findHadith(lib, 5503)!;
+    expect(findHadith(restoreHadith(removeHadith(lib, 5503), gone), 5503)).toEqual(gone);
+    expect(removeHadith(lib, 5503).items).toEqual(lib.items);
+  });
+  it("is kept when its folder is deleted", () => {
+    expect(findHadith(removeFolder(withHadith(), "f1"), 5503)).toMatchObject({ folder: null, note: "নোট" });
+  });
+  it("reads a library saved before hadith bookmarks existed, losing nothing", () => {
+    const before = { version: 1, folders: [{ id: "f1", name: "মুখস্থ" }], items: [{ s: 2, a: 255, folder: "f1", note: "আগের নোট", created: 1, updated: 2 }] };
+    expect(readLibrary(before)).toEqual({ ...before, hadiths: [] });
+    const result = merge(withHadith(), fromBackup(JSON.stringify(before))!);
+    expect(result.library.hadiths).toHaveLength(1);
+  });
+  it("travels in the backup, and importing never deletes", () => {
+    const lib = withHadith();
+    expect(fromBackup(toBackup(lib))).toEqual(lib);
+    const imported = merge(addHadith(EMPTY, 10, 1), lib);
+    expect(imported.library.hadiths.map((h) => h.id).sort((x, y) => x - y)).toEqual([10, 5503]);
+    expect(imported.added).toBe(3);
+    expect(findHadith(merge(lib, addHadith(EMPTY, 5503, 1)).library, 5503)!.note).toBe("নোট");
+  });
+  it("drops only the broken entries", () => {
+    expect(readLibrary({ version: 1, folders: [], items: [], hadiths: [null, { id: "5" }, { id: -2 }, { id: 7 }] })!.hadiths.map((h) => h.id)).toEqual([7]);
   });
 });
 

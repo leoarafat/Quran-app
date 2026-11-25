@@ -64,6 +64,9 @@ export function parseMetadata(xml) {
     juzs: all("juz").map(position),
     pages: all("page").map(position),
     sajdas: all("sajda").map(position),
+    rukus: all("ruku").map(position),
+    quarters: all("quarter").map(position),
+    manzils: all("manzil").map(position),
   };
 }
 

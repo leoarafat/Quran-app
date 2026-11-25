@@ -1,10 +1,15 @@
 // Pure rules for bookmarks. This is the visitor's own data: nothing here may lose it by accident.
 
 export type Folder = { id: string; name: string };
-export type Bookmark = { s: number; a: number; folder: string | null; note: string; created: number; updated: number };
-export type Library = { version: 1; folders: Folder[]; items: Bookmark[] };
+type Marked = { folder: string | null; note: string; created: number; updated: number };
+/** an ayah */
+export type Bookmark = Marked & { s: number; a: number };
+/** only the publisher's id is kept; the text always comes from the published data */
+export type HadithMark = Marked & { id: number };
+/** `hadiths` was added later: libraries and backups saved before it are still version 1 */
+export type Library = { version: 1; folders: Folder[]; items: Bookmark[]; hadiths: HadithMark[] };
 
-export const EMPTY: Library = { version: 1, folders: [], items: [] };
+export const EMPTY: Library = { version: 1, folders: [], items: [], hadiths: [] };
 export const NOTE_MAX = 2000;
 export const NAME_MAX = 40;
 const FOLDER_MAX = 100;
@@ -13,6 +18,7 @@ const AYAH_COUNTS = [7,286,200,176,120,165,206,75,129,109,123,111,43,52,99,128,1
 
 export const isAyah = (s: number, a: number) => Number.isInteger(s) && Number.isInteger(a) && s >= 1 && s <= 114 && a >= 1 && a <= AYAH_COUNTS[s - 1];
 export const keyOf = (b: { s: number; a: number }) => `${b.s}:${b.a}`;
+export const isHadithId = (id: number) => Number.isSafeInteger(id) && id > 0;
 
 const isObject = (x: unknown): x is Record<string, unknown> => typeof x === "object" && x !== null && !Array.isArray(x);
 
@@ -25,22 +31,28 @@ export function readLibrary(data: unknown): Library | null {
     const name = f.name.trim().slice(0, NAME_MAX);
     if (name && f.id && !folders.some((x) => x.id === f.id) && folders.length < FOLDER_MAX) folders.push({ id: f.id, name });
   }
+  const time = (v: unknown) => (typeof v === "number" && Number.isFinite(v) && v > 0 ? v : 0);
+  const marked = (b: Record<string, unknown>): Marked => ({
+    folder: typeof b.folder === "string" && folders.some((f) => f.id === b.folder) ? b.folder : null,
+    note: typeof b.note === "string" ? b.note.slice(0, NOTE_MAX) : "",
+    created: time(b.created),
+    updated: time(b.updated),
+  });
   const items = new Map<string, Bookmark>();
   for (const b of data.items) {
     if (!isObject(b) || typeof b.s !== "number" || typeof b.a !== "number" || !isAyah(b.s, b.a)) continue;
-    const time = (v: unknown) => (typeof v === "number" && Number.isFinite(v) && v > 0 ? v : 0);
-    const item: Bookmark = {
-      s: b.s,
-      a: b.a,
-      folder: typeof b.folder === "string" && folders.some((f) => f.id === b.folder) ? b.folder : null,
-      note: typeof b.note === "string" ? b.note.slice(0, NOTE_MAX) : "",
-      created: time(b.created),
-      updated: time(b.updated),
-    };
+    const item: Bookmark = { s: b.s, a: b.a, ...marked(b) };
     const old = items.get(keyOf(item));
     if (!old || item.updated >= old.updated) items.set(keyOf(item), item);
   }
-  return { version: 1, folders, items: [...items.values()] };
+  const hadiths = new Map<number, HadithMark>();
+  for (const b of Array.isArray(data.hadiths) ? data.hadiths : []) {
+    if (!isObject(b) || typeof b.id !== "number" || !isHadithId(b.id)) continue;
+    const item: HadithMark = { id: b.id, ...marked(b) };
+    const old = hadiths.get(item.id);
+    if (!old || item.updated >= old.updated) hadiths.set(item.id, item);
+  }
+  return { version: 1, folders, items: [...items.values()], hadiths: [...hadiths.values()] };
 }
 
 export const find = (lib: Library, s: number, a: number) => lib.items.find((b) => b.s === s && b.a === a);
@@ -55,15 +67,28 @@ export const remove = (lib: Library, s: number, a: number): Library => ({ ...lib
 /** Puts back a bookmark exactly as it was (undo). */
 export const restore = (lib: Library, item: Bookmark): Library => (find(lib, item.s, item.a) ? lib : { ...lib, items: [...lib.items, item] });
 
+function patched<T extends Marked>(lib: Library, item: T, patch: Partial<Pick<Marked, "folder" | "note">>, now: number): T {
+  const folder = patch.folder === undefined ? item.folder : lib.folders.some((f) => f.id === patch.folder) ? patch.folder : null;
+  return { ...item, folder, note: patch.note === undefined ? item.note : patch.note.slice(0, NOTE_MAX), updated: now };
+}
+
 export function change(lib: Library, s: number, a: number, patch: Partial<Pick<Bookmark, "folder" | "note">>, now: number): Library {
-  return {
-    ...lib,
-    items: lib.items.map((b) => {
-      if (b.s !== s || b.a !== a) return b;
-      const folder = patch.folder === undefined ? b.folder : lib.folders.some((f) => f.id === patch.folder) ? patch.folder : null;
-      return { ...b, folder, note: patch.note === undefined ? b.note : patch.note.slice(0, NOTE_MAX), updated: now };
-    }),
-  };
+  return { ...lib, items: lib.items.map((b) => (b.s === s && b.a === a ? patched(lib, b, patch, now) : b)) };
+}
+
+export const findHadith = (lib: Library, id: number) => lib.hadiths.find((b) => b.id === id);
+
+export function addHadith(lib: Library, id: number, now: number): Library {
+  if (!isHadithId(id) || findHadith(lib, id)) return lib;
+  return { ...lib, hadiths: [...lib.hadiths, { id, folder: null, note: "", created: now, updated: now }] };
+}
+
+export const removeHadith = (lib: Library, id: number): Library => ({ ...lib, hadiths: lib.hadiths.filter((b) => b.id !== id) });
+
+export const restoreHadith = (lib: Library, item: HadithMark): Library => (findHadith(lib, item.id) ? lib : { ...lib, hadiths: [...lib.hadiths, item] });
+
+export function changeHadith(lib: Library, id: number, patch: Partial<Pick<HadithMark, "folder" | "note">>, now: number): Library {
+  return { ...lib, hadiths: lib.hadiths.map((b) => (b.id === id ? patched(lib, b, patch, now) : b)) };
 }
 
 const sameName = (a: string, b: string) => a.trim().normalize("NFD").toLowerCase() === b.trim().normalize("NFD").toLowerCase();
@@ -87,6 +112,7 @@ export const removeFolder = (lib: Library, id: string): Library => ({
   ...lib,
   folders: lib.folders.filter((f) => f.id !== id),
   items: lib.items.map((b) => (b.folder === id ? { ...b, folder: null } : b)),
+  hadiths: lib.hadiths.map((b) => (b.folder === id ? { ...b, folder: null } : b)),
 });
 
 /** Adds a backup into what is already here. Nothing is deleted; for the same ayah the newer edit wins. */
@@ -101,18 +127,23 @@ export function merge(current: Library, incoming: Library): { library: Library; 
       folderMap.set(f.id, f.id);
     }
   }
-  const items = new Map(current.items.map((b) => [keyOf(b), b]));
   let added = 0;
   let updated = 0;
-  for (const b of incoming.items) {
-    const next = { ...b, folder: b.folder ? (folderMap.get(b.folder) ?? null) : null };
-    const old = items.get(keyOf(b));
-    if (!old) added++;
-    else if (next.updated > old.updated) updated++;
-    else continue;
-    items.set(keyOf(b), next);
-  }
-  return { library: { version: 1, folders, items: [...items.values()] }, added, updated };
+  const combine = <T extends Marked>(mine: T[], theirs: T[], key: (b: T) => string | number): T[] => {
+    const all = new Map(mine.map((b) => [key(b), b]));
+    for (const b of theirs) {
+      const next = { ...b, folder: b.folder ? (folderMap.get(b.folder) ?? null) : null };
+      const old = all.get(key(b));
+      if (!old) added++;
+      else if (next.updated > old.updated) updated++;
+      else continue;
+      all.set(key(b), next);
+    }
+    return [...all.values()];
+  };
+  const items = combine(current.items, incoming.items, keyOf);
+  const hadiths = combine(current.hadiths, incoming.hadiths, (b) => b.id);
+  return { library: { version: 1, folders, items, hadiths }, added, updated };
 }
 
 export const toBackup = (lib: Library) => JSON.stringify({ app: "noor-quran", ...lib }, null, 2);

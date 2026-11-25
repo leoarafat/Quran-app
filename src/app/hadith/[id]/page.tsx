@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
 import { GradeBadge } from "@/components/hadith/GradeBadge";
+import { HadithBookmarkButton } from "@/components/hadith/HadithBookmarkButton";
 import { ShareHadith } from "@/components/hadith/ShareHadith";
 import { SourceNote } from "@/components/hadith/SourceNote";
 import { toBnDigits } from "@/lib/bn";
@@ -31,9 +32,12 @@ export default async function HadithDetailPage({ params }: PageProps<"/hadith/[i
 
   return (
     <article className="mx-auto max-w-2xl space-y-4">
-      <Link href={h.categories[0] ? `/hadith/c/${h.categories[0]}/` : "/hadith/"} className="inline-flex min-h-11 items-center gap-1 text-accent">
-        <ChevronLeft aria-hidden className="size-5" /> {categories.get(h.categories[0])?.title ?? "হাদিস"}
-      </Link>
+      <div className="flex items-center justify-between gap-3">
+        <Link href={h.categories[0] ? `/hadith/c/${h.categories[0]}/` : "/hadith/"} className="inline-flex min-h-11 min-w-0 items-center gap-1 text-accent">
+          <ChevronLeft aria-hidden className="size-5 shrink-0" /> <span className="line-clamp-2">{categories.get(h.categories[0])?.title ?? "হাদিস"}</span>
+        </Link>
+        <HadithBookmarkButton id={h.id} />
+      </div>
       <h1 className="font-display text-xl font-semibold leading-relaxed">{h.title}</h1>
 
       <div className={card}>
@@ -42,7 +46,7 @@ export default async function HadithDetailPage({ params }: PageProps<"/hadith/[i
       <p className="whitespace-pre-line text-[calc(1.0625rem*var(--bn-scale))] leading-[1.9]">{h.hadeeth}</p>
 
       <dl className={`${card} space-y-2`}>
-        <div className="flex items-start gap-2"><dt className="shrink-0 text-muted">মান:</dt><dd className="flex min-w-0 flex-wrap items-center gap-2"><GradeBadge cls={h.gradeClass} /><span>{h.grade}</span></dd></div>
+        <div className="flex items-start gap-2"><dt className="shrink-0 text-muted">মান:</dt><dd className="flex min-w-0 flex-wrap items-center gap-2"><GradeBadge cls={h.gradeClass} />{!["সহীহ", "হাসান"].includes(h.grade.trim()) && <span>{h.grade}</span>}</dd></div>
         <div className="flex items-start gap-2"><dt className="shrink-0 text-muted">বর্ণনা:</dt><dd className="min-w-0 whitespace-pre-line">{h.attribution}</dd></div>
         {bukhari && (
           <div className="flex items-start gap-2"><dt className="shrink-0 text-muted">নম্বর:</dt><dd>বুখারী {bukhari} <span className="block text-[0.8125rem] text-muted">যন্ত্রে মিলিয়ে পাওয়া; ছাপা কিতাবে মিলিয়ে নিন।</span></dd></div>

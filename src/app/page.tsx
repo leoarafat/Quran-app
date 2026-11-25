@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Search } from "lucide-react";
+import { ChevronRight, Search } from "lucide-react";
 import { DailyAyah, type DailyItem } from "@/components/home/DailyAyah";
 import { PrayerArch } from "@/components/home/PrayerArch";
 import { QuickTiles } from "@/components/home/QuickTiles";
@@ -32,6 +32,10 @@ export default function HomePage() {
         <PrayerArch />
         <ContinueReading names={surahs.map((s) => s.bangla)} />
         <div className="pt-1"><QuickTiles /></div>
+        <Link href="/me/" className="flex min-h-14 items-center justify-between gap-3 rounded-[1.375rem] border border-line bg-surface px-4 py-2">
+          <span><span className="block font-display font-semibold">আমার পাতা</span><span className="block text-sm text-muted">আজকের আমল, খতম ও অগ্রগতি</span></span>
+          <ChevronRight aria-hidden className="size-5 shrink-0 text-accent" />
+        </Link>
         <DailyAyah items={daily} />
       </div>
     </>

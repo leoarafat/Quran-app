@@ -1,4 +1,4 @@
-import { DEFAULT_SETTINGS, SCALE_MAX, SCALE_MIN, SETTINGS_KEY, THEMES } from "@/lib/settings";
+import { BN_FONTS, DEFAULT_SETTINGS, SCALE_MAX, SCALE_MIN, SETTINGS_KEY, THEMES } from "@/lib/settings";
 import { WELCOME_KEY } from "@/lib/welcome";
 
 /**
@@ -11,6 +11,7 @@ if(!s||typeof s!=="object")return;
 var r=document.documentElement;
 r.dataset.theme=${JSON.stringify(THEMES)}.indexOf(s.theme)>-1?s.theme:${JSON.stringify(DEFAULT_SETTINGS.theme)};
 r.dataset.easy=String(s.easyMode===true);
+r.dataset.bnfont=${JSON.stringify(BN_FONTS)}.indexOf(s.bnFont)>-1?s.bnFont:${JSON.stringify(DEFAULT_SETTINGS.bnFont)};
 function c(v){return typeof v==="number"&&isFinite(v)?Math.min(${SCALE_MAX},Math.max(${SCALE_MIN},v)):1}
 r.style.setProperty("--ar-scale",String(c(s.arScale)));
 r.style.setProperty("--bn-scale",String(c(s.bnScale)));

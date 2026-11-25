@@ -72,6 +72,10 @@ export function useLibrary(): Library {
   return useSyncExternalStore(subscribe, getLibrary, () => EMPTY);
 }
 
+export function useIsHadithBookmarked(id: number): boolean {
+  return useSyncExternalStore(subscribe, () => getLibrary().hadiths.some((b) => b.id === id), () => false);
+}
+
 /** For one ayah row, so only the row that changed re-renders. */
 export function useIsBookmarked(s: number, a: number): boolean {
   return useSyncExternalStore(subscribe, () => getLibrary().items.some((b) => b.s === s && b.a === a), () => false);

@@ -4,18 +4,22 @@ import "@fontsource/hind-siliguri/500.css";
 import "@fontsource/hind-siliguri/600.css";
 import "@fontsource/hind-siliguri/700.css";
 import "@fontsource/amiri-quran/400.css";
+import "@fontsource/noto-serif-bengali/400.css";
 import "@fontsource/noto-serif-bengali/500.css";
 import "@fontsource/noto-serif-bengali/600.css";
 import "@fontsource/noto-serif-bengali/700.css";
 import "@fontsource/tiro-bangla/400.css";
 import "./globals.css";
 import { AppNav } from "@/components/AppNav";
+import { PwaManager } from "@/components/offline/PwaManager";
 import { MiniPlayer } from "@/components/quran/MiniPlayer";
+import { ReminderRunner } from "@/components/tools/ReminderRunner";
 import { SettingsBootScript } from "@/components/SettingsBootScript";
 
 export const metadata: Metadata = {
   title: { default: "নূর কুরআন: বাংলা কুরআন ও দৈনিক আমল", template: "%s · নূর কুরআন" },
-  description: "বাংলা কুরআন, অনুবাদ, তিলাওয়াত, দৈনিক আমল ও নামাজ শিক্ষা।",
+  description: "বাংলা কুরআন, উচ্চারণ, তিলাওয়াত, হাদিস, দোয়া ও নামাজের সময়।",
+  appleWebApp: { capable: true, title: "নূর কুরআন", statusBarStyle: "black-translucent" },
 };
 
 export const viewport: Viewport = {
@@ -40,6 +44,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <MiniPlayer />
         </div>
         <AppNav />
+        <PwaManager />
+        <ReminderRunner />
       </body>
     </html>
   );
