@@ -15,6 +15,16 @@ export function directMatches(query: string, surahs: SurahInfo[]) {
   return { named, reference, surahs: withoutWord ? matches : [] };
 }
 
+export type Scope = "all" | "quran" | "hadith";
+
+/** Which side an address asks for. Links made before the "all" tab carried Quran filters and no scope. */
+export function scopeOf(search: string): Scope {
+  const params = new URLSearchParams(search);
+  const scope = params.get("scope");
+  if (scope === "hadith" || scope === "quran") return scope;
+  return Object.keys(DEFAULT_FILTERS).some((key) => params.has(key)) ? "quran" : "all";
+}
+
 export function toParams(query: string, filters: Filters): string {
   const params = new URLSearchParams();
   if (query) params.set("q", query);

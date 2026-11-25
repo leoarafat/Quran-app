@@ -3,17 +3,12 @@
 import { useState } from "react";
 import { Check, Plus, Trash2, Undo2 } from "lucide-react";
 import { toBnDigits } from "@/lib/bn";
-import { addItem, dayKey, EMPTY_ROUTINE, ITEM_MAX, ITEMS_LIMIT, lastDays, PRAYERS, progress, readRoutine, removeItem, restoreItem, toggle, type Item, type Routine } from "@/lib/tools/routine";
+import { addItem, dayKey, ITEM_MAX, ITEMS_LIMIT, lastDays, PRAYERS, progress, removeItem, restoreItem, toggle, type Item } from "@/lib/tools/routine";
 import { streak } from "@/lib/tools/streak";
+import { useRoutine } from "@/lib/tools/useRoutine";
 import { useNow } from "@/lib/useNow";
-import { useInBrowser, useStored, writeStored } from "@/lib/useStored";
+import { useInBrowser } from "@/lib/useStored";
 
-const KEY = "noor.routine.v1";
-const RESCUE_KEY = "noor.routine.unreadable";
-const parse = (raw: string | null): { routine: Routine; unreadable: string | null } => {
-  const routine = raw === null ? EMPTY_ROUTINE : readRoutine(raw);
-  return routine ? { routine, unreadable: null } : { routine: EMPTY_ROUTINE, unreadable: raw };
-};
 const WEEKDAYS = ["রবি", "সোম", "মঙ্গল", "বুধ", "বৃহঃ", "শুক্র", "শনি"];
 const card = "rounded-[1.375rem] border border-line bg-surface p-4";
 
@@ -30,7 +25,7 @@ function Row({ name, done, onToggle, onRemove }: { name: string; done: boolean; 
 }
 
 function Inner({ now }: { now: number }) {
-  const { routine, unreadable } = useStored(KEY, parse);
+  const { routine, save } = useRoutine();
   const [name, setName] = useState("");
   const [removed, setRemoved] = useState<{ item: Item; index: number } | null>(null);
   const today = new Date(now);
@@ -39,11 +34,6 @@ function Inner({ now }: { now: number }) {
   const todays = progress(routine, day);
   const month = lastDays(today, 30);
 
-  const save = (next: Routine) => {
-    // Data we could not read is set aside first, so saving can never destroy it.
-    if (unreadable !== null) writeStored(RESCUE_KEY, unreadable);
-    writeStored(KEY, JSON.stringify(next));
-  };
   const add = (event: React.FormEvent) => {
     event.preventDefault();
     const next = addItem(routine, `u${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`, name);

@@ -80,6 +80,11 @@ describe("saving audio", () => {
 });
 
 describe("service worker", () => {
+  it("keeps the surah list the search palette asks for", () => {
+    expect(readFileSync(new URL("scripts/build-sw.mjs", root), "utf8")).toContain('"/data/quran/index.json"');
+    expect(readFileSync(new URL("src/components/search/CommandPalette.tsx", root), "utf8")).toContain('fetch("/data/quran/index.json")');
+  });
+
   const template = readFileSync(new URL("scripts/sw-template.js", root), "utf8")
     .replace('"__VERSION__"', '"t"').replace("__STATIC_FILES__", "[]").replace("__SHELL_FILES__", "[]");
   const rangeResponse = new Function("self", `${template}; return rangeResponse;`)({ addEventListener() {} }) as (r: Response, h: string | null) => Promise<Response>;

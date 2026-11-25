@@ -58,10 +58,10 @@ export function VoiceButton({ onText }: { onText: (text: string) => void }) {
 
   return (
     <div className="contents">
-      <button type="button" onClick={press} aria-pressed={listening} aria-label={listening ? "শোনা বন্ধ করুন" : "ভয়েস সার্চ"} className={`grid size-13 shrink-0 place-items-center rounded-full border text-accent ${listening ? "border-gold bg-active" : "border-line-strong bg-surface"}`}>
+      <button type="button" onClick={press} aria-pressed={listening} aria-label={listening ? "শোনা বন্ধ করুন" : "ভয়েস সার্চ"} className={`grid size-14 shrink-0 place-items-center rounded-[1.125rem] border text-ac ${listening ? "border-gd bg-gs" : "border-ln2 bg-sf"}`}>
         {listening ? <MicOff aria-hidden className="size-5" /> : <Mic aria-hidden className="size-5" />}
       </button>
-      <p role="status" className="order-last w-full text-sm text-muted empty:hidden">{message}</p>
+      <p role="status" className="order-last w-full text-sm text-ink2 empty:hidden">{message}</p>
     </div>
   );
 }

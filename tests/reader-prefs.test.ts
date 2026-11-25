@@ -8,9 +8,19 @@ describe("reading preferences", () => {
   it("falls back safely on bad data and never hides every layer", () => {
     for (const raw of [null, "", "no", "null", "5"]) expect(parseReaderPrefs(raw)).toEqual(DEFAULT_READER);
     expect(parseReaderPrefs('{"arabic":false,"pronunciation":false,"translation":false}')).toEqual(DEFAULT_READER);
-    const one = { arabic: false, pronunciation: false, translation: true, mushaf: false };
+    const one = { ...DEFAULT_READER, arabic: false, pronunciation: false };
     expect(toggleLayer(one, "translation")).toEqual(one);
     expect(toggleLayer(one, "arabic").arabic).toBe(true);
+  });
+
+  it("keeps older saved choices and drops unknown new ones", () => {
+    expect(parseReaderPrefs('{"pronunciation":false}')).toEqual({ ...DEFAULT_READER, pronunciation: false });
+    expect(parseReaderPrefs('{"lineGap":"huge","numbers":false,"follow":false}')).toEqual({ ...DEFAULT_READER, numbers: false, follow: false });
+    expect(parseReaderPrefs('{"arabic":false,"pronunciation":false,"translation":false,"lineGap":"wide"}').lineGap).toBe("wide");
+  });
+
+  it("changing the mode leaves the other choices alone", () => {
+    for (const mode of READING_MODES) expect(Object.keys(mode.prefs).sort()).toEqual(["arabic", "mushaf", "pronunciation", "translation"]);
   });
 
   it("recognises each ready-made mode", () => {

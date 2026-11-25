@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Play } from "lucide-react";
+import { Icon } from "@/components/ui/Icon";
 import { toAsciiDigits, toBnDigits } from "@/lib/bn";
 import { playAyah, setOptions, usePlayer, type Track } from "@/lib/audio/player";
 import { readRange, REPEAT_CHOICES } from "@/lib/audio/sequence";
@@ -34,7 +34,7 @@ export function RangeRepeat({ id, track, startAt, onStart }: { id: string; track
   );
 
   return (
-    <form id={id} onSubmit={start} aria-label="অংশ বারবার শুনুন" className="mb-3 space-y-3 rounded-[1.375rem] border border-line-strong bg-surface p-4">
+    <form id={id} onSubmit={start} aria-label="অংশ বারবার শুনুন" className="mb-3 space-y-3 rounded-md border border-ln2 bg-sf p-4">
       <div className="grid grid-cols-2 gap-3">
         <label className={label}>শুরুর আয়াত<input inputMode="numeric" value={from} onChange={(e) => { setFrom(e.target.value); setError(""); }} className={field} /></label>
         <label className={label}>শেষের আয়াত<input inputMode="numeric" value={to} onChange={(e) => { setTo(e.target.value); setError(""); }} className={field} /></label>
@@ -42,8 +42,8 @@ export function RangeRepeat({ id, track, startAt, onStart }: { id: string; track
         <label className={label}>প্রতি আয়াত{select(options.repeatEach, (n) => setOptions({ repeatEach: n }))}</label>
       </div>
       {error && <p role="alert" className="text-sm text-accent">{error}</p>}
-      <button type="submit" className="flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-gold font-semibold text-on-gold">
-        <Play aria-hidden className="size-4" fill="currentColor" /> শুরু করুন
+      <button type="submit" className="flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-ac font-semibold text-on-ac">
+        <Icon name="play" className="size-5" filled /> শুরু করুন
       </button>
     </form>
   );

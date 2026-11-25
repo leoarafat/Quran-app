@@ -12,9 +12,10 @@ const TALL = 1920;
 
 /** The app's own theme colours (see globals.css; a test keeps them equal). */
 export const CARD_COLORS: Record<Theme, { bg: string; surface: string; text: string; soft: string; muted: string; accent: string; line: string }> = {
-  dark: { bg: "#06130e", surface: "#0e211a", text: "#f4eedf", soft: "#c8d6cd", muted: "#a9bdb2", accent: "#ebcb88", line: "#3a5647" },
-  light: { bg: "#f6f3e9", surface: "#fffdf6", text: "#13261e", soft: "#2e433a", muted: "#4f645a", accent: "#7c570c", line: "#c9bb93" },
-  sepia: { bg: "#f1e4ca", surface: "#f8eed9", text: "#33271a", soft: "#46372a", muted: "#66543d", accent: "#74440d", line: "#c3a974" },
+  paper: { bg: "#f6f1e6", surface: "#fffdf8", text: "#12201a", soft: "#12201a", muted: "#4a5a52", accent: "#7a5c14", line: "#d9d5cc" },
+  sepia: { bg: "#eaddbf", surface: "#f3e8ce", text: "#33281a", soft: "#33281a", muted: "#5e4e36", accent: "#6b4e0e", line: "#cfbd97" },
+  night: { bg: "#0a1511", surface: "#111f19", text: "#e7efe8", soft: "#e7efe8", muted: "#9db1a5", accent: "#d9bc77", line: "#2c3a33" },
+  amoled: { bg: "#000000", surface: "#0b0f0d", text: "#edede8", soft: "#edede8", muted: "#a3b0a8", accent: "#d9bc77", line: "#2b302d" },
 };
 
 export type CardContent = {
@@ -61,14 +62,15 @@ export function wrapText(text: string, maxWidth: number, measure: (s: string) =>
 }
 
 type Role = "brand" | "reference" | "arabic" | "pronunciation" | "translation" | "note" | "credit";
-type Style = { family: string; weight: number; size: number; height: number; color: keyof (typeof CARD_COLORS)["dark"]; scales: boolean; rtl?: boolean };
+type Style = { family: string; weight: number; size: number; height: number; color: keyof (typeof CARD_COLORS)["paper"]; scales: boolean; rtl?: boolean };
 
 const BANGLA = '"Hind Siliguri", sans-serif';
 const DISPLAY = '"Noto Serif Bengali", "Hind Siliguri", serif';
+const ARABIC = '"Amiri Quran", serif';
 const STYLES: Record<Role, Style> = {
   brand: { family: DISPLAY, weight: 700, size: 40, height: 1.5, color: "accent", scales: false },
   reference: { family: DISPLAY, weight: 600, size: 34, height: 1.6, color: "muted", scales: false },
-  arabic: { family: '"Amiri Quran", serif', weight: 400, size: 64, height: 2.15, color: "text", scales: true, rtl: true },
+  arabic: { family: ARABIC, weight: 400, size: 64, height: 2.15, color: "text", scales: true, rtl: true },
   pronunciation: { family: DISPLAY, weight: 500, size: 38, height: 1.75, color: "accent", scales: true },
   translation: { family: BANGLA, weight: 400, size: 40, height: 1.7, color: "soft", scales: true },
   note: { family: BANGLA, weight: 400, size: 24, height: 1.6, color: "muted", scales: false },
@@ -93,7 +95,14 @@ export function cardBlocks(c: CardContent): Block[] {
   ];
 }
 
-const font = (s: Style, scale: number) => `${s.weight} ${Math.round(s.size * (s.scales ? scale : 1))}px ${s.family}`;
+/** next/font gives the families generated names, so a canvas has to be told what the page uses. */
+const PAGE_FONTS: Record<string, string> = { [BANGLA]: "--ff-sans", [DISPLAY]: "--ff-display", [ARABIC]: "--ff-arabic" };
+function familyOf(family: string): string {
+  if (typeof document === "undefined" || !document.documentElement) return family;
+  return getComputedStyle(document.documentElement).getPropertyValue(PAGE_FONTS[family]).trim() || family;
+}
+
+const font = (s: Style, scale: number) => `${s.weight} ${Math.round(s.size * (s.scales ? scale : 1))}px ${familyOf(s.family)}`;
 
 /** Waits for the app's own fonts, so a picture is never made with a stand-in for the Quran script. */
 export async function loadCardFonts(content: CardContent): Promise<void> {

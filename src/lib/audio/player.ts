@@ -47,6 +47,15 @@ const listeners = new Set<() => void>();
 // Progress changes many times a second, so it has its own subscribers.
 const progressListeners = new Set<() => void>();
 let progress = 0;
+/** "seconds heard|length", whole seconds */
+let clock = "0|0";
+
+function setClock(current: number, length: number) {
+  const next = `${Math.floor(current) || 0}|${Math.floor(length) || 0}`;
+  if (next === clock) return;
+  clock = next;
+  progressListeners.forEach((l) => l());
+}
 
 function setProgress(value: number) {
   const next = Math.round(Math.min(1, Math.max(0, value)) * 200) / 200;
@@ -59,6 +68,11 @@ const subscribeProgress = (listener: () => void) => {
   progressListeners.add(listener);
   return () => { progressListeners.delete(listener); };
 };
+
+/** Seconds heard and the length of the current ayah, as "12|33". */
+export function useClock(): string {
+  return useSyncExternalStore(subscribeProgress, () => clock, () => "0|0");
+}
 
 /** How far the current ayah has been recited, 0..1. */
 export function useProgress(): number {
@@ -113,7 +127,9 @@ function audio(): HTMLAudioElement {
   element.addEventListener("error", () => { if (state.track) set({ status: "error" }); });
   element.addEventListener("ended", advance);
   element.addEventListener("timeupdate", () => {
-    if (Number.isFinite(element!.duration) && element!.duration > 0) setProgress(element!.currentTime / element!.duration);
+    if (!Number.isFinite(element!.duration) || element!.duration <= 0) return;
+    setProgress(element!.currentTime / element!.duration);
+    setClock(element!.currentTime, element!.duration);
   });
   setupMediaSession();
   return element;
@@ -135,6 +151,7 @@ function load(position: Position) {
   const el = audio();
   set({ position, status: "loading" });
   setProgress(0);
+  setClock(0, 0);
   el.src = ayahAudioUrl(reciter, track.surah, position.ayah);
   el.defaultPlaybackRate = state.options.rate;
   updateMetadata();
@@ -215,6 +232,7 @@ export function stop() {
   }
   set({ track: null, status: "idle", position: { ayah: 1, plays: 1 }, sleep: null });
   setProgress(0);
+  setClock(0, 0);
   if (typeof navigator !== "undefined" && "mediaSession" in navigator) navigator.mediaSession.metadata = null;
 }
 

@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import type { QuranIndex } from "@/lib/quran/types";
 import { DEFAULT_FILTERS } from "@/lib/search/engine";
 import { addToHistory, parseHistory } from "@/lib/search/history";
-import { directMatches, fromParams, toParams } from "@/lib/search/query";
+import { directMatches, fromParams, scopeOf, toParams } from "@/lib/search/query";
 
 const { surahs } = JSON.parse(readFileSync(new URL("../public/data/quran/index.json", import.meta.url), "utf8")) as QuranIndex;
 
@@ -42,4 +42,11 @@ describe("recent searches", () => {
   it("survives corrupt storage", () => {
     for (const raw of [null, "x", "{}", "[1,2]"]) expect(parseHistory(raw)).toEqual([]);
   });
+});
+
+describe("search tabs", () => {
+  it("opens the side the address asks for, and both when it asks for neither", () => {
+    expect(["", "?q=x", "?scope=quran&q=x", "?scope=hadith", "?scope=other"].map(scopeOf)).toEqual(["all", "all", "quran", "hadith", "all"]);
+  });
+  it("treats an older link with Quran filters as a Quran search", () => expect(scopeOf("?q=x&surah=2")).toBe("quran"));
 });

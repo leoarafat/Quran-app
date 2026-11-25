@@ -5,7 +5,7 @@ export function Highlight({ text, words }: { text: string; words: number[] }) {
   return text.split(" ").map((word, i) => (
     <span key={i}>
       {i > 0 && " "}
-      {marked.has(i) ? <mark className="rounded bg-gold px-0.5 text-on-gold">{word}</mark> : word}
+      {marked.has(i) ? <mark className="rounded bg-gd/30 px-0.5 text-inherit">{word}</mark> : word}
     </span>
   ));
 }

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { toBnDigits } from "@/lib/bn";
 import type { Ayah } from "@/lib/quran/types";
 import { PinchArea } from "./PinchArea";
-import { AyahCard } from "./Reader";
+import { AyahCard } from "./AyahCard";
 
 export type ShownPassage = { surah: number; surahName: string; ayahs: Ayah[] };
 

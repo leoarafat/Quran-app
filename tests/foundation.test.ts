@@ -29,6 +29,23 @@ describe("settings", () => {
     for (const raw of bad) expect(parseSettings(raw)).toEqual(DEFAULT_SETTINGS);
   });
 
+  it("keeps the theme chosen before the redesign", () => {
+    expect(parseSettings('{"theme":"dark"}').theme).toBe("night");
+    expect(parseSettings('{"theme":"light"}').theme).toBe("paper");
+    expect(parseSettings('{"theme":"sepia"}').theme).toBe("sepia");
+  });
+
+  it("follows the phone only when asked to", () => {
+    const root = () => ({ dataset: {} as Record<string, string>, style: { setProperty: () => {} } }) as unknown as HTMLElement;
+    const apply = (raw: string, dark: boolean) => { const r = root(); applySettings(parseSettings(raw), r, dark); return r.dataset.theme; };
+    expect([apply('{"theme":"system"}', false), apply('{"theme":"system"}', true), apply('{"theme":"sepia"}', true)]).toEqual(["paper", "night", "sepia"]);
+    for (const dark of [true, false]) {
+      const booted = { dataset: {} as Record<string, string>, style: { setProperty: () => {} } };
+      new Function("localStorage", "document", "matchMedia", BOOT_SCRIPT)({ getItem: () => '{"theme":"system","contrast":true}' }, { documentElement: booted }, () => ({ matches: dark }));
+      expect(booted.dataset).toMatchObject({ theme: dark ? "night" : "paper", contrast: "true" });
+    }
+  });
+
   it("clamps sizes", () => {
     expect(parseSettings('{"arScale":99,"bnScale":0}')).toMatchObject({ arScale: 2, bnScale: 0.8 });
   });
@@ -44,6 +61,9 @@ describe("settings", () => {
       '{"theme":"dark","easyMode":true,"arScale":1.4,"bnScale":1.2}',
       '{"theme":"sepia","easyMode":"yes","arScale":50}',
       '{"theme":"neon"}',
+      '{"theme":"light"}',
+      '{"theme":"amoled"}',
+      '{"theme":"constructor"}',
     ];
     for (const raw of inputs) {
       const a = fakeRoot();

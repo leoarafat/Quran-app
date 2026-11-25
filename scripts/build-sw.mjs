@@ -17,6 +17,8 @@ const shell = [
   // what the in-app router fetches when moving between those pages
   ...PAGES.map((p) => `${p}index.txt`),
   "/no-connection.html", "/manifest.webmanifest", "/icons/icon-192.png",
+  // the search palette's surah list, so it can jump to a surah or ayah offline
+  "/data/quran/index.json",
 ];
 for (const url of shell) if (!existsSync(pathOf(url))) throw new Error(`Missing from the build: ${url}`);
 

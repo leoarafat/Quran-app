@@ -1,7 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { applySettings, DEFAULT_SETTINGS, parseSettings, SETTINGS_KEY, type Settings } from "./settings";
+import { applySettings, DARK_QUERY, DEFAULT_SETTINGS, parseSettings, SETTINGS_KEY, type Settings } from "./settings";
 
 const listeners = new Set<() => void>();
 let current: Settings | null = null;
@@ -28,9 +28,17 @@ function subscribe(listener: () => void): () => void {
     listeners.forEach((l) => l());
   };
   window.addEventListener("storage", onStorage);
+  // With the "system" choice the page follows the phone while it is open.
+  const dark = window.matchMedia(DARK_QUERY);
+  const onPhone = () => {
+    if (getSnapshot().theme === "system") applySettings(getSnapshot(), document.documentElement);
+    listener();
+  };
+  dark.addEventListener("change", onPhone);
   return () => {
     listeners.delete(listener);
     window.removeEventListener("storage", onStorage);
+    dark.removeEventListener("change", onPhone);
   };
 }
 

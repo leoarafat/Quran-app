@@ -5,10 +5,9 @@ import { createPortal } from "react-dom";
 import { Download, ImageIcon, Share2, Type, X } from "lucide-react";
 import { toBnDigits } from "@/lib/bn";
 import { drawCard, loadCardFonts, type CardContent } from "@/lib/share/card";
-import type { Theme } from "@/lib/settings";
+import { phoneIsDark, resolveTheme, THEME_LABELS, THEMES, type Theme } from "@/lib/settings";
 import { useSettings } from "@/lib/useSettings";
 
-const THEME_NAMES = [["dark", "রাত"], ["light", "দিন"], ["sepia", "সেপিয়া"]] as const;
 const chip = (on: boolean) => `min-h-11 rounded-full border px-3 ${on ? "border-brand bg-brand font-semibold text-on-brand" : "border-line-strong"}`;
 const action = "flex min-h-12 items-center justify-center gap-2 rounded-full border border-line-strong px-4 font-semibold text-accent disabled:opacity-40";
 
@@ -22,7 +21,7 @@ export function ShareSheet({ content, pronunciation, onShareText, onClose }: {
 }) {
   const settings = useSettings();
   const dialog = useRef<HTMLDialogElement>(null);
-  const [theme, setTheme] = useState<Theme>(settings.theme);
+  const [theme, setTheme] = useState<Theme>(() => resolveTheme(settings.theme, phoneIsDark()));
   // Off unless asked for: the pronunciation is not verified yet, and a picture travels without the app.
   const [withPronunciation, setWithPronunciation] = useState(false);
   const [attempt, setAttempt] = useState(0);
@@ -109,8 +108,8 @@ export function ShareSheet({ content, pronunciation, onShareText, onClose }: {
           )}
         </div>
 
-        <div role="group" aria-label="ছবির রং" className="grid grid-cols-3 gap-2">
-          {THEME_NAMES.map(([value, label]) => <button key={value} type="button" aria-pressed={theme === value} className={chip(theme === value)} onClick={() => { setTheme(value); setMessage(""); }}>{label}</button>)}
+        <div role="group" aria-label="ছবির রং" className="grid grid-cols-4 gap-2">
+          {THEMES.map((value) => <button key={value} type="button" aria-pressed={theme === value} className={chip(theme === value)} onClick={() => { setTheme(value); setMessage(""); }}>{THEME_LABELS[value]}</button>)}
         </div>
         <label className="flex min-h-11 items-center gap-3">
           <input type="checkbox" checked={withPronunciation} onChange={(e) => { setWithPronunciation(e.target.checked); setMessage(""); }} className="size-5 shrink-0 accent-[var(--brand)]" />
