@@ -34,11 +34,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="bn" data-theme="dark" suppressHydrationWarning>
       <body className="min-h-dvh antialiased">
         <SettingsBootScript />
-        <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-2 focus:z-50 focus:rounded-lg focus:bg-surface focus:p-3">
+        <div aria-hidden className="status-bar" />
+        <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-2 focus:top-[calc(0.5rem+var(--safe-top))] focus:z-50 focus:rounded-lg focus:bg-surface focus:p-3">
           মূল অংশে যান
         </a>
         <div className="lg:pl-56">
-          <main id="main" className="mx-auto max-w-5xl px-[1.375rem] pb-32 pt-6 lg:px-8 lg:pb-10">
+          <main id="main" className="mx-auto max-w-5xl px-[1.375rem] pb-32 pt-[calc(1.5rem+var(--safe-top))] lg:px-8 lg:pb-10">
             {children}
           </main>
           <MiniPlayer />

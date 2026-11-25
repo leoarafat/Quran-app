@@ -73,7 +73,27 @@
   --hero-muted: #a9bdb2;
   --ar-scale: 1;
   --bn-scale: 1;
+  /* The height of the phone's status bar when the installed app is drawn under it (iPhone). */
+  --safe-top: env(safe-area-inset-top, 0px);
 }
+
+/* An anchor or a scrolled-to ayah must not stop behind the status bar. */
+html { scroll-padding-top: var(--safe-top); }
+
+/*
+ * A solid strip behind the status bar, so scrolled text never mixes with the clock and battery.
+ * iOS draws those in white for this app, so the strip is dark in every theme.
+ * It has no height wherever there is no inset.
+ */
+.status-bar {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 60;
+  height: var(--safe-top);
+  background: var(--bg);
+}
+:root[data-theme="light"] .status-bar,
+:root[data-theme="sepia"] .status-bar { background: var(--hero); }
 
 /* The visitor's choice of Bangla typeface for Quran pronunciation and translation. */
 .reading { font-family: var(--font-sans); }

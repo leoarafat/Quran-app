@@ -13,7 +13,7 @@ export function Welcome() {
 
   return (
     <div role="dialog" aria-modal="true" aria-labelledby="welcome-title" className="welcome fixed inset-0 z-50 justify-center overflow-y-auto bg-[#f5f7f3] text-[#10231c]">
-      <div className="flex min-h-full w-full max-w-[26rem] flex-col px-5 pb-[calc(2.25rem+env(safe-area-inset-bottom))] pt-[calc(2.25rem+env(safe-area-inset-top))] short:pb-3 short:pt-3">
+      <div className="flex min-h-full w-full max-w-[26rem] flex-col px-5 pb-[calc(2.25rem+env(safe-area-inset-bottom))] pt-[calc(2.25rem+var(--safe-top))] short:pb-3 short:pt-[calc(0.75rem+var(--safe-top))]">
         <div className="relative h-[max(17rem,min(26.875rem,51dvh))] short:h-[43dvh] shrink-0 overflow-hidden rounded-t-[11rem] rounded-b-[1.75rem] bg-[#0d3b30]">
           <svg aria-hidden="true" viewBox="0 0 350 430" preserveAspectRatio="xMidYMax slice" className="absolute inset-0 size-full">
             {/* On short screens the sun sits lower so it never rises behind the greeting. */}
