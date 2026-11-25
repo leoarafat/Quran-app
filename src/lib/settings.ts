@@ -13,7 +13,7 @@ export const SCALE_MIN = 0.8;
 export const SCALE_MAX = 2;
 
 export const DEFAULT_SETTINGS: Settings = {
-  theme: "light",
+  theme: "dark",
   easyMode: false,
   arScale: 1,
   bnScale: 1,
@@ -32,7 +32,7 @@ export function parseSettings(raw: string | null): Settings {
     if (typeof data !== "object" || data === null) return DEFAULT_SETTINGS;
     const d = data as Record<string, unknown>;
     return {
-      theme: THEMES.includes(d.theme as Theme) ? (d.theme as Theme) : "light",
+      theme: THEMES.includes(d.theme as Theme) ? (d.theme as Theme) : DEFAULT_SETTINGS.theme,
       easyMode: d.easyMode === true,
       arScale: clampScale(d.arScale),
       bnScale: clampScale(d.bnScale),

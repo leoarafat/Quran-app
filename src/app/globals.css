@@ -1,72 +1,105 @@
 @import "tailwindcss";
 
-:root {
-  --bg: #f8f5ec;
-  --surface: #fffdf7;
-  --surface-2: #efeadb;
-  --text: #17241f;
-  --muted: #56655e;
-  --line: #e3dcc8;
-  --brand: #0b5d47;
-  --brand-strong: #084634;
-  --on-brand: #fffdf5;
-  --accent: #8a5f0a;
-  --accent-soft: #f3e6c4;
-  --hero: #0b5d47;
-  --on-hero: #fffdf5;
-  --ar-scale: 1;
-  --bn-scale: 1;
-  color-scheme: light;
+/* নূর-এ-লাইল. Night is the default; day and sepia are the same design in light. */
+:root,
+:root[data-theme="dark"] {
+  --bg: #06130e;
+  --surface: #0e211a;
+  --surface-2: #102820;
+  --raised: #14301f;
+  --text: #f4eedf;
+  --soft: #c8d6cd;
+  --muted: #a9bdb2;
+  --line: #284238;
+  --line-strong: #3a5647;
+  --brand: #d9b46a;
+  --brand-strong: #ebcb88;
+  --on-brand: #14100a;
+  --accent: #ebcb88;
+  --accent-soft: #22270f;
+  --active: #10291f;
+  --hero: #0f2a20;
+  --on-hero: #f4eedf;
+  color-scheme: dark;
 }
 
-:root[data-theme="dark"] {
-  --bg: #0b1411;
-  --surface: #121e1a;
-  --surface-2: #1a2a24;
-  --text: #e9efe9;
-  --muted: #a1b3aa;
-  --line: #243730;
-  --brand: #4fbf96;
-  --brand-strong: #7ad4b1;
-  --on-brand: #06140f;
-  --accent: #e2bd68;
-  --accent-soft: #33301c;
-  --hero: #123f31;
-  --on-hero: #eef7f1;
-  color-scheme: dark;
+:root[data-theme="light"] {
+  --bg: #f6f3e9;
+  --surface: #fffdf6;
+  --surface-2: #ffffff;
+  --raised: #ffffff;
+  --text: #13261e;
+  --soft: #2e433a;
+  --muted: #4f645a;
+  --line: #dfd6bc;
+  --line-strong: #c9bb93;
+  --brand: #0d4a38;
+  --brand-strong: #0a3b2d;
+  --on-brand: #fff9e8;
+  --accent: #7c570c;
+  --accent-soft: #f3e7c6;
+  --active: #ece7d3;
+  --hero: #0f3a2c;
+  --on-hero: #f7f1e1;
+  color-scheme: light;
 }
 
 :root[data-theme="sepia"] {
   --bg: #f1e4ca;
   --surface: #f8eed9;
-  --surface-2: #e8d8b8;
+  --surface-2: #fbf3e2;
+  --raised: #fbf3e2;
   --text: #33271a;
+  --soft: #46372a;
   --muted: #66543d;
   --line: #d8c49e;
+  --line-strong: #c3a974;
   --brand: #5c4a14;
   --brand-strong: #45370e;
   --on-brand: #fff8e8;
-  --accent: #7d4a0e;
+  --accent: #74440d;
   --accent-soft: #ead5a8;
-  --hero: #5c4a14;
-  --on-hero: #fff8e8;
+  --active: #ebdbb9;
+  --hero: #3f3410;
+  --on-hero: #fff6e0;
+  color-scheme: light;
+}
+
+:root {
+  /* The same in every theme: the gold card and the details drawn on the dark hero. */
+  --gold: #d9b46a;
+  --on-gold: #14100a;
+  --hero-accent: #ebcb88;
+  --hero-muted: #a9bdb2;
+  --ar-scale: 1;
+  --bn-scale: 1;
 }
 
 @theme inline {
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
+  --color-raised: var(--raised);
   --color-text: var(--text);
+  --color-soft: var(--soft);
   --color-muted: var(--muted);
   --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
   --color-brand: var(--brand);
   --color-brand-strong: var(--brand-strong);
   --color-on-brand: var(--on-brand);
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
+  --color-active: var(--active);
   --color-hero: var(--hero);
   --color-on-hero: var(--on-hero);
+  --color-gold: var(--gold);
+  --color-on-gold: var(--on-gold);
+  --color-hero-accent: var(--hero-accent);
+  --color-hero-muted: var(--hero-muted);
   --font-sans: "Hind Siliguri", system-ui, sans-serif;
+  --font-display: "Noto Serif Bengali", "Hind Siliguri", serif;
+  --font-welcome: "Tiro Bangla", "Noto Serif Bengali", serif;
   --font-arabic: "Amiri Quran", "Amiri", serif;
 }
 
@@ -79,9 +112,18 @@ body {
   color: var(--text);
   font-family: var(--font-sans);
   line-height: 1.65;
+  -webkit-tap-highlight-color: transparent;
 }
 
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+/* The welcome screen is in the home page's HTML and shown before first paint when due. */
+.welcome { display: none; }
+html[data-welcome="1"] .welcome { display: flex; }
+html[data-welcome="1"]:has(.welcome) { overflow: hidden; }
+
+@keyframes sunrise { from { transform: translateY(80px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }

@@ -25,10 +25,11 @@ function ratio(a: string, b: string): number {
 const PAIRS = [
   ["text", "bg"], ["text", "surface"], ["muted", "bg"], ["muted", "surface"], ["brand", "surface"],
   ["brand", "surface-2"], ["accent", "accent-soft"], ["on-brand", "brand"], ["on-hero", "hero"],
+  ["soft", "bg"], ["accent", "bg"], ["accent", "active"], ["soft", "active"], ["muted", "raised"], ["on-gold", "gold"], ["hero-accent", "hero"], ["hero-muted", "hero"],
 ];
 
-describe.each([":root", ':root[data-theme="dark"]', ':root[data-theme="sepia"]'])("%s contrast", (selector) => {
-  const t = tokens(selector);
+describe.each([':root[data-theme="dark"]', ':root[data-theme="light"]', ':root[data-theme="sepia"]'])("%s contrast", (selector) => {
+  const t = { ...tokens("\n:root"), ...tokens(selector) };
   it.each(PAIRS)("%s on %s meets WCAG AA", (fg, bg) => {
     expect(ratio(t[fg], t[bg])).toBeGreaterThanOrEqual(4.5);
   });

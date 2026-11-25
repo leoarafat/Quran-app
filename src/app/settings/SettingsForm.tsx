@@ -31,7 +31,7 @@ export function SettingsForm() {
         <legend className="sr-only">থিম</legend>
         <p aria-hidden className="mb-2 font-semibold">থিম</p>
         <div className="grid grid-cols-3 gap-2">
-          {THEMES.map((theme) => (
+          {[...THEMES].reverse().map((theme) => (
             <label key={theme} className="flex min-h-12 cursor-pointer items-center justify-center rounded-xl border border-line has-checked:border-brand has-checked:bg-brand has-checked:text-on-brand has-focus-visible:outline-3 has-focus-visible:outline-accent">
               <input type="radio" name="theme" className="sr-only" checked={settings.theme === theme} onChange={() => updateSettings({ theme })} />
               {THEME_LABELS[theme]}
