@@ -42,3 +42,6 @@ next-env.d.ts
 
 # Hadith collections used only to cross-check references (about 42 MB, never published)
 /data/verify/*.json
+
+# Generated from data/raw by "npm run data:build" (also runs before test, dev and build)
+/public/data/hadith/

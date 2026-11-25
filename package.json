@@ -12,7 +12,9 @@
     "data:fetch": "node scripts/fetch-data.mjs",
     "data:build": "node scripts/build-data.mjs && node scripts/build-hadith.mjs",
     "prebuild": "node scripts/build-data.mjs && node scripts/build-hadith.mjs",
-    "data:verify-hadith": "node scripts/fetch-verify.mjs && node scripts/verify-hadith.mjs"
+    "data:verify-hadith": "node scripts/fetch-verify.mjs && node scripts/verify-hadith.mjs",
+    "pretest": "node scripts/build-hadith.mjs",
+    "predev": "node scripts/build-hadith.mjs"
   },
   "dependencies": {
     "@fontsource/amiri-quran": "^5.3.0",
