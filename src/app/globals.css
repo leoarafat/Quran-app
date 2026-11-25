@@ -12,6 +12,8 @@
   --on-brand: #fffdf5;
   --accent: #8a5f0a;
   --accent-soft: #f3e6c4;
+  --hero: #0b5d47;
+  --on-hero: #fffdf5;
   --ar-scale: 1;
   --bn-scale: 1;
   color-scheme: light;
@@ -29,6 +31,8 @@
   --on-brand: #06140f;
   --accent: #e2bd68;
   --accent-soft: #33301c;
+  --hero: #123f31;
+  --on-hero: #eef7f1;
   color-scheme: dark;
 }
 
@@ -44,6 +48,8 @@
   --on-brand: #fff8e8;
   --accent: #7d4a0e;
   --accent-soft: #ead5a8;
+  --hero: #5c4a14;
+  --on-hero: #fff8e8;
 }
 
 @theme inline {
@@ -58,6 +64,8 @@
   --color-on-brand: var(--on-brand);
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
+  --color-hero: var(--hero);
+  --color-on-hero: var(--on-hero);
   --font-sans: "Hind Siliguri", system-ui, sans-serif;
   --font-arabic: "Amiri Quran", "Amiri", serif;
 }

@@ -1,0 +1,704 @@
+{
+  "tanzil/quran-uthmani.txt": {
+    "url": "https://tanzil.net/pub/download/index.php?quranType=uthmani&marks=true&sajdah=true&rub=true&tatweel=true&outType=txt-2&agree=true",
+    "fetched": "2026-11-25",
+    "bytes": 1396684,
+    "sha256": "7f30c647331a61100ebf24a80507dc0fcdd9f2df97f1312b5b2dfcb982a7f326"
+  },
+  "tanzil/quran-simple-clean.txt": {
+    "url": "https://tanzil.net/pub/download/index.php?quranType=simple-clean&outType=txt-2&agree=true",
+    "fetched": "2026-11-25",
+    "bytes": 781176,
+    "sha256": "228df2a717671aeb9d2ff573002bd28d6b3f973f4bc7153554e3a81663d67610"
+  },
+  "tanzil/quran-data.xml": {
+    "url": "https://tanzil.net/res/text/metadata/quran-data.xml",
+    "fetched": "2026-11-25",
+    "bytes": 77234,
+    "sha256": "8867c1d88191472adec9db694b3cd9f135b1a2ef580574d32cf888dcb22c5c7a"
+  },
+  "quranenc/bengali_rwwad/1.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/1",
+    "fetched": "2026-11-25",
+    "bytes": 3978,
+    "sha256": "e94951e3113aaa3221e27ae2324265c7cded287859b716daa9b4287dcf3b6cdb"
+  },
+  "quranenc/bengali_rwwad/2.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/2",
+    "fetched": "2026-11-25",
+    "bytes": 733539,
+    "sha256": "713bc68a826cefceb7faac2d6da56f83efa2f73c54145885e57d1d62436ee9a1"
+  },
+  "quranenc/bengali_rwwad/3.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/3",
+    "fetched": "2026-11-25",
+    "bytes": 439672,
+    "sha256": "50111f600c055fd21e28cf29c8a85b2d54a886e0bde2e474265f1c94057c0e40"
+  },
+  "quranenc/bengali_rwwad/4.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/4",
+    "fetched": "2026-11-25",
+    "bytes": 434618,
+    "sha256": "65cd30836cb48b1b9fe3d7c44aee12f07aa720f06e5f12c24b8b7ed01b0179ec"
+  },
+  "quranenc/bengali_rwwad/5.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/5",
+    "fetched": "2026-11-25",
+    "bytes": 322470,
+    "sha256": "1701581bb4085074aca4ed3a83a359b27a6d6e580f4b6b3d62324419e28f8e63"
+  },
+  "quranenc/bengali_rwwad/6.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/6",
+    "fetched": "2026-11-25",
+    "bytes": 356740,
+    "sha256": "653f40da28a0bb7d0027dfeb80682940e703c56b1755bb04a87a287cd398bb29"
+  },
+  "quranenc/bengali_rwwad/7.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/7",
+    "fetched": "2026-11-25",
+    "bytes": 419673,
+    "sha256": "13a97b23c9322462a8ff3bfbf2ba52186b6b4d3d8776e00ae035896bbd494d1f"
+  },
+  "quranenc/bengali_rwwad/8.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/8",
+    "fetched": "2026-11-25",
+    "bytes": 160879,
+    "sha256": "fb76d78a90e4db048e353953ede6e8a916137347a51f4840577de002097b6f7e"
+  },
+  "quranenc/bengali_rwwad/9.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/9",
+    "fetched": "2026-11-25",
+    "bytes": 311063,
+    "sha256": "4ac8833e24b9e4e62780b995c21b43d224a2153ac54e7b3f3bf13d9d147edcd0"
+  },
+  "quranenc/bengali_rwwad/10.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/10",
+    "fetched": "2026-11-25",
+    "bytes": 233191,
+    "sha256": "ed5f4f3dcff87befde1e663b7e0e6ca25228d8745747137e2b5ca6449fe83821"
+  },
+  "quranenc/bengali_rwwad/11.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/11",
+    "fetched": "2026-11-25",
+    "bytes": 241115,
+    "sha256": "4e04658b8b2856d6bcdec0abaa45c433e90166d6c81c4501806aa654d5b47cff"
+  },
+  "quranenc/bengali_rwwad/12.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/12",
+    "fetched": "2026-11-25",
+    "bytes": 222203,
+    "sha256": "74a6cbb8358f7e715f557d317e7e1c3287512bddf4e15a0c17243eb35dcc10c3"
+  },
+  "quranenc/bengali_rwwad/13.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/13",
+    "fetched": "2026-11-25",
+    "bytes": 108237,
+    "sha256": "1915c5580af5b676630ae9458443aa88e58a62b9a883cee7509fe5345ece6f02"
+  },
+  "quranenc/bengali_rwwad/14.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/14",
+    "fetched": "2026-11-25",
+    "bytes": 111356,
+    "sha256": "2428f81fcaf9ebd6c51031196c8692792b5436856f80ec0d20788cfc6fa251aa"
+  },
+  "quranenc/bengali_rwwad/15.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/15",
+    "fetched": "2026-11-25",
+    "bytes": 96085,
+    "sha256": "181bbc229c58d4f16be1532fda228527534259fea2a4397a808b146d27be4f70"
+  },
+  "quranenc/bengali_rwwad/16.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/16",
+    "fetched": "2026-11-25",
+    "bytes": 237712,
+    "sha256": "d9c7fc65e26e070797d273ee39428184c528e3bc76d5ff2a675f6b01063ddb06"
+  },
+  "quranenc/bengali_rwwad/17.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/17",
+    "fetched": "2026-11-25",
+    "bytes": 203966,
+    "sha256": "5590523e3cff4e16315ec76fc21ffb76ccd89b2ea692d3baf6bc313b69ffd211"
+  },
+  "quranenc/bengali_rwwad/18.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/18",
+    "fetched": "2026-11-25",
+    "bytes": 203895,
+    "sha256": "6db4859cc56283969bf8991dcbc368cf1ca533e4fd14548ac559647619613b57"
+  },
+  "quranenc/bengali_rwwad/19.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/19",
+    "fetched": "2026-11-25",
+    "bytes": 129434,
+    "sha256": "a6942f63b6fac73041acba5b193f827ccd461467ff19f204dd9395855b5004c2"
+  },
+  "quranenc/bengali_rwwad/20.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/20",
+    "fetched": "2026-11-25",
+    "bytes": 177082,
+    "sha256": "c48bbf284a7b6c03e6050afa590236a8e273bcd01c0ee52ffe5236dcb414549a"
+  },
+  "quranenc/bengali_rwwad/21.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/21",
+    "fetched": "2026-11-25",
+    "bytes": 152664,
+    "sha256": "8404f1c8b5c61af76a5df2d2d8fada1cbeec0a5bfd4b16a7f79fffca3e212bb0"
+  },
+  "quranenc/bengali_rwwad/22.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/22",
+    "fetched": "2026-11-25",
+    "bytes": 158972,
+    "sha256": "fb9e87272c17dab91481c77ad07c86d55f4b70037fb73782a9cf3f87ca10bd62"
+  },
+  "quranenc/bengali_rwwad/23.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/23",
+    "fetched": "2026-11-25",
+    "bytes": 135520,
+    "sha256": "520bc9c0ccbd980ecc267a8cde5292f034a8df0c154b277fe23f7ecd1a4a5b16"
+  },
+  "quranenc/bengali_rwwad/24.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/24",
+    "fetched": "2026-11-25",
+    "bytes": 158021,
+    "sha256": "505a74c3e552f57dc0d92075220fe505e3919e639ae38d1136a528c53bcf8851"
+  },
+  "quranenc/bengali_rwwad/25.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/25",
+    "fetched": "2026-11-25",
+    "bytes": 117491,
+    "sha256": "07f878595f8a1583d4eace59b10a1054f28e6b0d49d60435a56cfb62c61d7ee4"
+  },
+  "quranenc/bengali_rwwad/26.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/26",
+    "fetched": "2026-11-25",
+    "bytes": 186156,
+    "sha256": "76d2e7aa9af1a09c46611b2b165cdcd6aeea8cb74f370c12a634b9f02ae1276e"
+  },
+  "quranenc/bengali_rwwad/27.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/27",
+    "fetched": "2026-11-25",
+    "bytes": 145749,
+    "sha256": "fd3b9c1cc36cc5d3c4126310dd8cee91ad2d059e46fb46953d6c129386c9f46e"
+  },
+  "quranenc/bengali_rwwad/28.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/28",
+    "fetched": "2026-11-25",
+    "bytes": 169466,
+    "sha256": "641226390dde232898f31e96836c7da74871e8b1fe77b33104f6818d7ac4da09"
+  },
+  "quranenc/bengali_rwwad/29.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/29",
+    "fetched": "2026-11-25",
+    "bytes": 119431,
+    "sha256": "2fa9726fd191c91eb3dbf63ea4abbf5e3a194607dad0e478c10b5ba9e528f4e0"
+  },
+  "quranenc/bengali_rwwad/30.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/30",
+    "fetched": "2026-11-25",
+    "bytes": 98240,
+    "sha256": "9d11c96839091ecafecae30786de323cfde726d9f589c303c778dbf29eae83ce"
+  },
+  "quranenc/bengali_rwwad/31.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/31",
+    "fetched": "2026-11-25",
+    "bytes": 59201,
+    "sha256": "ea450a2e148f0021788cd9645bed8d4586ad4c586bdb1b60d58386e4c2dfc2fb"
+  },
+  "quranenc/bengali_rwwad/32.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/32",
+    "fetched": "2026-11-25",
+    "bytes": 43442,
+    "sha256": "3a67351feae48a21c2bbe7ecbb7e24af8d1ed60ea5fb2635aa4a510a91437655"
+  },
+  "quranenc/bengali_rwwad/33.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/33",
+    "fetched": "2026-11-25",
+    "bytes": 160450,
+    "sha256": "ae0b63e439a0f1919bdeb221e1d0a31ede50091a9d86940c4d1cd5dd371748ed"
+  },
+  "quranenc/bengali_rwwad/34.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/34",
+    "fetched": "2026-11-25",
+    "bytes": 104592,
+    "sha256": "fc4356d57dbf58fa3a3bbe29084a007b5f5c2e7811ac4b80d651cb80a7ed6bfd"
+  },
+  "quranenc/bengali_rwwad/35.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/35",
+    "fetched": "2026-11-25",
+    "bytes": 91751,
+    "sha256": "c5a3afae115bb08f9d36a1ffa599a10511c2cf32c2f223827bfb18769ea2ae8f"
+  },
+  "quranenc/bengali_rwwad/36.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/36",
+    "fetched": "2026-11-25",
+    "bytes": 98419,
+    "sha256": "4db62a1c79c14eb4667a65581fa3a7c5c398b840ebfe8bbf6ca9996d368f368b"
+  },
+  "quranenc/bengali_rwwad/37.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/37",
+    "fetched": "2026-11-25",
+    "bytes": 136661,
+    "sha256": "17d02a045a1b91e49a0c8ef12a4e6612a6d484ffb4b0d1aedf9b9be1b99c3dc7"
+  },
+  "quranenc/bengali_rwwad/38.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/38",
+    "fetched": "2026-11-25",
+    "bytes": 105815,
+    "sha256": "6ab51959c6c0f8b059e922320c1f34860f9c09c3899c74924fe618103c10a819"
+  },
+  "quranenc/bengali_rwwad/39.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/39",
+    "fetched": "2026-11-25",
+    "bytes": 140058,
+    "sha256": "44fb59c47e6da543da4b73dac7d2b89e97d905a4b3c3661906c7a3c817f764de"
+  },
+  "quranenc/bengali_rwwad/40.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/40",
+    "fetched": "2026-11-25",
+    "bytes": 147225,
+    "sha256": "34a5e7b1dbd412d06987ea71b1b7ecf93b1ef65144dc7cfaae9aa9c99b2b2ac2"
+  },
+  "quranenc/bengali_rwwad/41.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/41",
+    "fetched": "2026-11-25",
+    "bytes": 95244,
+    "sha256": "2d81b2c9ba80f7fa621e47ce15f598c93087358cdca9c717bea86fe5afc35099"
+  },
+  "quranenc/bengali_rwwad/42.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/42",
+    "fetched": "2026-11-25",
+    "bytes": 95693,
+    "sha256": "87b3d66e55b63d5af6bc8763ce8dac06302a0a558b519d3a1eefadcd2f74abe6"
+  },
+  "quranenc/bengali_rwwad/43.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/43",
+    "fetched": "2026-11-25",
+    "bytes": 110077,
+    "sha256": "3d3bd65b9a2a788dc525a16e40e981ee4e6ecea56c38abe5ed238fa6fc7fbdab"
+  },
+  "quranenc/bengali_rwwad/44.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/44",
+    "fetched": "2026-11-25",
+    "bytes": 48246,
+    "sha256": "0693726986fdf18e368d414cdeebb3687c406864cdc78aae7ef4ba29fc372b65"
+  },
+  "quranenc/bengali_rwwad/45.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/45",
+    "fetched": "2026-11-25",
+    "bytes": 57049,
+    "sha256": "dca7c9a3f615af5926811a41210c0dff6ad70069410787b81f9cd6658f47b6eb"
+  },
+  "quranenc/bengali_rwwad/46.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/46",
+    "fetched": "2026-11-25",
+    "bytes": 73915,
+    "sha256": "2aa72aaceed797ea4899f4f6945ab12fe21a186c482fa5701af8c5aa51195666"
+  },
+  "quranenc/bengali_rwwad/47.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/47",
+    "fetched": "2026-11-25",
+    "bytes": 68952,
+    "sha256": "51ac58e76cec3a897764577336595ef7d8892933968d839dbe1671ee0ff9f785"
+  },
+  "quranenc/bengali_rwwad/48.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/48",
+    "fetched": "2026-11-25",
+    "bytes": 69414,
+    "sha256": "df2f49d21a66bd65db98ade9e0dd602622fd72246547fee4f3999dcc2c2737fa"
+  },
+  "quranenc/bengali_rwwad/49.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/49",
+    "fetched": "2026-11-25",
+    "bytes": 40431,
+    "sha256": "d74fb14fceac2011b7957ecf2ca8cc2e9fd7a26de5ad1b22b1bb98c0f37668e8"
+  },
+  "quranenc/bengali_rwwad/50.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/50",
+    "fetched": "2026-11-25",
+    "bytes": 48373,
+    "sha256": "a014a887372010964f4340692205d39988241072861f35a870f601ef6f65a7fb"
+  },
+  "quranenc/bengali_rwwad/51.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/51",
+    "fetched": "2026-11-25",
+    "bytes": 48287,
+    "sha256": "18c7f46eb3a0bee70ac8a817a5cfd62d1911cb5ff847719b95aa2efc86177e49"
+  },
+  "quranenc/bengali_rwwad/52.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/52",
+    "fetched": "2026-11-25",
+    "bytes": 41172,
+    "sha256": "6b75928aaaad168a4f163d880f1adb0669866915d53c24c45716f6155421fb94"
+  },
+  "quranenc/bengali_rwwad/53.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/53",
+    "fetched": "2026-11-25",
+    "bytes": 47449,
+    "sha256": "6377f98d117f22832bc48f9f4a151422d2055226ce5f63045f5b745cf286cf2e"
+  },
+  "quranenc/bengali_rwwad/54.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/54",
+    "fetched": "2026-11-25",
+    "bytes": 49678,
+    "sha256": "c51b0246f86a4a462aeed9642c1f54df970099a2646a7b31b55390f06bc55dfc"
+  },
+  "quranenc/bengali_rwwad/55.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/55",
+    "fetched": "2026-11-25",
+    "bytes": 55619,
+    "sha256": "7857752064b63d25abb28eb393801874af471cd69b5d37f4100c6599165f6758"
+  },
+  "quranenc/bengali_rwwad/56.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/56",
+    "fetched": "2026-11-25",
+    "bytes": 62488,
+    "sha256": "6cf18083a5761595152a3a703bde25c887d69479b81cb532665597bb52784c7c"
+  },
+  "quranenc/bengali_rwwad/57.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/57",
+    "fetched": "2026-11-25",
+    "bytes": 74675,
+    "sha256": "68195ff045197e95a004b99f98f2016c93d5f3c0369824b914c121421f3502d8"
+  },
+  "quranenc/bengali_rwwad/58.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/58",
+    "fetched": "2026-11-25",
+    "bytes": 57766,
+    "sha256": "9930a7277f0648c4e531f4aba7245e120c51d4dc3d56054a0460c1a5596d8cba"
+  },
+  "quranenc/bengali_rwwad/59.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/59",
+    "fetched": "2026-11-25",
+    "bytes": 53551,
+    "sha256": "2e230e8dcc0aaa7b5ad935320e3d0b684e8bb29275fdba7f64c71b7a2f66ab1b"
+  },
+  "quranenc/bengali_rwwad/60.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/60",
+    "fetched": "2026-11-25",
+    "bytes": 44279,
+    "sha256": "b505dbfb668277b15da166da3c0fac39953d0c7d3ff31d5f6233d6bd1d118fff"
+  },
+  "quranenc/bengali_rwwad/61.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/61",
+    "fetched": "2026-11-25",
+    "bytes": 25434,
+    "sha256": "3a0578259091877d5d7f589553001967890a3123dda31cbaa68be0f394b386e9"
+  },
+  "quranenc/bengali_rwwad/62.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/62",
+    "fetched": "2026-11-25",
+    "bytes": 20233,
+    "sha256": "97c634623877defc6e17b10c7ed33ae537c9beab97b8238aace070a90d4104e0"
+  },
+  "quranenc/bengali_rwwad/63.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/63",
+    "fetched": "2026-11-25",
+    "bytes": 22105,
+    "sha256": "1ac3ddccbfe8cd11d770dc4278ec049de1bc1c1e219b6dba2cad0a48c037c668"
+  },
+  "quranenc/bengali_rwwad/64.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/64",
+    "fetched": "2026-11-25",
+    "bytes": 31936,
+    "sha256": "31116741765102da5b0a770bd57a91722e9e8dbdf8ddacecf705829cb8948630"
+  },
+  "quranenc/bengali_rwwad/65.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/65",
+    "fetched": "2026-11-25",
+    "bytes": 34736,
+    "sha256": "cb4d913bf6abfdf27236d2985a841fb0441f6ba70bf8dc7a79a6b936458d76b8"
+  },
+  "quranenc/bengali_rwwad/66.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/66",
+    "fetched": "2026-11-25",
+    "bytes": 31431,
+    "sha256": "4ad88701ffc0e7a21cff117b29d94cfa92b67c44661f34c419534a86b31c4fe5"
+  },
+  "quranenc/bengali_rwwad/67.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/67",
+    "fetched": "2026-11-25",
+    "bytes": 40524,
+    "sha256": "b70375bc80610d2c674ae30e572d749191fa371156e6d419744fa615f0a7ce22"
+  },
+  "quranenc/bengali_rwwad/68.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/68",
+    "fetched": "2026-11-25",
+    "bytes": 42416,
+    "sha256": "a01db6df98683b8051a223b3a7da4283d558161acaa7c665207b447d9c0469a5"
+  },
+  "quranenc/bengali_rwwad/69.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/69",
+    "fetched": "2026-11-25",
+    "bytes": 34585,
+    "sha256": "0a854566456f7277fbbd1dfc437c6d568e1b33a190233ba855d44feb6da59178"
+  },
+  "quranenc/bengali_rwwad/70.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/70",
+    "fetched": "2026-11-25",
+    "bytes": 30744,
+    "sha256": "2aa95f7780ef454bfc01b555de22c39312733acd6b20f9926720cd08a04fa31b"
+  },
+  "quranenc/bengali_rwwad/71.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/71",
+    "fetched": "2026-11-25",
+    "bytes": 28337,
+    "sha256": "561b0ab6461093daecf2a30768fd5477f244459873af6585cfc13eba2500af0d"
+  },
+  "quranenc/bengali_rwwad/72.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/72",
+    "fetched": "2026-11-25",
+    "bytes": 34685,
+    "sha256": "114a8c0f5e95a6f56b8be6a041e3d5b9fd72782d6577a30785e0e120d254b9c2"
+  },
+  "quranenc/bengali_rwwad/73.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/73",
+    "fetched": "2026-11-25",
+    "bytes": 24102,
+    "sha256": "7772abd6386718100295cafd92caf56eca58798c5972725302e2920053dd15af"
+  },
+  "quranenc/bengali_rwwad/74.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/74",
+    "fetched": "2026-11-25",
+    "bytes": 35806,
+    "sha256": "fa42f075eea0f4808ca21971ce8c8ba888c3870b6ca664c047ecba33503bf059"
+  },
+  "quranenc/bengali_rwwad/75.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/75",
+    "fetched": "2026-11-25",
+    "bytes": 23843,
+    "sha256": "09ec200d33262085b6fbdc0c03c2e64bf200f36b5702acb85c65c0fd465926e4"
+  },
+  "quranenc/bengali_rwwad/76.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/76",
+    "fetched": "2026-11-25",
+    "bytes": 31888,
+    "sha256": "e366f31edf0a55bafff37cb62fa2e83de3ce4a3ee74a94e9e073fc88d04ca986"
+  },
+  "quranenc/bengali_rwwad/77.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/77",
+    "fetched": "2026-11-25",
+    "bytes": 27544,
+    "sha256": "ff8c91514af5478ade106e0f88ce878e7bf7f8b0d4876d019fccdfc4fa0bfac3"
+  },
+  "quranenc/bengali_rwwad/78.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/78",
+    "fetched": "2026-11-25",
+    "bytes": 24266,
+    "sha256": "02dac6506b2359883d248d94738625b47a299f80008ab0968db93af05ff818dd"
+  },
+  "quranenc/bengali_rwwad/79.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/79",
+    "fetched": "2026-11-25",
+    "bytes": 28553,
+    "sha256": "7203e454c7fb842b36465c7e9825085da976728a2feb163bea2e1ad4976e833e"
+  },
+  "quranenc/bengali_rwwad/80.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/80",
+    "fetched": "2026-11-25",
+    "bytes": 21960,
+    "sha256": "a59621fa6fc96b32268996c348bffa0d57d686568cb0dd2362e9c86be8ff53bc"
+  },
+  "quranenc/bengali_rwwad/81.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/81",
+    "fetched": "2026-11-25",
+    "bytes": 15937,
+    "sha256": "ffc30f379952388864704bc44ed588b9e180b88237c9f117acd3622b71fdc452"
+  },
+  "quranenc/bengali_rwwad/82.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/82",
+    "fetched": "2026-11-25",
+    "bytes": 10717,
+    "sha256": "f7ed4698d3e04ea99a821226dab6fbc53b14fb688d3c381357db08d34fb5a50f"
+  },
+  "quranenc/bengali_rwwad/83.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/83",
+    "fetched": "2026-11-25",
+    "bytes": 24463,
+    "sha256": "46750ec3d445ba82f53969cd8e88cf1166dcf2faf73ef08590d21680bc4420c6"
+  },
+  "quranenc/bengali_rwwad/84.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/84",
+    "fetched": "2026-11-25",
+    "bytes": 15876,
+    "sha256": "1b05a6e55daed2cef2816bf649e078701eae2eb7d14b2e366155f0d295dda73f"
+  },
+  "quranenc/bengali_rwwad/85.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/85",
+    "fetched": "2026-11-25",
+    "bytes": 14987,
+    "sha256": "5bcf38da5defa084cac6260a3b7067419ca9061b979acd18597a7b66479f74c9"
+  },
+  "quranenc/bengali_rwwad/86.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/86",
+    "fetched": "2026-11-25",
+    "bytes": 9805,
+    "sha256": "5fcc2bf9e00331b339dd0f0a43f53d1a815749f992afcda976dcee03c9754dc9"
+  },
+  "quranenc/bengali_rwwad/87.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/87",
+    "fetched": "2026-11-25",
+    "bytes": 10455,
+    "sha256": "e252a8c4c0ab3db7decfed1198c84198a7480dfa709994c6b3f7ecd0492ad047"
+  },
+  "quranenc/bengali_rwwad/88.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/88",
+    "fetched": "2026-11-25",
+    "bytes": 12757,
+    "sha256": "66c3df107899717f303063eb44c479d3729acd470e7b02a3928cdd6c53e68cf0"
+  },
+  "quranenc/bengali_rwwad/89.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/89",
+    "fetched": "2026-11-25",
+    "bytes": 20543,
+    "sha256": "282d075ad85d1a2933a00d25e1070224e00293e2ef5b985dcf7a32fab96ca250"
+  },
+  "quranenc/bengali_rwwad/90.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/90",
+    "fetched": "2026-11-25",
+    "bytes": 11741,
+    "sha256": "fca069225a0879255fc9190f1c011d41eaaaec0d43fb4bcb44b5aff9e1c81d46"
+  },
+  "quranenc/bengali_rwwad/91.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/91",
+    "fetched": "2026-11-25",
+    "bytes": 9154,
+    "sha256": "0aee8f85ef4c6bbf0447a282659a1b2933e907881966958cbaba05ef8f7bb33a"
+  },
+  "quranenc/bengali_rwwad/92.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/92",
+    "fetched": "2026-11-25",
+    "bytes": 12910,
+    "sha256": "e9ff83b56b56681a89cd3f971f831cb0ffcf83e26cd55969ab8c2f010e737f1d"
+  },
+  "quranenc/bengali_rwwad/93.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/93",
+    "fetched": "2026-11-25",
+    "bytes": 6866,
+    "sha256": "d5d9cfd047938339cca3fc1683247ad8ab0339e1e5ddd35c29eaef7b8198c1fc"
+  },
+  "quranenc/bengali_rwwad/94.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/94",
+    "fetched": "2026-11-25",
+    "bytes": 4478,
+    "sha256": "050de9e5a986504319decd6474edc3d2118884985d403b34b7d13118bce052e4"
+  },
+  "quranenc/bengali_rwwad/95.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/95",
+    "fetched": "2026-11-25",
+    "bytes": 5527,
+    "sha256": "2719926cda7626aa1ccb42b696ce67b244d6184d84471faed6e526c55a5cf3f9"
+  },
+  "quranenc/bengali_rwwad/96.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/96",
+    "fetched": "2026-11-25",
+    "bytes": 11154,
+    "sha256": "646b4736957a7b86b844bb978f991652f9e36764b11beee3732f125d01ff8d0f"
+  },
+  "quranenc/bengali_rwwad/97.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/97",
+    "fetched": "2026-11-25",
+    "bytes": 3291,
+    "sha256": "8e45779988c43483e0068af72b58be68208b16345e70bc2f47359b361e90dd12"
+  },
+  "quranenc/bengali_rwwad/98.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/98",
+    "fetched": "2026-11-25",
+    "bytes": 10715,
+    "sha256": "12d40914296a10de4fd07a2e60db3d31ff656c11563b000db73bca96a7d1574c"
+  },
+  "quranenc/bengali_rwwad/99.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/99",
+    "fetched": "2026-11-25",
+    "bytes": 4866,
+    "sha256": "f106e1ee36cb03490716c49586353cb287fdf466bd55b19057eb596e02fd1a8b"
+  },
+  "quranenc/bengali_rwwad/100.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/100",
+    "fetched": "2026-11-25",
+    "bytes": 6168,
+    "sha256": "2d6e409b03764c70930cdc96fb8f9c540b3d003efadf8ba34da144188db40550"
+  },
+  "quranenc/bengali_rwwad/101.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/101",
+    "fetched": "2026-11-25",
+    "bytes": 4630,
+    "sha256": "ece48992fb42a35c2caba12e4fad274cc05f1bb098f355b65462d118de2d4f8f"
+  },
+  "quranenc/bengali_rwwad/102.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/102",
+    "fetched": "2026-11-25",
+    "bytes": 5240,
+    "sha256": "d8dbee7a9a3de8c034ee33e3972f055763fff39c3e68ff20292d743c51a7a941"
+  },
+  "quranenc/bengali_rwwad/103.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/103",
+    "fetched": "2026-11-25",
+    "bytes": 2445,
+    "sha256": "3b77dd27657d09ab97f2bd4c60e93c62561efecba9cff5e94ebff2ac13ca2daa"
+  },
+  "quranenc/bengali_rwwad/104.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/104",
+    "fetched": "2026-11-25",
+    "bytes": 5240,
+    "sha256": "8b66aad655ec77d1d033d04a72cc9320e9652617780c34e93debc641f1b02f2f"
+  },
+  "quranenc/bengali_rwwad/105.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/105",
+    "fetched": "2026-11-25",
+    "bytes": 3279,
+    "sha256": "cc08444c3e2087e28e9766bc1317324dfc9b0e4efb5bd1660d579a134d45a2fd"
+  },
+  "quranenc/bengali_rwwad/106.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/106",
+    "fetched": "2026-11-25",
+    "bytes": 2511,
+    "sha256": "d5ea98fbf1597ea97a0dc32b49e7bef381160d1727265e4691d07ce54492c00e"
+  },
+  "quranenc/bengali_rwwad/107.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/107",
+    "fetched": "2026-11-25",
+    "bytes": 4014,
+    "sha256": "a25ddbfa0bb7bdd85a03a2044e78450c473e30d583839b7a52cf41a881a706ad"
+  },
+  "quranenc/bengali_rwwad/108.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/108",
+    "fetched": "2026-11-25",
+    "bytes": 2132,
+    "sha256": "99b3824644e9f01d1ca7065697ca3ce4ca29233249759b0e115f79ff001c3429"
+  },
+  "quranenc/bengali_rwwad/109.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/109",
+    "fetched": "2026-11-25",
+    "bytes": 3867,
+    "sha256": "a5d330e2f3cb54e0e8881e1de9e63ae19f8af0ddb699664324838c7ffa123d38"
+  },
+  "quranenc/bengali_rwwad/110.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/110",
+    "fetched": "2026-11-25",
+    "bytes": 2592,
+    "sha256": "d4c4633c9507d47e7c21178dc071e3ea36272ed9e8fb7261e50cbf592bfec187"
+  },
+  "quranenc/bengali_rwwad/111.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/111",
+    "fetched": "2026-11-25",
+    "bytes": 3773,
+    "sha256": "6bf35aac908b8418f705e98f39f0578b432b715a74e8e03006650104be2fc1ec"
+  },
+  "quranenc/bengali_rwwad/112.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/112",
+    "fetched": "2026-11-25",
+    "bytes": 2067,
+    "sha256": "2409dfcb6d5fbe21c77e1815fdc6e6883c15664f2e52f5130002fec92d146003"
+  },
+  "quranenc/bengali_rwwad/113.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/113",
+    "fetched": "2026-11-25",
+    "bytes": 3149,
+    "sha256": "33cbc8fc5092e72544b1196c7b6f9bcddcf5af3d9cdb04bc52b992fb547b86a7"
+  },
+  "quranenc/bengali_rwwad/114.json": {
+    "url": "https://quranenc.com/api/v1/translation/sura/bengali_rwwad/114",
+    "fetched": "2026-11-25",
+    "bytes": 3170,
+    "sha256": "54f4047208c4ffeb7b3362881c73d4a081153e5de6f27a3bee11210b99872cf4"
+  }
+}

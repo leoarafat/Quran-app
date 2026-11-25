@@ -11,5 +11,5 @@ function format(): string {
 /** The date is only known on the visitor's device, never at build time. */
 export function TodayDate() {
   const text = useSyncExternalStore(subscribe, format, () => "");
-  return <p className="min-h-[1.65em] text-on-brand/85">{text}</p>;
+  return <p className="min-h-[1.65em] text-on-hero/85">{text}</p>;
 }
