@@ -3,6 +3,7 @@
 // One audio element for the whole app, so recitation survives moving between pages.
 // Reusing the same element also gives the best chance of continuing on a locked phone.
 import { useSyncExternalStore } from "react";
+import { toBnDigits } from "@/lib/bn";
 import { ayahAudioUrl, RECITERS } from "./reciters";
 import { DEFAULT_OPTIONS, GAP_CHOICES, nextStep, RATE_CHOICES, REPEAT_CHOICES, type PlayOptions, type Position } from "./sequence";
 
@@ -191,7 +192,7 @@ function setupMediaSession() {
 function updateMetadata() {
   if (!state.track || !("mediaSession" in navigator) || typeof MediaMetadata === "undefined") return;
   navigator.mediaSession.metadata = new MediaMetadata({
-    title: `${state.track.surahName}, আয়াত ${state.position.ayah}`,
+    title: `${state.track.surahName}, আয়াত ${toBnDigits(state.position.ayah)}`,
     artist: RECITERS.find((r) => r.id === state.reciter)?.name ?? "",
     album: "নূর কুরআন",
   });
