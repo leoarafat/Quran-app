@@ -15,6 +15,6 @@ export function getSurah(n: number): SurahData {
   return {
     ...data,
     // The plain spelling is only for search; pick fields so it is not sent to the reader page.
-    ayahs: data.ayahs.map(({ a, ar, bn, fn, juz, page, sajdah }) => ({ a, ar, bn, fn, juz, page, sajdah })),
+    ayahs: data.ayahs.map(({ a, ar, tr, bn, fn, juz, page, sajdah }) => ({ a, ar, tr, bn, fn, juz, page, sajdah })),
   };
 }

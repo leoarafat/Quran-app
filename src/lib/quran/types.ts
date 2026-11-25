@@ -20,6 +20,6 @@ export type QuranIndex = {
   };
 };
 
-export type Ayah = { a: number; ar: string; bn: string; fn?: string; juz: number; page: number; sajdah?: boolean };
+export type Ayah = { a: number; ar: string; /** Bangla pronunciation, machine generated */ tr: string; bn: string; fn?: string; juz: number; page: number; sajdah?: boolean };
 
-export type SurahData = { n: number; basmalah: string | null; ayahs: Ayah[] };
+export type SurahData = { n: number; basmalah: string | null; basmalahTr: string | null; ayahs: Ayah[] };

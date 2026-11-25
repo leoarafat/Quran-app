@@ -4,6 +4,7 @@ import {
   divisionFinder, parseMetadata, parseTanzil, sha256, similarity, skeleton, splitBasmalah,
   TOTAL_AYAHS, TOTAL_SURAHS,
 } from "./lib/quran.mjs";
+import { uccharon } from "./lib/uccharon.mjs";
 
 const root = new URL("../", import.meta.url);
 const raw = new URL("data/raw/", root);
@@ -75,6 +76,7 @@ for (const surah of meta.surahs) {
       a,
       ar: split.text,
       arPlain: plainSplit.text,
+      tr: uccharon(split.text, `${surah.n}:${a}`),
       bn: row.translation,
       ...(row.footnotes ? { fn: row.footnotes } : {}),
       juz: juzOf(surah.n, a),
@@ -82,7 +84,8 @@ for (const surah of meta.surahs) {
       ...(sajdas.has(`${surah.n}:${a}`) ? { sajdah: true } : {}),
     };
   });
-  writeFileSync(new URL(`${surah.n}.json`, out), JSON.stringify({ n: surah.n, basmalah, ayahs }));
+  const basmalahTr = basmalah ? uccharon(basmalah) : null;
+  writeFileSync(new URL(`${surah.n}.json`, out), JSON.stringify({ n: surah.n, basmalah, basmalahTr, ayahs }));
 }
 check(total === TOTAL_AYAHS, "Total ayah count");
 

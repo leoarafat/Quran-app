@@ -9,10 +9,10 @@ import type { Ayah, SurahData } from "@/lib/quran/types";
 import { SCALE_MAX, SCALE_MIN } from "@/lib/settings";
 import { updateSettings, useSettings } from "@/lib/useSettings";
 
-type Layers = { arabic: boolean; translation: boolean };
+type Layers = { arabic: boolean; pronunciation: boolean; translation: boolean };
 
 function shareText(track: Track, ayah: Ayah, credit: string) {
-  return `${ayah.ar}\n\n${ayah.bn}\n\nসূরা ${track.surahName} ${toBnDigits(track.surah)}:${toBnDigits(ayah.a)}\n${credit}`;
+  return `${ayah.ar}\n\nউচ্চারণ: ${ayah.tr}\n\nঅর্থ: ${ayah.bn}\n\nসূরা ${track.surahName} ${toBnDigits(track.surah)}:${toBnDigits(ayah.a)}\n${credit}`;
 }
 
 function AyahCard({ ayah, track, layers, credit }: { ayah: Ayah; track: Track; layers: Layers; credit: string }) {
@@ -69,6 +69,11 @@ function AyahCard({ ayah, track, layers, credit }: { ayah: Ayah; track: Track; l
       {layers.arabic && (
         <p lang="ar" dir="rtl" className="mb-3 text-right font-arabic text-[calc(1.875rem*var(--ar-scale))] leading-[2.3]">{ayah.ar}</p>
       )}
+      {layers.pronunciation && (
+        <p className="mb-3 border-l-4 border-accent pl-3 text-[calc(1.125rem*var(--bn-scale))] font-medium leading-relaxed text-brand">
+          <span className="sr-only">উচ্চারণ: </span>{ayah.tr}
+        </p>
+      )}
       {layers.translation && (
         <>
           <p className="text-[calc(1.0625rem*var(--bn-scale))] leading-relaxed">{ayah.bn}</p>
@@ -86,7 +91,7 @@ function AyahCard({ ayah, track, layers, credit }: { ayah: Ayah; track: Track; l
 
 export function Reader({ data, surahName, credit }: { data: SurahData; surahName: string; credit: string }) {
   const track: Track = { surah: data.n, surahName, total: data.ayahs.length };
-  const [layers, setLayers] = useState<Layers>({ arabic: true, translation: true });
+  const [layers, setLayers] = useState<Layers>({ arabic: true, pronunciation: true, translation: true });
   const [panel, setPanel] = useState(false);
   const [jump, setJump] = useState("");
   const [jumpError, setJumpError] = useState("");
@@ -129,8 +134,8 @@ export function Reader({ data, surahName, credit }: { data: SurahData; surahName
   const toggleLayer = (key: keyof Layers) => {
     setLayers((current) => {
       const next = { ...current, [key]: !current[key] };
-      // At least one of the two always stays visible.
-      return next.arabic || next.translation ? next : current;
+      // At least one layer always stays visible.
+      return next.arabic || next.pronunciation || next.translation ? next : current;
     });
   };
 
@@ -155,7 +160,8 @@ export function Reader({ data, surahName, credit }: { data: SurahData; surahName
           <div className="space-y-2 pt-3">
             <div className="flex gap-2">
               <button type="button" aria-pressed={layers.arabic} className={chip(layers.arabic)} onClick={() => toggleLayer("arabic")}>আরবি</button>
-              <button type="button" aria-pressed={layers.translation} className={chip(layers.translation)} onClick={() => toggleLayer("translation")}>অনুবাদ</button>
+              <button type="button" aria-pressed={layers.pronunciation} className={chip(layers.pronunciation)} onClick={() => toggleLayer("pronunciation")}>উচ্চারণ</button>
+              <button type="button" aria-pressed={layers.translation} className={chip(layers.translation)} onClick={() => toggleLayer("translation")}>অর্থ</button>
             </div>
             {([["arScale", "আরবি সাইজ"], ["bnScale", "বাংলা সাইজ"]] as const).map(([key, label]) => (
               <label key={key} className="flex items-center gap-3">
@@ -167,8 +173,17 @@ export function Reader({ data, surahName, credit }: { data: SurahData; surahName
         )}
       </div>
 
-      {data.basmalah && layers.arabic && (
-        <p lang="ar" dir="rtl" className="mb-4 text-center font-arabic text-[calc(1.75rem*var(--ar-scale))] leading-[2.2] text-brand">{data.basmalah}</p>
+      {layers.pronunciation && (
+        <p className="mb-4 rounded-2xl bg-accent-soft px-4 py-2 text-sm">
+          বাংলা উচ্চারণ স্বয়ংক্রিয়ভাবে তৈরি, ক্বারীর যাচাই এখনো বাকি। বাংলা হরফে আরবির সব ধ্বনি ঠিকভাবে লেখা যায় না, তাই তিলাওয়াত শুনে মিলিয়ে পড়ুন।
+        </p>
+      )}
+
+      {data.basmalah && (
+        <div className="mb-4 text-center">
+          {layers.arabic && <p lang="ar" dir="rtl" className="font-arabic text-[calc(1.75rem*var(--ar-scale))] leading-[2.2] text-brand">{data.basmalah}</p>}
+          {layers.pronunciation && <p className="text-[calc(1.0625rem*var(--bn-scale))] text-muted">{data.basmalahTr}</p>}
+        </div>
       )}
 
       <ol ref={listRef} className="space-y-3">
