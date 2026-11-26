@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArabicLessons, type ShownExample } from "@/components/arabic/ArabicLessons";
-import { PageHeader } from "@/components/PageHeader";
+import { LearnedMark } from "@/components/Learned";
+import { ScreenHeader } from "@/components/shell/ScreenHeader";
 import { PendingNote } from "@/components/PendingNote";
 import { findExamples } from "@/lib/arabic/letters";
 import { QAIDA, qaidaPath } from "@/lib/arabic/qaida";
@@ -19,20 +20,22 @@ export default function ArabicPage() {
 
   return (
     <div className="mx-auto max-w-2xl lg:max-w-5xl space-y-4">
-      <PageHeader title="আরবি শিখুন" subtitle="হরফ, হরকত ও চেনার অনুশীলন" />
+      <ScreenHeader title="আরবি শিখুন" back={{ href: "/more/", label: "আরও পাতায় ফিরে যান" }} />
+      <p className="text-[0.9375rem] text-ink2">হরফ, হরকত ও চেনার অনুশীলন</p>
       <ArabicLessons examples={examples} />
       <section aria-labelledby="qaida" className="space-y-2">
         <h2 id="qaida" className="font-display text-lg font-semibold">ধাপে ধাপে কুরআন পড়া শিখুন</h2>
-        <p className="text-sm leading-relaxed text-muted">আগে ওপরের হরফ ও হরকত চিনুন, তারপর পাঠগুলো ক্রমানুসারে পড়ুন। একটি পাঠ ভালোভাবে আয়ত্ত করে পরেরটিতে যান।</p>
+        <p className="text-sm leading-relaxed text-ink2">আগে ওপরের হরফ ও হরকত চিনুন, তারপর পাঠগুলো ক্রমানুসারে পড়ুন। একটি পাঠ ভালোভাবে আয়ত্ত করে পরেরটিতে যান।</p>
         <ol className="grid gap-2 lg:grid-cols-2">
           {QAIDA.map((lesson, i) => (
             <li key={lesson.slug}>
-              <Link href={qaidaPath(lesson.slug)} className="flex min-h-16 items-center gap-3 rounded-[1.375rem] border border-line-strong bg-surface px-4 py-2 hover:border-brand">
-                <span aria-hidden className="flex size-9 shrink-0 items-center justify-center rounded-full border border-line-strong font-semibold text-accent">{toBnDigits(i + 1)}</span>
+              <Link href={qaidaPath(lesson.slug)} className="flex min-h-16 items-center gap-3 rounded-md border border-ln2 bg-sf px-4 py-2 hover:border-ac">
+                <span aria-hidden className="flex size-9 shrink-0 items-center justify-center rounded-full border border-ln2 font-semibold text-gt">{toBnDigits(i + 1)}</span>
                 <span className="min-w-0 flex-1">
                   <span className="block font-display font-semibold leading-snug">{lesson.title}</span>
-                  <span className="block text-sm text-muted">{lesson.hint}</span>
+                  <span className="block text-sm text-ink2">{lesson.hint}</span>
                 </span>
+                <LearnedMark href={qaidaPath(lesson.slug)} />
               </Link>
             </li>
           ))}

@@ -23,8 +23,8 @@ export function TopicSources({ topic }: { topic: Topic }) {
   return (
     <div className="space-y-4">
       <nav aria-label="এই পাতার অংশ" className="grid grid-cols-2 gap-2">
-        <a href="#hadith" className="flex min-h-11 items-center justify-center rounded-full border border-line-strong bg-surface px-3 font-semibold text-accent">হাদিস</a>
-        <a href="#ayat" className="flex min-h-11 items-center justify-center rounded-full border border-line-strong bg-surface px-3 font-semibold text-accent">কুরআনের আয়াত</a>
+        <a href="#hadith" className="flex min-h-11 items-center justify-center rounded-full border border-ln2 bg-sf px-3 font-semibold text-ac">হাদিস</a>
+        <a href="#ayat" className="flex min-h-11 items-center justify-center rounded-full border border-ln2 bg-sf px-3 font-semibold text-ac">কুরআনের আয়াত</a>
       </nav>
 
       <section id="hadith" className="scroll-mt-4 space-y-3">
@@ -34,15 +34,15 @@ export function TopicSources({ topic }: { topic: Topic }) {
             <CategoryLinks categories={group.categories} />
           </div>
         ))}
-        <p className="text-sm leading-relaxed text-muted">ভেতরের ভাগগুলোর নাম হাদিস প্রকাশকের; কয়েকটির বাংলা নাম প্রকাশকের ফাইলে নেই।</p>
+        <p className="text-sm leading-relaxed text-ink2">ভেতরের ভাগগুলোর নাম হাদিস প্রকাশকের; কয়েকটির বাংলা নাম প্রকাশকের ফাইলে নেই।</p>
         <SourceNote meta={index.meta} />
       </section>
 
       <section id="ayat" className="scroll-mt-4 space-y-3">
         <h2 className="font-display text-lg font-semibold">কুরআনের আয়াত ({toBnDigits(passages.length)}টি অংশ)</h2>
-        <p className="text-sm leading-relaxed text-muted">এই বিষয়ের বাছাই করা কিছু আয়াত, সব আয়াত নয়। বাছাই আমাদের করা, আলেমের যাচাই বাকি। বাংলা উচ্চারণ স্বয়ংক্রিয়, ক্বারীর যাচাই বাকি।</p>
+        <p className="text-sm leading-relaxed text-ink2">এই বিষয়ের বাছাই করা কিছু আয়াত, সব আয়াত নয়। বাছাই আমাদের করা, আলেমের যাচাই বাকি। বাংলা উচ্চারণ স্বয়ংক্রিয়, ক্বারীর যাচাই বাকি।</p>
         <QuranPassages passages={passages} credit={credit} />
-        <p className="text-center text-sm text-muted">{credit}</p>
+        <p className="text-center text-sm text-ink2">{credit}</p>
       </section>
     </div>
   );

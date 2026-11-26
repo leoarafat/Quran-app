@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { LoaderCircle } from "lucide-react";
 import { GradeBadge } from "@/components/hadith/GradeBadge";
 import { Chip } from "@/components/ui/Chip";
 import { Icon } from "@/components/ui/Icon";
@@ -31,7 +30,7 @@ export function SearchField({ label, value, onChange, onChoose, onSubmit, filter
     <form role="search" onSubmit={(e) => { e.preventDefault(); onSubmit(); (document.activeElement as HTMLElement | null)?.blur(); }} className="flex flex-wrap gap-2">
       <div className="flex min-h-14 min-w-0 flex-1 items-center gap-2.5 rounded-[1.125rem] border-[1.5px] border-ln2 bg-sf pl-4 pr-1.5 focus-within:border-ac">
         <Icon name="search" className="size-6 text-ac" />
-        <input type="text" aria-label={label} enterKeyHint="search" autoComplete="off" maxLength={200} value={value} onChange={(e) => onChange(e.target.value)} placeholder="খুঁজুন" className="quiet-focus min-w-0 flex-1 bg-transparent font-display text-lg" />
+        <input type="text" aria-label={label} enterKeyHint="search" autoComplete="off" maxLength={200} value={value} onChange={(e) => onChange(e.target.value)} placeholder="খুঁজুন" className="quiet-focus min-w-0 flex-1 self-stretch bg-transparent font-display text-lg" />
         {value && <button type="button" aria-label="লেখা মুছুন" onClick={() => onChoose("")} className="grid size-11 shrink-0 place-items-center rounded-xl text-ink2"><Icon name="close" className="size-[1.375rem]" /></button>}
       </div>
       <VoiceButton onText={(heard) => onChoose(heard, true)} />
@@ -131,7 +130,7 @@ export function SearchStatus({ searching, text, synonyms }: { searching: boolean
   return (
     <>
       <p role="status" className="mb-2 flex min-h-7 items-center gap-2 text-[0.8125rem] text-ink2">
-        {searching ? <><LoaderCircle aria-hidden className="size-4 animate-spin" /> খোঁজা হচ্ছে…</> : text}
+        {searching ? <><Icon name="timer" className="size-4 animate-spin" /> খোঁজা হচ্ছে…</> : text}
       </p>
       {!searching && synonyms.length > 0 && <p className="mb-2 text-sm text-gt">সমার্থক শব্দসহ খোঁজা হয়েছে: {synonyms.join(", ")}</p>}
     </>

@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { CategoryLinks } from "@/components/hadith/CategoryLinks";
 import { HadithList } from "@/components/hadith/HadithList";
 import { SourceNote } from "@/components/hadith/SourceNote";
-import { PageHeader } from "@/components/PageHeader";
+import { ScreenHeader } from "@/components/shell/ScreenHeader";
 import { LessonPlayer } from "@/components/video/LessonPlayer";
 import { categoryPath, getHadithIndex } from "@/lib/hadith/server";
 import { videoFor } from "@/lib/videos";
@@ -29,11 +29,12 @@ export default async function CategoryPage({ params }: PageProps<"/hadith/c/[id]
 
   return (
     <div className="mx-auto max-w-2xl lg:max-w-5xl space-y-4">
+      <ScreenHeader title={category.title} back={{ href: trail.length ? `/hadith/c/${trail.at(-1)!.id}/` : "/hadith/", label: "আগের বিভাগে ফিরে যান" }} />
       <nav aria-label="বিষয়ের পথ" className="flex flex-wrap items-center gap-x-2 text-sm">
-        <Link href="/hadith/" className="inline-flex min-h-11 items-center text-accent underline">হাদিস</Link>
-        {trail.map((c) => <span key={c.id} className="flex items-center gap-2"><span aria-hidden>›</span><Link href={`/hadith/c/${c.id}/`} className="inline-flex min-h-11 items-center text-accent underline">{c.title}</Link></span>)}
+        <Link href="/hadith/" className="inline-flex min-h-11 items-center text-gt underline">হাদিস</Link>
+        {trail.map((c) => <span key={c.id} className="flex items-center gap-2"><span aria-hidden>›</span><Link href={`/hadith/c/${c.id}/`} className="inline-flex min-h-11 items-center text-gt underline">{c.title}</Link></span>)}
       </nav>
-      <PageHeader title={category.title} />
+      <p className="font-display text-xl font-semibold leading-relaxed max-md:hidden">{category.title}</p>
       {video && <LessonPlayer video={video} />}
       {category.children.length > 0 && <CategoryLinks categories={category.children.map((id) => categories.get(id)!)} />}
       {category.hadiths.length > 0 && <HadithList key={category.id} items={category.hadiths.map((id) => ({ id, title: index.titles[id][0], grade: index.titles[id][1] }))} />}

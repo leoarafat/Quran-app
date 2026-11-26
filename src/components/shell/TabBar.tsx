@@ -17,7 +17,7 @@ export function TabBar() {
           const active = isActivePath(href, pathname);
           return (
             <li key={href}>
-              <Link href={href} aria-current={active ? "page" : undefined} className={`flex min-h-13 flex-col items-center justify-center gap-0.5 text-[0.6875rem] leading-tight ${active ? "font-semibold text-ink" : "text-ink2"}`}>
+              <Link href={href} transitionTypes={["tab"]} aria-current={active ? "page" : undefined} className={`flex min-h-13 flex-col items-center justify-center gap-0.5 text-[0.6875rem] leading-tight ${active ? "font-semibold text-ink" : "text-ink2"}`}>
                 <Icon name={icon} className={`size-6 ${active ? "text-ac" : ""}`} />
                 {label}
                 <span aria-hidden="true" className={`size-[5px] rounded-full ${active ? "bg-gd" : ""}`} />

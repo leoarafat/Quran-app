@@ -11,6 +11,12 @@ export function qiblaBearing(lat: number, lng: number): number {
   return normalize(deg(Math.atan2(y, x)));
 }
 
+/** Great-circle distance to the Kaaba in kilometres. */
+export function qiblaDistance(lat: number, lng: number): number {
+  const h = Math.sin(rad(KAABA.lat - lat) / 2) ** 2 + Math.cos(rad(lat)) * Math.cos(rad(KAABA.lat)) * Math.sin(rad(KAABA.lng - lng) / 2) ** 2;
+  return 2 * 6371 * Math.asin(Math.sqrt(h));
+}
+
 /** How far to turn: negative is left, positive is right, within -180..180. */
 export function turnNeeded(heading: number, bearing: number): number {
   return normalize(bearing - heading + 180) - 180;

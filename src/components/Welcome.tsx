@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { ArrowRight } from "lucide-react";
 import { dismissWelcome } from "@/lib/welcome";
+import { Icon } from "@/components/ui/Icon";
 
 /** Design "খ · ফজর". Its colours are its own and do not follow the app theme. */
 export function Welcome() {
@@ -44,7 +44,7 @@ export function Welcome() {
         <div className="mt-auto flex justify-end lg:mt-8 lg:justify-start px-2.5 pt-6 short:pt-2 [animation:rise_1s_.9s_ease-out_both]">
           <button ref={button} type="button" onClick={dismissWelcome} className="flex h-[3.75rem] items-center gap-[1.125rem] rounded-full bg-[#10231c] pl-7 pr-2.5 text-lg font-semibold text-[#f5f7f3]">
             বিসমিল্লাহ
-            <span className="grid size-[2.625rem] place-items-center rounded-full bg-[#f4c375] text-[#10231c]"><ArrowRight aria-hidden className="size-5" strokeWidth={2.4} /></span>
+            <span className="grid size-[2.625rem] place-items-center rounded-full bg-[#f4c375] text-[#10231c]"><Icon name="chev" className="size-5" /></span>
           </button>
         </div>
         </div>

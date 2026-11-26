@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { CircleDot, ListChecks } from "lucide-react";
 import { TopicPage } from "@/components/topic/TopicPage";
 import { TOPICS } from "@/lib/topics";
 
@@ -9,9 +8,10 @@ export default function AfterSalahPage() {
   return (
     <TopicPage
       topic={TOPICS.afterSalah}
+      back={{ href: "/amal/", label: "দোয়া ও আমলে ফিরে যান" }}
       tools={[
-        { href: "/tasbih/", title: "তাসবিহ", hint: "যিকির গুনুন", icon: CircleDot },
-        { href: "/amal/daily/", title: "আমার আমলের খাতা", hint: "পাঁচ ওয়াক্ত ও নিজের আমল টিক দিন", icon: ListChecks },
+        { href: "/tasbih/", title: "তাসবিহ", hint: "যিকির গুনুন", icon: "tasbih" },
+        { href: "/amal/daily/", title: "আমার আমলের খাতা", hint: "পাঁচ ওয়াক্ত ও নিজের আমল টিক দিন", icon: "deeds" },
       ]}
     />
   );

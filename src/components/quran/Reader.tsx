@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, ViewTransition } from "react";
 import { BottomSheet } from "@/components/ui/BottomSheet";
 import { Chip } from "@/components/ui/Chip";
 import { Icon } from "@/components/ui/Icon";
@@ -221,8 +221,12 @@ export function Reader({ data, surahs, credit }: { data: SurahData; surahs: Sura
             <span aria-hidden="true" className="pointer-events-none absolute inset-[5px] rounded-md border border-gd/45" />
             <p lang="ar" dir="rtl" className="font-arabic text-4xl leading-[1.9]">{info.arabic}</p>
             {/* The page's heading from tablet width, where the phone's top bar is not shown. */}
-            <p className="hidden font-display text-xl font-semibold md:block" role="heading" aria-level={1}>{info.bangla}</p>
-            <p className="font-display text-[1.0625rem] font-semibold md:hidden">{info.bangla}</p>
+            <ViewTransition name={`surah-${data.n}`} share="surah-morph" default="none">
+              <div>
+                <p className="hidden font-display text-xl font-semibold md:block" role="heading" aria-level={1}>{info.bangla}</p>
+                <p className="font-display text-[1.0625rem] font-semibold md:hidden">{info.bangla}</p>
+              </div>
+            </ViewTransition>
             <p className="text-[0.8125rem] text-ink2">{meta}</p>
           </div>
 
@@ -256,7 +260,7 @@ export function Reader({ data, surahs, credit }: { data: SurahData; surahs: Sura
               ) : (
                 <ol>
                   {data.ayahs.map((ayah) => (
-                    <AyahCard key={ayah.a} ayah={ayah} track={track} layers={prefs} credit={credit} numbers={prefs.numbers} selected={selected === ayah.a} onSelect={select} onMarkLast={markLast} />
+                    <AyahCard key={ayah.a} ayah={ayah} track={track} layers={prefs} credit={credit} numbers={prefs.numbers} selected={selected === ayah.a} onSelect={select} onMarkLast={markLast} onHold={openAyah} />
                   ))}
                 </ol>
               )}
@@ -314,7 +318,7 @@ export function Reader({ data, surahs, credit }: { data: SurahData; surahs: Sura
           <p className="reading text-[calc(1.0625rem*var(--bn-scale))] leading-[1.8]">{data.ayahs[selected - 1].bn}</p>
           {data.ayahs[selected - 1].fn && <p className="whitespace-pre-line text-sm text-ink2">{data.ayahs[selected - 1].fn}</p>}
           <p className="text-[0.8125rem] text-ink2">উচ্চারণ স্বয়ংক্রিয়, ক্বারীর যাচাই বাকি।</p>
-          <AyahActions ayah={data.ayahs[selected - 1]} track={track} credit={credit} onMarkLast={markLast} />
+          <AyahActions ayah={data.ayahs[selected - 1]} track={track} credit={credit} onMarkLast={markLast} list />
         </BottomSheet>
       )}
     </div>

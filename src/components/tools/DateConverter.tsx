@@ -5,7 +5,7 @@ import { toAsciiDigits, toBnDigits } from "@/lib/bn";
 import { gregorianOf } from "@/lib/tools/convert";
 import { HIJRI_MONTHS, hijriOf } from "@/lib/tools/hijri";
 
-const field = "min-h-11 w-full min-w-0 rounded-2xl border border-line-strong bg-bg px-3 text-text";
+const field = "min-h-12 w-full min-w-0 rounded-md border border-ln2 bg-bg px-3 text-ink";
 const full = new Intl.DateTimeFormat("bn-BD", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
 
 export function DateConverter({ today, adjust }: { today: Date; adjust: number }) {
@@ -21,14 +21,14 @@ export function DateConverter({ today, adjust }: { today: Date; adjust: number }
   const back = inRange ? gregorianOf({ year: y, month, day: d }, adjust, today) : null;
 
   return (
-    <section aria-label="তারিখ রূপান্তর" className="space-y-3 rounded-[1.375rem] border border-line bg-surface p-4">
+    <section aria-label="তারিখ রূপান্তর" className="space-y-3 rounded-md border border-ln bg-sf p-4 shadow-card">
       <h2 className="font-display text-lg font-semibold">তারিখ রূপান্তর</h2>
-      <label className="block text-sm text-muted">ইংরেজি তারিখ থেকে হিজরি
+      <label className="block text-sm text-ink2">ইংরেজি তারিখ থেকে হিজরি
         <input type="date" min="1900-01-01" max="2100-12-31" value={civil} onChange={(e) => setCivil(e.target.value)} className={field} />
       </label>
-      <p role="status" className="font-semibold text-accent empty:hidden">{hijri && `${toBnDigits(hijri.day)} ${HIJRI_MONTHS[hijri.month - 1]} ${toBnDigits(hijri.year)} হিজরি`}</p>
+      <p role="status" className="font-semibold text-gt empty:hidden">{hijri && `${toBnDigits(hijri.day)} ${HIJRI_MONTHS[hijri.month - 1]} ${toBnDigits(hijri.year)} হিজরি`}</p>
       <fieldset>
-        <legend className="mb-1 text-sm text-muted">হিজরি থেকে ইংরেজি তারিখ</legend>
+        <legend className="mb-1 text-sm text-ink2">হিজরি থেকে ইংরেজি তারিখ</legend>
         <div className="grid grid-cols-[4rem_1fr_5rem] gap-2">
           <input inputMode="numeric" aria-label="হিজরি দিন" value={day} onChange={(e) => setDay(e.target.value)} className={field} />
           <select aria-label="হিজরি মাস" value={month} onChange={(e) => setMonth(Number(e.target.value))} className={field}>
@@ -37,8 +37,8 @@ export function DateConverter({ today, adjust }: { today: Date; adjust: number }
           <input inputMode="numeric" aria-label="হিজরি সাল" value={year} onChange={(e) => setYear(e.target.value)} className={field} />
         </div>
       </fieldset>
-      <p role="status" className="font-semibold text-accent">{back ? full.format(back) : inRange ? "এই মাসে এমন তারিখ নেই।" : "হিজরি সাল ১৩১৮ থেকে ১৫২০-এর মধ্যে লিখুন।"}</p>
-      <p className="text-[0.8125rem] text-muted">উম্মুল কুরা হিসাব ও আপনার দিন-সমন্বয় অনুযায়ী আনুমানিক। চাঁদ দেখার সাথে এক-দুই দিন পার্থক্য হতে পারে।</p>
+      <p role="status" className="font-semibold text-gt">{back ? full.format(back) : inRange ? "এই মাসে এমন তারিখ নেই।" : "হিজরি সাল ১৩১৮ থেকে ১৫২০-এর মধ্যে লিখুন।"}</p>
+      <p className="text-[0.8125rem] text-ink2">উম্মুল কুরা হিসাব ও আপনার দিন-সমন্বয় অনুযায়ী আনুমানিক। চাঁদ দেখার সাথে এক-দুই দিন পার্থক্য হতে পারে।</p>
     </section>
   );
 }

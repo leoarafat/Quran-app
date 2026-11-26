@@ -11,6 +11,7 @@ export const BACKUP_KEYS: Record<string, string> = {
   "noor.routine.v1": "আমলের খাতা",
   "noor.tasbih.v1": "তাসবিহ",
   "noor.quiz.v1": "কুইজের ফল",
+  "noor.learned.v1": "শেখা পাঠের চিহ্ন",
   "noor.fasts.v1": "রোজার খাতা",
   "noor.favsurahs.v1": "প্রিয় সূরা",
   "noor.searches.v1": "সার্চ ইতিহাস",
@@ -20,11 +21,12 @@ export const BACKUP_KEYS: Record<string, string> = {
   "noor.place.v1": "শহর বা অবস্থান",
   "noor.prayer.v1": "নামাজের হিসাবের নিয়ম",
   "noor.reminder.v1": "রিমাইন্ডার",
+  "noor.khatm.reminder.v1": "খতমের রিমাইন্ডার",
   "noor.hijri.adjust.v1": "হিজরি তারিখ সমন্বয়",
 };
 
 /** Copies kept aside or bookkeeping: not worth backing up, but removed by "delete everything". */
-export const OTHER_KEYS = ["noor.bookmarks.unreadable", "noor.khatm.unreadable", "noor.fasts.unreadable", "noor.routine.unreadable", "noor.reminder.shown", "noor.welcome.v1"];
+export const OTHER_KEYS = ["noor.bookmarks.unreadable", "noor.khatm.unreadable", "noor.fasts.unreadable", "noor.routine.unreadable", "noor.reminder.shown", "noor.onboarded.v1", "noor.khatm.reminder.shown", "noor.welcome.v1"];
 
 type Store = Pick<Storage, "getItem" | "setItem" | "removeItem">;
 export type Backup = { app: "noor-quran"; kind: "full"; version: 1; made: string; data: Record<string, string> };

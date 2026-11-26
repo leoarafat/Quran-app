@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { PageHeader } from "@/components/PageHeader";
+import { ScreenHeader } from "@/components/shell/ScreenHeader";
+import { LinkList } from "@/components/ui/LinkList";
 import { toBnDigits } from "@/lib/bn";
 import { getHadithIndex } from "@/lib/hadith/server";
 import { getIndex } from "@/lib/quran/server";
@@ -9,12 +10,16 @@ export const metadata: Metadata = { title: "উৎস ও শর্ত" };
 export default function AboutPage() {
   const { sources } = getIndex();
   const hadith = getHadithIndex().index.meta;
-  const card = "rounded-2xl border border-line bg-surface p-4";
-  const link = "font-semibold text-brand underline";
+  const card = "rounded-md border border-ln bg-sf p-4 shadow-card";
+  const link = "font-semibold text-ac underline";
   return (
-    <>
-      <PageHeader title="উৎস ও শর্ত" subtitle="কোন লেখা কোথা থেকে নেওয়া" />
-      <div className="max-w-2xl space-y-4">
+    <div className="mx-auto max-w-2xl">
+      <ScreenHeader title="উৎস ও শর্ত" back={{ href: "/more/", label: "আরও পাতায় ফিরে যান" }} />
+      <div className="space-y-4">
+        <section className={card}>
+          <p className="font-display text-xl font-bold">নূর কুরআন</p>
+          <p className="text-sm text-ink2">কুরআন, হাদিস ও দৈনিক ইবাদতের বাংলা সঙ্গী। কোন লেখা কোথা থেকে নেওয়া, নিচে লেখা আছে।</p>
+        </section>
         <section className={card}>
           <h2 className="font-bold">আরবি কুরআন</h2>
           <p lang="en">{sources.arabic.name}, {sources.arabic.license}</p>
@@ -44,7 +49,12 @@ export default function AboutPage() {
           <h2 className="font-bold">সূরার বাংলা নাম</h2>
           <p>এগুলো এই অ্যাপের জন্য সংকলিত, আলেমের যাচাই এখনো বাকি।</p>
         </section>
+        <section className={card}>
+          <h2 className="font-bold">গোপনীয়তা</h2>
+          <p>বুকমার্ক, নোট, আমলের খাতা ও সেটিংস শুধু আপনার ফোনের এই ব্রাউজারে থাকে। নামাজের সময়ের জন্য নেওয়া অবস্থান ফোনের বাইরে যায় না।</p>
+        </section>
+        <LinkList items={[{ href: "/data/", title: "আমার ডেটা", hint: "ব্যাকআপ, রিস্টোর ও মুছে ফেলা", icon: "lock" }, { href: "/offline/", title: "অ্যাপ ইনস্টল ও অফলাইন", icon: "download" }]} />
       </div>
-    </>
+    </div>
   );
 }

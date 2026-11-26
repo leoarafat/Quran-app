@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Heart, Search } from "lucide-react";
 import { CategoryLinks } from "@/components/hadith/CategoryLinks";
 import { DailyHadith } from "@/components/hadith/DailyHadith";
 import { SourceNote } from "@/components/hadith/SourceNote";
-import { PageHeader } from "@/components/PageHeader";
+import { headerButton, ScreenHeader } from "@/components/shell/ScreenHeader";
+import { Icon } from "@/components/ui/Icon";
 import { toBnDigits } from "@/lib/bn";
 import { getHadith, getHadithIndex } from "@/lib/hadith/server";
 
@@ -27,18 +27,22 @@ export default function HadithPage() {
     .filter((id) => getHadith(id).hadeeth.length <= 700)
     .map((id) => ({ id, title: index.titles[id][0] }));
 
-  const link = "flex min-h-14 flex-1 items-center justify-center gap-2 rounded-full border border-line-strong bg-surface px-3 font-semibold text-accent";
   return (
-    <div className="mx-auto max-w-2xl lg:max-w-5xl space-y-4">
-      <PageHeader title="হাদিস" subtitle={`${toBnDigits(index.meta.total)}টি সহিহ ও হাসান হাদিস, ব্যাখ্যাসহ`} />
-      <div className="flex gap-2">
-        <Link href="/search/?scope=hadith" className={link}><Search aria-hidden className="size-5" /> হাদিস খুঁজুন</Link>
-        <Link href="/amal/" className={link}><Heart aria-hidden className="size-5" /> দোয়া ও যিকির</Link>
+    <div className="mx-auto max-w-2xl lg:max-w-5xl">
+      <ScreenHeader title="হাদিস">
+        <Link href="/search/?scope=hadith" aria-label="হাদিস খুঁজুন" className={headerButton}><Icon name="search" /></Link>
+      </ScreenHeader>
+      <div className="space-y-5">
+        <Link href="/search/?scope=hadith" className="flex min-h-13 items-center gap-3 rounded-md border border-ln2 bg-sf px-4 text-ink2"><Icon name="search" className="size-5" /> হাদিস খুঁজুন</Link>
+        <p className="text-[0.9375rem] text-ink2">{toBnDigits(index.meta.total)}টি সহিহ ও হাসান হাদিস, ব্যাখ্যাসহ</p>
+        <DailyHadith items={daily} />
+        <Link href="/amal/" className="flex min-h-14 items-center gap-3.5 rounded-md border border-ln bg-sf px-4 py-2 font-semibold shadow-card"><Icon name="deeds" className="size-6 text-ac" /><span className="flex-1">দোয়া ও যিকির</span><Icon name="chev" className="size-5 text-ink2" /></Link>
+        <section aria-labelledby="topics">
+          <h2 id="topics" className="mb-2 font-display text-xl font-semibold">বিষয় অনুযায়ী</h2>
+          <CategoryLinks categories={roots} />
+        </section>
+        <SourceNote meta={index.meta} />
       </div>
-      <DailyHadith items={daily} />
-      <h2 className="pt-2 font-display text-lg font-semibold">বিষয় অনুযায়ী</h2>
-      <CategoryLinks categories={roots} />
-      <SourceNote meta={index.meta} />
     </div>
   );
 }

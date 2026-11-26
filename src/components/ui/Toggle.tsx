@@ -12,3 +12,14 @@ export function Toggle({ label, hint, checked, onChange, disabled }: { label: st
     </button>
   );
 }
+
+/** The switch alone, where the row around it holds other things. */
+export function Switch({ label, checked, onChange }: { label: string; checked: boolean; onChange: (next: boolean) => void }) {
+  return (
+    <button type="button" role="switch" aria-checked={checked} aria-label={label} onClick={() => onChange(!checked)} className="grid h-11 w-[3.25rem] shrink-0 place-items-center">
+      <span aria-hidden="true" className={`relative block h-7 w-[2.875rem] rounded-full ${checked ? "bg-ac" : "bg-ln2"}`}>
+        <span className={`absolute top-[3px] size-[1.375rem] rounded-full bg-white shadow transition-[left] duration-150 ${checked ? "left-[1.3125rem]" : "left-[3px]"}`} />
+      </span>
+    </button>
+  );
+}

@@ -7,8 +7,8 @@ import { playAyah, setOptions, usePlayer, type Track } from "@/lib/audio/player"
 import { readRange, REPEAT_CHOICES } from "@/lib/audio/sequence";
 
 const times = (n: number) => (n === 0 ? "থামানো পর্যন্ত" : `${toBnDigits(n)} বার`);
-const field = "min-h-11 w-full min-w-0 rounded-2xl border border-line-strong bg-bg px-3 text-base text-text";
-const label = "flex min-w-0 flex-col gap-1 text-sm text-muted";
+const field = "min-h-11 w-full min-w-0 rounded-2xl border border-ln2 bg-bg px-3 text-base text-ink";
+const label = "flex min-w-0 flex-col gap-1 text-sm text-ink2";
 
 /** Choose a passage of this surah and hear it again and again, for memorising. */
 export function RangeRepeat({ id, track, startAt, onStart }: { id: string; track: Track; /** suggested first ayah */ startAt: number; onStart: () => void }) {
@@ -41,7 +41,7 @@ export function RangeRepeat({ id, track, startAt, onStart }: { id: string; track
         <label className={label}>পুরো অংশ{select(rounds, setRounds)}</label>
         <label className={label}>প্রতি আয়াত{select(options.repeatEach, (n) => setOptions({ repeatEach: n }))}</label>
       </div>
-      {error && <p role="alert" className="text-sm text-accent">{error}</p>}
+      {error && <p role="alert" className="text-sm text-gt">{error}</p>}
       <button type="submit" className="flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-ac font-semibold text-on-ac">
         <Icon name="play" className="size-5" filled /> শুরু করুন
       </button>

@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { DailyAyah, type DailyItem } from "@/components/home/DailyAyah";
-import { ExploreSmall, ExploreWide, Quick } from "@/components/home/Explore";
+import { ExploreSmall, ExploreTablet, ExploreWide, Quick } from "@/components/home/Explore";
 import { Greeting } from "@/components/home/Greeting";
 import { MySnapshot, TodayDeeds } from "@/components/home/MySnapshot";
 import { PrayerHero } from "@/components/home/PrayerHero";
 import { Upcoming } from "@/components/home/Upcoming";
 import { ContinueReading } from "@/components/quran/ContinueReading";
 import { Icon } from "@/components/ui/Icon";
+import { Onboarding } from "@/components/Onboarding";
 import { Welcome } from "@/components/Welcome";
 import { DAILY_REFS } from "@/lib/quran/daily";
 import { getIndex, getSurah } from "@/lib/quran/server";
@@ -23,6 +24,7 @@ export default function HomePage() {
   return (
     <>
       <Welcome />
+      <Onboarding sample={{ ar: getSurah(1).ayahs[1].ar, bn: getSurah(1).ayahs[1].bn }} />
       <div className="mx-auto max-w-md space-y-7 md:max-w-none">
         <div className="-mt-3 !mb-2 flex items-center justify-between md:hidden">
           <p className="font-display text-[1.375rem] font-bold">নূর কুরআন</p>
@@ -46,6 +48,7 @@ export default function HomePage() {
               <div className="order-1 min-w-0 md:hidden"><Quick /></div>
             </div>
             <ExploreSmall />
+            <ExploreTablet />
             <ExploreWide />
           </div>
           <div className="space-y-5">

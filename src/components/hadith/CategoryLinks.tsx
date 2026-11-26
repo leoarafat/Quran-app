@@ -1,17 +1,17 @@
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { Icon } from "@/components/ui/Icon";
 import { toBnDigits } from "@/lib/bn";
 import type { HadithCategory } from "@/lib/hadith/types";
 
 export function CategoryLinks({ categories }: { categories: HadithCategory[] }) {
   return (
-    <ul className="grid gap-2 lg:grid-cols-2">
+    <ul className="rounded-md border border-ln bg-sf px-4 py-1 shadow-card lg:grid lg:grid-cols-2 lg:gap-x-6">
       {categories.map((c) => (
-        <li key={c.id}>
-          <Link href={`/hadith/c/${c.id}/`} prefetch={false} className="flex h-full min-h-16 items-center gap-3 rounded-[1.375rem] border border-line bg-surface px-4 py-2 hover:border-brand">
-            <span className="min-w-0 flex-1 font-display font-semibold leading-snug">{c.title}</span>
-            <span className="shrink-0 text-sm text-muted">{toBnDigits(c.count)}টি</span>
-            <ChevronRight aria-hidden className="size-5 shrink-0 text-accent" />
+        <li key={c.id} className="border-b border-ln last:border-0">
+          <Link href={`/hadith/c/${c.id}/`} prefetch={false} className="flex h-full min-h-14 items-center gap-3 py-2">
+            <span className="min-w-0 flex-1 font-semibold leading-snug">{c.title}</span>
+            <span className="shrink-0 text-[0.8125rem] text-ink2">{toBnDigits(c.count)}টি</span>
+            <Icon name="chev" className="size-5 shrink-0 text-ink2" />
           </Link>
         </li>
       ))}

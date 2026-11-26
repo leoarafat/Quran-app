@@ -75,7 +75,7 @@ describe("ayah picture", () => {
     for (const [theme, colors] of Object.entries(CARD_COLORS)) {
       const start = css.indexOf(`:root[data-theme="${theme}"]`);
       const block = css.slice(start, css.indexOf("}", start));
-      const names = { bg: "bg", surface: "surface", text: "text", soft: "soft", muted: "muted", accent: "accent", line: "line-strong" };
+      const names = { bg: "bg", surface: "sf", text: "ink", soft: "ink", muted: "ink2", accent: "gt", line: "card-line" };
       for (const [key, variable] of Object.entries(names)) expect(block, `${theme} ${key}`).toContain(`--${variable}: ${colors[key as keyof typeof colors]};`);
     }
   });

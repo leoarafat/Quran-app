@@ -60,6 +60,24 @@ describe("hijri calendar", () => {
   });
 });
 
+describe("tasbih history", () => {
+  it("keeps what an older save knew and counts on from there", () => {
+    const old = parseTasbih('{"count":5,"today":12,"day":"2026-11-25","target":33}', "2026-11-25");
+    expect(old).toMatchObject({ total: 12, history: { "2026-11-25": 12 } });
+    expect(tap(old, "2026-11-25").next).toMatchObject({ total: 13, history: { "2026-11-25": 13 } });
+    expect(tap(old, "2026-11-26").next.history).toEqual({ "2026-11-25": 12, "2026-11-26": 1 });
+  });
+
+  it("reads an older save whose day has no leading zeros", () => {
+    expect(parseTasbih('{"today":3,"day":"2026-11-5"}', "2026-11-5").history).toEqual({ "2026-11-05": 3 });
+  });
+
+  it("accepts a target of the visitor's own, within limits", () => {
+    expect(parseTasbih('{"target":7}', "d").target).toBe(7);
+    for (const bad of ["-1", "10001", "2.5", '"9"']) expect(parseTasbih(`{"target":${bad}}`, "d").target).toBe(33);
+  });
+});
+
 describe("tasbih", () => {
   const many = (s: Tasbih, n: number) => Array.from({ length: n }).reduce<Tasbih>((x) => tap(x, "d1").next, s);
 
@@ -78,7 +96,7 @@ describe("tasbih", () => {
     expect(parseTasbih(JSON.stringify(s), "d2").today).toBe(0);
   });
   it("survives corrupt storage", () => {
-    for (const raw of [null, "x", "[]", '{"count":-4,"phrase":99,"target":7}']) {
+    for (const raw of [null, "x", "[]", '{"count":-4,"phrase":99,"target":-7}']) {
       expect(parseTasbih(raw, "d")).toMatchObject({ count: 0, phrase: 0, target: 33 });
     }
   });

@@ -3,6 +3,7 @@
 // its own unicode-range, and globals.css lists them one after another.
 // next/font reads these calls without running them, so every value has to be written out.
 import localFont from "next/font/local";
+import { hindRestVariable } from "./fonts-hind-rest";
 
 
 const amiri = localFont({
@@ -29,9 +30,7 @@ const hind = localFont({
   declarations: [{ prop: "unicode-range", value: "U+0951-0952,U+0964-0965,U+0980-09FE,U+1CD0,U+1CD2,U+1CD5-1CD6,U+1CD8,U+1CE1,U+1CEA,U+1CED,U+1CF2,U+1CF5-1CF7,U+200C-200D,U+20B9,U+25CC,U+A8F1" }],
   src: [
     { path: "../../node_modules/@fontsource/hind-siliguri/files/hind-siliguri-bengali-400-normal.woff2", weight: "400" },
-    { path: "../../node_modules/@fontsource/hind-siliguri/files/hind-siliguri-bengali-500-normal.woff2", weight: "500" },
     { path: "../../node_modules/@fontsource/hind-siliguri/files/hind-siliguri-bengali-600-normal.woff2", weight: "600" },
-    { path: "../../node_modules/@fontsource/hind-siliguri/files/hind-siliguri-bengali-700-normal.woff2", weight: "700" },
   ],
 });
 
@@ -76,4 +75,4 @@ const notoSerifLatin = localFont({
   ],
 });
 
-export const fontVariables = [amiri, amiriLatin, hind, hindLatin, notoSerif, notoSerifLatin].map((f) => f.variable).join(" ");
+export const fontVariables = [amiri, amiriLatin, hind, hindLatin, notoSerif, notoSerifLatin].map((f) => f.variable).concat(hindRestVariable).join(" ");

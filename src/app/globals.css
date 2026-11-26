@@ -4,8 +4,8 @@
  * Design tokens (design system board, version 1.0). Four reading themes; paper is the default.
  * bg page, sf card, ink text, ink2 secondary text, ln hairline, ac accent, gd gold mark,
  * gt gold text, gs gold wash. rail and ln2 are the side bar and the stronger border.
- * bg/surface/text/... lines repeat the same colours as plain hex for the ayah picture (a test
- * keeps them equal to lib/share/card.ts).
+ * card-line is the ayah picture's border as a solid colour (a test keeps the picture's colours,
+ * in lib/share/card.ts, equal to these).
  */
 :root,
 :root[data-theme="paper"] {
@@ -25,12 +25,7 @@
   --on-tint: #0a2419;
   --gold-soft: #f1e6c8;
   --on-gold-soft: #3b2b05;
-  --surface: #fffdf8;
-  --text: #12201a;
-  --soft: #12201a;
-  --muted: #4a5a52;
-  --accent: #7a5c14;
-  --line-strong: #d9d5cc;
+  --card-line: #d9d5cc;
   color-scheme: light;
 }
 
@@ -51,12 +46,7 @@
   --on-tint: #1d3526;
   --gold-soft: #e3cf98;
   --on-gold-soft: #33260a;
-  --surface: #f3e8ce;
-  --text: #33281a;
-  --soft: #33281a;
-  --muted: #5e4e36;
-  --accent: #6b4e0e;
-  --line-strong: #cfbd97;
+  --card-line: #cfbd97;
   color-scheme: light;
 }
 
@@ -77,12 +67,7 @@
   --on-tint: #d6eadf;
   --gold-soft: #332c16;
   --on-gold-soft: #f1e6c8;
-  --surface: #111f19;
-  --text: #e7efe8;
-  --soft: #e7efe8;
-  --muted: #9db1a5;
-  --accent: #d9bc77;
-  --line-strong: #2c3a33;
+  --card-line: #2c3a33;
   color-scheme: dark;
 }
 
@@ -103,31 +88,17 @@
   --on-tint: #d6eadf;
   --gold-soft: #292311;
   --on-gold-soft: #f1e6c8;
-  --surface: #0b0f0d;
-  --text: #edede8;
-  --soft: #edede8;
-  --muted: #a3b0a8;
-  --accent: #d9bc77;
-  --line-strong: #2b302d;
+  --card-line: #2b302d;
   color-scheme: dark;
 }
 
 /* High contrast: darker secondary and gold text, plainly visible lines. */
-:root[data-theme="paper"][data-contrast="true"] { --ink2: #26352e; --muted: #26352e; --gt: #5a430b; --accent: #5a430b; --ln: rgba(18, 32, 26, 0.38); --ln2: rgba(18, 32, 26, 0.55); --line-strong: #7b807a; }
-:root[data-theme="sepia"][data-contrast="true"] { --ink2: #3d3120; --muted: #3d3120; --gt: #4c3708; --accent: #4c3708; --ln: rgba(51, 40, 26, 0.42); --ln2: rgba(51, 40, 26, 0.6); --line-strong: #7d6c49; }
-:root[data-theme="night"][data-contrast="true"] { --ink2: #cbdad1; --muted: #cbdad1; --gt: #ecd495; --accent: #ecd495; --ln: rgba(231, 239, 232, 0.34); --ln2: rgba(231, 239, 232, 0.52); --line-strong: #6e8579; }
-:root[data-theme="amoled"][data-contrast="true"] { --ink2: #d3ded8; --muted: #d3ded8; --gt: #ecd495; --accent: #ecd495; --ln: rgba(255, 255, 255, 0.36); --ln2: rgba(255, 255, 255, 0.55); --line-strong: #8a928e; }
+:root[data-theme="paper"][data-contrast="true"] { --ink2: #26352e; --gt: #5a430b; --ln: rgba(18, 32, 26, 0.38); --ln2: rgba(18, 32, 26, 0.55); }
+:root[data-theme="sepia"][data-contrast="true"] { --ink2: #3d3120; --gt: #4c3708; --ln: rgba(51, 40, 26, 0.42); --ln2: rgba(51, 40, 26, 0.6); }
+:root[data-theme="night"][data-contrast="true"] { --ink2: #cbdad1; --gt: #ecd495; --ln: rgba(231, 239, 232, 0.34); --ln2: rgba(231, 239, 232, 0.52); }
+:root[data-theme="amoled"][data-contrast="true"] { --ink2: #d3ded8; --gt: #ecd495; --ln: rgba(255, 255, 255, 0.36); --ln2: rgba(255, 255, 255, 0.55); }
 
 :root {
-  /* Names used by the pages that are not redesigned yet; they follow the new tokens. */
-  --surface-2: var(--sf);
-  --raised: var(--sf);
-  --line: var(--ln);
-  --brand: var(--ac);
-  --brand-strong: var(--ac);
-  --on-brand: var(--on-ac);
-  --accent-soft: var(--gs);
-  --active: var(--gs);
   /* The deep emerald card (next prayer, daily deeds) and its gold: the same in every theme. */
   --hero: #0f3527;
   --on-hero: #eef6f1;
@@ -205,20 +176,6 @@ html { scroll-padding-top: calc(var(--safe-top) + var(--header-h)); }
   --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.05), 0 10px 28px -16px rgba(0, 0, 0, 0.2);
   --shadow-float: 0 12px 28px -10px rgba(0, 0, 0, 0.4);
   --color-bg: var(--bg);
-  --color-surface: var(--surface);
-  --color-surface-2: var(--surface-2);
-  --color-raised: var(--raised);
-  --color-text: var(--text);
-  --color-soft: var(--soft);
-  --color-muted: var(--muted);
-  --color-line: var(--line);
-  --color-line-strong: var(--line-strong);
-  --color-brand: var(--brand);
-  --color-brand-strong: var(--brand-strong);
-  --color-on-brand: var(--on-brand);
-  --color-accent: var(--accent);
-  --color-accent-soft: var(--accent-soft);
-  --color-active: var(--active);
   --color-hero: var(--hero);
   --color-on-hero: var(--on-hero);
   --color-gold: var(--gold);
@@ -233,7 +190,7 @@ html { scroll-padding-top: calc(var(--safe-top) + var(--header-h)); }
 
 /* Printing a page, such as the monthly prayer timetable, uses plain black on white. */
 @media print {
-  :root, :root[data-theme] { --bg: #fff; --sf: #fff; --ink: #000; --ink2: #333; --surface: #fff; --text: #000; --soft: #000; --muted: #333; --ln: #999; --ln2: #666; --line-strong: #666; --gt: #000; --accent: #000; --gs: #eee; color-scheme: light; }
+  :root, :root[data-theme] { --bg: #fff; --sf: #fff; --ink: #000; --ink2: #333; --ln: #999; --ln2: #666; --gt: #000; --gs: #eee; color-scheme: light; }
   nav[aria-label="প্রধান মেনু"], [data-site], section[aria-label="তিলাওয়াত প্লেয়ার"] { display: none !important; }
 }
 
@@ -243,7 +200,7 @@ html[data-easy="true"] { font-size: 118.75%; }
 
 body {
   background: var(--bg);
-  color: var(--text);
+  color: var(--ink);
   font-family: var(--font-sans);
   line-height: 1.65;
   -webkit-tap-highlight-color: transparent;
@@ -254,6 +211,9 @@ body {
 .on-deep :focus-visible { outline-color: var(--hero-accent); }
 /* A box inside a framed field: the frame shows the focus. (Tailwind's outline-none loses to the rule above.) */
 .quiet-focus:focus-visible { outline: none; }
+
+/* Date boxes and videos put the focus on parts inside them, which the rule above does not see. */
+input[type="date"]:focus-within, input[type="time"]:focus-within, video:focus-within { outline: 2px solid var(--ac); outline-offset: 2px; }
 
 /* The surah reader lays itself out from edge to edge. */
 #main:has([data-reader]) { max-width: none; padding: 0; }
@@ -274,7 +234,8 @@ body {
 @keyframes pulse { 50% { opacity: 0.5; } }
 
 /* Bottom sheet: slides up on phones; a centred dialog from tablet width. */
-.sheet[open] { animation: sheet-in 0.28s cubic-bezier(0.2, 0.9, 0.3, 1.05) both; }
+/* The curve is the design's spring (stiffness 320, damping 30), sampled over 420ms. */
+.sheet[open] { animation: sheet-in 0.42s linear(0.0, 0.057, 0.185, 0.338, 0.487, 0.62, 0.73, 0.817, 0.882, 0.929, 0.961, 0.982, 0.995, 1.003, 1.007, 1.008, 1.008, 1.007, 1.006, 1.004, 1) both; }
 @keyframes sheet-in { from { transform: translateY(2rem); opacity: 0; } to { transform: none; opacity: 1; } }
 html:has(dialog.sheet[open]) { overflow: hidden; }
 
@@ -286,6 +247,21 @@ html[data-welcome="1"]:has(.welcome) { overflow: hidden; }
 @keyframes sunrise { from { transform: translateY(80px); opacity: 0; } to { transform: none; opacity: 1; } }
 @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 
+/* Page transitions: only the named parts move; the rest of the page changes at once. */
+::view-transition-old(root) { display: none; }
+::view-transition-new(root) { animation: none; }
+::view-transition-group(.surah-morph) { animation-duration: 220ms; }
+::view-transition-old(.surah-morph), ::view-transition-new(.surah-morph) { animation-duration: 220ms; }
+::view-transition-old(.tab-fade), ::view-transition-new(.tab-fade) { animation-duration: 150ms; animation-timing-function: ease; }
+::view-transition-group(.tab-fade) { animation: none; }
+
 @media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+  ::view-transition-old(*) { display: none; }
   *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }
+
+/* An earned quiz badge: its gold line fades in once. */
+.badge-in { animation: badge-in 0.6s ease-out both; }
+@keyframes badge-in { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .badge-in { animation: none; } }

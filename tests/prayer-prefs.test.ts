@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { CITIES, nextPrayer, timesFor } from "@/lib/prayer";
 import { DEFAULT_PRAYER_PREFS, parsePrayerPrefs } from "@/lib/prayerPrefs";
-import { dueReminder, parseReminder } from "@/lib/tools/reminders";
+import { dueReminder, parseReminder, reminds, setPrayerReminder } from "@/lib/tools/reminders";
 import { COLUMNS, monthDays, toCsv } from "@/lib/tools/timetable";
 
 const dhaka = CITIES[0];
@@ -56,7 +56,21 @@ describe("prayer reminders", () => {
   });
 
   it("is off unless switched on", () => {
-    expect(parseReminder(null)).toEqual({ on: false, before: 10 });
-    expect(parseReminder('{"on":"yes","before":7}')).toEqual({ on: false, before: 10 });
+    expect(parseReminder(null)).toEqual({ on: false, before: 10, prayers: ["fajr", "dhuhr", "asr", "maghrib", "isha"] });
+    expect(parseReminder('{"on":"yes","before":7}')).toEqual({ on: false, before: 10, prayers: ["fajr", "dhuhr", "asr", "maghrib", "isha"] });
+  });
+
+  it("keeps an older saved reminder on for all five prayers", () => {
+    expect(parseReminder('{"on":true,"before":5}').prayers).toHaveLength(5);
+    expect(parseReminder('{"on":true,"before":5,"prayers":["asr","x"]}').prayers).toEqual(["asr"]);
+    expect(parseReminder('{"on":true,"prayers":[]}').on).toBe(false);
+  });
+
+  it("switches one prayer at a time", () => {
+    const one = setPrayerReminder(parseReminder(null), "asr", true);
+    expect(one).toMatchObject({ on: true, prayers: ["asr"] });
+    expect(reminds(one, "fajr")).toBe(false);
+    expect(setPrayerReminder(one, "fajr", true).prayers).toEqual(["fajr", "asr"]);
+    expect(setPrayerReminder(one, "asr", false).on).toBe(false);
   });
 });

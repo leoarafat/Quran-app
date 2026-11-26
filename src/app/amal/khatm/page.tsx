@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
-import { PageHeader } from "@/components/PageHeader";
+import { ScreenHeader } from "@/components/shell/ScreenHeader";
 import { KhatmTracker } from "@/components/tools/KhatmTracker";
-import { getIndex } from "@/lib/quran/server";
+import { getIndex, getSurah } from "@/lib/quran/server";
 
 export const metadata: Metadata = { title: "খতম ও দৈনিক লক্ষ্য" };
 
 export default function KhatmPage() {
+  const { pages, juzs } = getIndex();
   return (
-    <div className="mx-auto max-w-md lg:max-w-2xl space-y-4">
-      <PageHeader title="খতম ও দৈনিক লক্ষ্য" subtitle="নিজের তিলাওয়াতের হিসাব" />
-      <KhatmTracker starts={getIndex().pages} />
+    <div className="mx-auto max-w-md md:max-w-2xl">
+      <ScreenHeader title="খতম ও লক্ষ্য" back={{ href: "/amal/", label: "দোয়া ও আমলে ফিরে যান" }} />
+      <KhatmTracker starts={pages} paras={juzs.map((j) => ({ ...j, page: getSurah(j.s).ayahs[j.a - 1].page }))} />
     </div>
   );
 }

@@ -2,14 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Download, ImageIcon, Share2, Type, X } from "lucide-react";
 import { toBnDigits } from "@/lib/bn";
 import { drawCard, loadCardFonts, type CardContent } from "@/lib/share/card";
 import { phoneIsDark, resolveTheme, THEME_LABELS, THEMES, type Theme } from "@/lib/settings";
 import { useSettings } from "@/lib/useSettings";
+import { Icon } from "@/components/ui/Icon";
 
-const chip = (on: boolean) => `min-h-11 rounded-full border px-3 ${on ? "border-brand bg-brand font-semibold text-on-brand" : "border-line-strong"}`;
-const action = "flex min-h-12 items-center justify-center gap-2 rounded-full border border-line-strong px-4 font-semibold text-accent disabled:opacity-40";
+const chip = (on: boolean) => `min-h-11 rounded-full border px-3 ${on ? "border-ac bg-ac font-semibold text-on-ac" : "border-ln2"}`;
+const action = "flex min-h-12 items-center justify-center gap-2 rounded-full border border-ln2 px-4 font-semibold text-gt disabled:opacity-40";
 
 type Picture = { key: string; url: string; file: File } | { key: string; failed: true };
 
@@ -86,25 +86,25 @@ export function ShareSheet({ content, pronunciation, onShareText, onClose }: {
       aria-label={`${title} শেয়ার`}
       onClose={onClose}
       onClick={(e) => { if (e.target === e.currentTarget) e.currentTarget.close(); }}
-      className="m-auto mb-0 max-h-[92dvh] w-full max-w-lg overflow-y-auto overscroll-contain rounded-t-[1.75rem] border border-line-strong bg-raised p-0 text-text backdrop:bg-black/65 sm:mb-auto sm:rounded-[1.75rem]"
+      className="m-auto mb-0 max-h-[92dvh] w-full max-w-lg overflow-y-auto overscroll-contain rounded-t-[1.75rem] border border-ln2 bg-sf p-0 text-ink backdrop:bg-black/65 sm:mb-auto sm:rounded-[1.75rem]"
     >
       <div className="space-y-3 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
         <div className="flex items-center gap-2">
           <h2 className="min-w-0 flex-1 truncate font-display text-lg font-semibold">{title}</h2>
-          <button type="button" aria-label="বন্ধ করুন" autoFocus onClick={() => dialog.current?.close()} className="grid size-11 shrink-0 place-items-center rounded-full border border-line-strong text-accent"><X aria-hidden className="size-5" /></button>
+          <button type="button" aria-label="বন্ধ করুন" autoFocus onClick={() => dialog.current?.close()} className="grid size-11 shrink-0 place-items-center rounded-full border border-ln2 text-gt"><Icon name="close" className="size-5" /></button>
         </div>
 
-        <div className="flex h-[38dvh] min-h-48 items-center justify-center overflow-hidden rounded-2xl border border-line bg-bg p-2">
+        <div className="flex h-[38dvh] min-h-48 items-center justify-center overflow-hidden rounded-2xl border border-ln bg-bg p-2">
           {image ? (
             // eslint-disable-next-line @next/next/no-img-element -- a picture made in the browser; there is nothing to optimise
             <img src={image.url} alt={`${title}-এর ছবি: আরবি ও বাংলা অনুবাদ`} className="h-full w-full object-contain" />
           ) : ready ? (
             <div className="text-center">
-              <p role="alert" className="text-sm text-muted">ছবি বানানো যায়নি। লেখা শেয়ার করা যাবে।</p>
-              <button type="button" className="min-h-11 font-semibold text-accent underline" onClick={() => setAttempt((n) => n + 1)}>আবার চেষ্টা করুন</button>
+              <p role="alert" className="text-sm text-ink2">ছবি বানানো যায়নি। লেখা শেয়ার করা যাবে।</p>
+              <button type="button" className="min-h-11 font-semibold text-gt underline" onClick={() => setAttempt((n) => n + 1)}>আবার চেষ্টা করুন</button>
             </div>
           ) : (
-            <p role="status" className="flex items-center gap-2 text-sm text-muted"><ImageIcon aria-hidden className="size-5" /> ছবি তৈরি হচ্ছে…</p>
+            <p role="status" className="flex items-center gap-2 text-sm text-ink2"><Icon name="image" className="size-5" /> ছবি তৈরি হচ্ছে…</p>
           )}
         </div>
 
@@ -112,16 +112,16 @@ export function ShareSheet({ content, pronunciation, onShareText, onClose }: {
           {THEMES.map((value) => <button key={value} type="button" aria-pressed={theme === value} className={chip(theme === value)} onClick={() => { setTheme(value); setMessage(""); }}>{THEME_LABELS[value]}</button>)}
         </div>
         <label className="flex min-h-11 items-center gap-3">
-          <input type="checkbox" checked={withPronunciation} onChange={(e) => { setWithPronunciation(e.target.checked); setMessage(""); }} className="size-5 shrink-0 accent-[var(--brand)]" />
-          <span className="leading-snug">ছবিতে বাংলা উচ্চারণ দিন <span className="block text-[0.8125rem] text-muted">স্বয়ংক্রিয়, ক্বারীর যাচাই বাকি</span></span>
+          <input type="checkbox" checked={withPronunciation} onChange={(e) => { setWithPronunciation(e.target.checked); setMessage(""); }} className="size-5 shrink-0 accent-[var(--ac)]" />
+          <span className="leading-snug">ছবিতে বাংলা উচ্চারণ দিন <span className="block text-[0.8125rem] text-ink2">স্বয়ংক্রিয়, ক্বারীর যাচাই বাকি</span></span>
         </label>
 
         <div className="grid grid-cols-2 gap-2">
-          {canShareImage && <button type="button" className={`${action} col-span-2 !border-gold bg-gold !text-on-gold`} onClick={shareImage}><Share2 aria-hidden className="size-4" /> ছবি শেয়ার</button>}
-          <button type="button" className={action} disabled={!image} onClick={saveImage}><Download aria-hidden className="size-4" /> ছবি সেভ</button>
-          <button type="button" className={action} onClick={onShareText}><Type aria-hidden className="size-4" /> লেখা শেয়ার</button>
+          {canShareImage && <button type="button" className={`${action} col-span-2 !border-gold bg-gold !text-on-gold`} onClick={shareImage}><Icon name="share" className="size-4" /> ছবি শেয়ার</button>}
+          <button type="button" className={action} disabled={!image} onClick={saveImage}><Icon name="download" className="size-4" /> ছবি সেভ</button>
+          <button type="button" className={action} onClick={onShareText}><Icon name="settings" className="size-4" /> লেখা শেয়ার</button>
         </div>
-        <p role="status" className="text-center text-sm text-muted empty:hidden">{message}</p>
+        <p role="status" className="text-center text-sm text-ink2 empty:hidden">{message}</p>
       </div>
     </dialog>,
     document.body,

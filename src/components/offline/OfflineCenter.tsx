@@ -1,7 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { BookOpen, Check, Download, Headphones, Smartphone, Square, Trash2 } from "lucide-react";
+import { AyahOrnament } from "@/components/ui/AyahOrnament";
+import { Icon } from "@/components/ui/Icon";
+import { Skeleton } from "@/components/ui/Skeleton";
+import { Seg } from "@/components/ui/Seg";
 import { toBnDigits } from "@/lib/bn";
 import { RECITERS } from "@/lib/audio/reciters";
 import { AUDIO_CACHE, parseSaved, removableUrls, saveAll, SAVED_KEY, savedId, urlsOf, type Progress, type Saved, type Unit } from "@/lib/offline/audio";
@@ -10,10 +13,10 @@ import type { Place, SurahInfo } from "@/lib/quran/types";
 import { useInBrowser, useStored, writeStored } from "@/lib/useStored";
 
 const QURAN_CACHE = "noor-quran-offline";
-const chip = (on: boolean) => `min-h-11 rounded-full border px-4 ${on ? "border-brand bg-brand font-semibold text-on-brand" : "border-line-strong bg-surface"}`;
-const primary = "flex min-h-12 items-center justify-center gap-2 rounded-full bg-gold px-5 font-semibold text-on-gold disabled:opacity-50";
-const card = "rounded-[1.375rem] border border-line bg-surface p-4";
-const select = "min-h-12 w-full rounded-2xl border border-line-strong bg-bg px-3 text-text";
+const chip = (on: boolean) => `min-h-11 rounded-full border px-4 ${on ? "border-ac bg-ac font-semibold text-on-ac" : "border-ln2 bg-sf"}`;
+const primary = "flex min-h-13 items-center justify-center gap-2 rounded-full bg-ac px-5 font-semibold text-on-ac disabled:opacity-50";
+const card = "rounded-md border border-ln bg-sf p-4 shadow-card";
+const select = "min-h-12 w-full rounded-2xl border border-ln2 bg-bg px-3 text-ink";
 const mb = (bytes: number) => `${toBnDigits((bytes / 1e6).toFixed(1))} MB`;
 
 function explain(error: unknown): string {
@@ -27,10 +30,10 @@ function Bar({ progress, label }: { progress: Progress; label: string }) {
   const percent = progress.total ? Math.round((progress.done / progress.total) * 100) : 0;
   return (
     <div>
-      <div role="progressbar" aria-label={label} aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent} className="h-2.5 overflow-hidden rounded-full bg-line">
+      <div role="progressbar" aria-label={label} aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent} className="h-2.5 overflow-hidden rounded-full bg-ln">
         <div className="h-full bg-gold transition-[width]" style={{ width: `${percent}%` }} />
       </div>
-      <p className="mt-1 text-sm text-muted">{toBnDigits(progress.done)}/{toBnDigits(progress.total)} · {toBnDigits(percent)}%{progress.bytes > 0 && ` · ${mb(progress.bytes)}`}</p>
+      <p className="mt-1 text-sm text-ink2">{toBnDigits(progress.done)}/{toBnDigits(progress.total)} · {toBnDigits(percent)}%{progress.bytes > 0 && ` · ${mb(progress.bytes)}`}</p>
     </div>
   );
 }
@@ -60,21 +63,29 @@ function useJob() {
   return { progress, message, setMessage, run, stop: () => controller.current?.abort() };
 }
 
+type Device = "android" | "iphone" | "desktop";
+const STEPS: Record<Device, string[]> = {
+  android: ["ব্রাউজারের মেনু (⋮) খুলুন", "“Add to Home screen” বা “Install app” বেছে নিন", "নিশ্চিত করুন; অ্যাপের আইকন হোম স্ক্রিনে আসবে"],
+  iphone: ["Safari-তে এই পাতা খুলুন", "নিচের শেয়ার বাটনে চাপুন", "“Add to Home Screen” বেছে নিয়ে Add চাপুন"],
+  desktop: ["Chrome বা Edge-এ এই পাতা খুলুন", "ঠিকানার ঘরের ডান পাশের ইনস্টল চিহ্নে চাপুন", "“Install” চাপুন; আলাদা জানালায় অ্যাপ খুলবে"],
+};
+const thisDevice = (): Device => (/iphone|ipad|ipod/i.test(navigator.userAgent) ? "iphone" : /android/i.test(navigator.userAgent) ? "android" : "desktop");
+
 function InstallCard() {
   const { canInstall, installed } = usePwa();
-  const [isApple] = useState(() => /iphone|ipad|ipod/i.test(navigator.userAgent));
+  const [device, setDevice] = useState<Device>(thisDevice);
+  if (installed) return <p className={`${card} flex items-center gap-3 font-semibold`}><Icon name="check" className="size-6 text-ac" /> অ্যাপ হিসেবে চলছে</p>;
   return (
-    <section className={card}>
-      <h2 className="mb-1 flex items-center gap-2 font-display text-lg font-semibold"><Smartphone aria-hidden className="size-5 text-accent" /> অ্যাপ হিসেবে রাখুন</h2>
-      {installed ? (
-        <p className="flex items-center gap-2 text-accent"><Check aria-hidden className="size-5" /> অ্যাপ হিসেবে চলছে</p>
-      ) : canInstall ? (
-        <><p className="mb-3 text-muted">হোম স্ক্রিনে আইকন থাকবে, পুরো স্ক্রিনে খুলবে।</p><button type="button" className={primary} onClick={install}><Download aria-hidden className="size-5" /> ইনস্টল করুন</button></>
-      ) : isApple ? (
-        <p className="text-muted">Safari-তে নিচের <b>শেয়ার</b> বাটনে চাপুন, তারপর <b>Add to Home Screen</b> বেছে নিন।</p>
-      ) : (
-        <p className="text-muted">ব্রাউজারের মেনু থেকে “Install app” বা “Add to Home screen” বেছে নিন। কিছু ব্রাউজারে এই সুবিধা নেই।</p>
-      )}
+    <section aria-labelledby="install" className="space-y-3">
+      <h2 id="install" className="font-display text-lg font-semibold">অ্যাপ হিসেবে রাখুন</h2>
+      <p className="text-ink2">হোম স্ক্রিনে আইকন থাকবে, পুরো স্ক্রিনে খুলবে।</p>
+      <Seg label="কোন যন্ত্র" options={[{ value: "android", text: "অ্যান্ড্রয়েড" }, { value: "iphone", text: "আইফোন" }, { value: "desktop", text: "ডেস্কটপ" }]} value={device} onChange={setDevice} />
+      <ol className="space-y-2">
+        {STEPS[device].map((step, i) => <li key={step} className={`${card} flex items-center gap-3.5`}><AyahOrnament label={toBnDigits(i + 1)} /><span>{step}</span></li>)}
+      </ol>
+      {canInstall
+        ? <button type="button" className={`${primary} w-full`} onClick={install}><Icon name="download" className="size-5" /> অ্যাপ ইনস্টল করুন</button>
+        : <p className="text-sm text-ink2">কিছু ব্রাউজারে ইনস্টল করার সুবিধা নেই।</p>}
     </section>
   );
 }
@@ -139,22 +150,22 @@ function QuranCard() {
 
   return (
     <section className={`${card} space-y-3`}>
-      <h2 className="flex items-center gap-2 font-display text-lg font-semibold"><BookOpen aria-hidden className="size-5 text-accent" /> ইন্টারনেট ছাড়া কুরআন</h2>
-      <p className="text-muted">১১৪টি সূরা (আরবি, উচ্চারণ, অর্থ), আয়াত সার্চ ও বুকমার্কের লেখা। অডিও আলাদা।{pack && ` সাইজ প্রায় ${mb(pack.bytes)}।`}</p>
-      {failed && <p role="alert" className="text-accent">তালিকা আনা যায়নি। ইন্টারনেট চালু করে পাতাটি আবার খুলুন।</p>}
+      <h2 className="flex items-center gap-2 font-display text-lg font-semibold"><Icon name="quran" className="size-5 text-gt" /> ইন্টারনেট ছাড়া কুরআন</h2>
+      <p className="text-ink2">১১৪টি সূরা (আরবি, উচ্চারণ, অর্থ), আয়াত সার্চ ও বুকমার্কের লেখা। অডিও আলাদা।{pack && ` সাইজ প্রায় ${mb(pack.bytes)}।`}</p>
+      {failed && <p role="alert" className="text-gt">তালিকা আনা যায়নি। ইন্টারনেট চালু করে পাতাটি আবার খুলুন।</p>}
       {job.progress ? (
         <>
           <Bar progress={job.progress} label="কুরআন নামছে" />
-          <button type="button" className={`${chip(false)} flex items-center gap-2`} onClick={job.stop}><Square aria-hidden className="size-4" /> থামান</button>
+          <button type="button" className={`${chip(false)} flex items-center gap-2`} onClick={job.stop}><Icon name="stop" className="size-4" /> থামান</button>
         </>
       ) : pack && (
         <div className="flex flex-wrap items-center gap-2">
-          {complete && <span className="flex w-full items-center gap-2 font-semibold text-accent"><Check aria-hidden className="size-5" /> সেভ করা আছে</span>}
-          <button type="button" className={complete ? chip(false) : primary} onClick={download}>{complete ? "আবার হালনাগাদ করুন" : <><Download aria-hidden className="size-5" /> {saved > 0 ? "আবার নামান" : "সেভ করুন"}</>}</button>
-          {saved > 0 && <button type="button" className={`${chip(false)} flex items-center gap-2`} onClick={clear}><Trash2 aria-hidden className="size-4" /> মুছুন</button>}
+          {complete && <span className="flex w-full items-center gap-2 font-semibold text-gt"><Icon name="check" className="size-5" /> সেভ করা আছে</span>}
+          <button type="button" className={complete ? chip(false) : primary} onClick={download}>{complete ? "আবার হালনাগাদ করুন" : <><Icon name="download" className="size-5" /> {saved > 0 ? "আবার নামান" : "সেভ করুন"}</>}</button>
+          {saved > 0 && <button type="button" className={`${chip(false)} flex items-center gap-2`} onClick={clear}><Icon name="trash" className="size-4" /> মুছুন</button>}
         </div>
       )}
-      <p role="status" className="text-sm text-accent empty:hidden">{job.message}</p>
+      <p role="status" className="text-sm text-gt empty:hidden">{job.message}</p>
     </section>
   );
 }
@@ -191,38 +202,38 @@ function AudioCard({ surahs, juzs }: { surahs: SurahInfo[]; juzs: Place[] }) {
 
   return (
     <section className={`${card} space-y-3`}>
-      <h2 className="flex items-center gap-2 font-display text-lg font-semibold"><Headphones aria-hidden className="size-5 text-accent" /> অফলাইনে তিলাওয়াত</h2>
-      <label className="block text-sm text-muted">ক্বারী
+      <h2 className="flex items-center gap-2 font-display text-lg font-semibold"><Icon name="headphones" className="size-5 text-gt" /> অফলাইনে তিলাওয়াত</h2>
+      <label className="block text-sm text-ink2">ক্বারী
         <select className={select} value={reciter} disabled={!!job.progress} onChange={(e) => setReciter(e.target.value)}>{RECITERS.map((r) => <option key={r.id} value={r.id}>{r.name}</option>)}</select>
       </label>
       <div role="group" aria-label="সূরা না পারা" className="flex gap-2">
         {([["s", "সূরা"], ["j", "পারা"]] as const).map(([k, label]) => <button key={k} type="button" aria-pressed={kind === k} disabled={!!job.progress} className={chip(kind === k)} onClick={() => { setKind(k); setNumber(1); }}>{label}</button>)}
       </div>
-      <label className="block text-sm text-muted">{kind === "s" ? "কোন সূরা" : "কোন পারা"}
+      <label className="block text-sm text-ink2">{kind === "s" ? "কোন সূরা" : "কোন পারা"}
         <select className={select} value={number} disabled={!!job.progress} onChange={(e) => setNumber(Number(e.target.value))}>
           {kind === "s" ? surahs.map((s) => <option key={s.n} value={s.n}>{toBnDigits(s.n)}. {s.bangla} ({toBnDigits(s.ayahs)} আয়াত)</option>) : juzs.map((_, i) => <option key={i} value={i + 1}>পারা {toBnDigits(i + 1)}</option>)}
         </select>
       </label>
-      <p className="text-sm text-muted">{toBnDigits(urls.length)}টি আয়াতের অডিও। বড় সূরা বা পুরো পারায় ১০০ MB-এর বেশিও লাগতে পারে, তাই Wi-Fi ভালো।</p>
+      <p className="text-sm text-ink2">{toBnDigits(urls.length)}টি আয়াতের অডিও। বড় সূরা বা পুরো পারায় ১০০ MB-এর বেশিও লাগতে পারে, তাই Wi-Fi ভালো।</p>
       {job.progress ? (
         <>
           <Bar progress={job.progress} label="অডিও নামছে" />
-          <button type="button" className={`${chip(false)} flex items-center gap-2`} onClick={job.stop}><Square aria-hidden className="size-4" /> থামান</button>
+          <button type="button" className={`${chip(false)} flex items-center gap-2`} onClick={job.stop}><Icon name="stop" className="size-4" /> থামান</button>
         </>
       ) : (
-        <button type="button" className={`${primary} w-full`} onClick={download}><Download aria-hidden className="size-5" /> {already ? "বাদ পড়া ফাইল আবার নামান" : "অডিও সেভ করুন"}</button>
+        <button type="button" className={`${primary} w-full`} onClick={download}><Icon name="download" className="size-5" /> {already ? "বাদ পড়া ফাইল আবার নামান" : "অডিও সেভ করুন"}</button>
       )}
-      <p role="status" className="text-sm text-accent empty:hidden">{job.message}</p>
+      <p role="status" className="text-sm text-gt empty:hidden">{job.message}</p>
 
       {saved.length > 0 && (
         <div>
           <h3 className="mb-2 font-semibold">সেভ করা আছে · মোট প্রায় {mb(saved.reduce((t, x) => t + x.bytes, 0))}</h3>
           <ul className="space-y-2">
             {saved.map((x) => (
-              <li key={savedId(x)} className="rounded-2xl border border-line-strong p-3">
+              <li key={savedId(x)} className="rounded-2xl border border-ln2 p-3">
                 <div className="flex items-center gap-2">
-                  <span className="min-w-0 flex-1"><span className="block truncate font-display font-semibold">{title(x)}</span><span className="block truncate text-sm text-muted">{reciterName(x.reciter)} · {mb(x.bytes)}</span></span>
-                  <button type="button" disabled={!!job.progress} aria-label={`${title(x)} মুছুন`} className="grid size-11 shrink-0 place-items-center rounded-full border border-line-strong text-accent disabled:opacity-40" onClick={() => setAsking(savedId(x))}><Trash2 aria-hidden className="size-[1.125rem]" /></button>
+                  <span className="min-w-0 flex-1"><span className="block truncate font-display font-semibold">{title(x)}</span><span className="block truncate text-sm text-ink2">{reciterName(x.reciter)} · {mb(x.bytes)}</span></span>
+                  <button type="button" disabled={!!job.progress} aria-label={`${title(x)} মুছুন`} className="grid size-11 shrink-0 place-items-center rounded-full border border-ln2 text-gt disabled:opacity-40" onClick={() => setAsking(savedId(x))}><Icon name="trash" className="size-[1.125rem]" /></button>
                 </div>
                 {asking === savedId(x) && (
                   <div className="mt-2 flex flex-wrap items-center gap-2"><span className="w-full text-sm">এই অডিও মুছবেন?</span><button type="button" className={chip(true)} onClick={() => remove(x)}>মুছুন</button><button type="button" className={chip(false)} onClick={() => setAsking(null)}>থাক</button></div>
@@ -246,11 +257,11 @@ function Center({ surahs, juzs }: { surahs: SurahInfo[]; juzs: Place[] }) {
       ) : (
         <p role="alert" className={card}>এই ব্রাউজারে অফলাইনে সেভ করা যায় না। প্রাইভেট মোড বন্ধ করে বা অন্য ব্রাউজারে চেষ্টা করুন।</p>
       )}
-      <p className="text-sm leading-relaxed text-muted">সেভ করা ফাইল শুধু এই ব্রাউজারে থাকে। ব্রাউজারের ডেটা মুছলে চলে যাবে, আর iPhone অনেকদিন ব্যবহার না হওয়া সাইটের ডেটা নিজে মুছে ফেলতে পারে। অ্যাপ হিসেবে ইনস্টল করলে এই ঝুঁকি কমে।</p>
+      <p className="text-sm leading-relaxed text-ink2">সেভ করা ফাইল শুধু এই ব্রাউজারে থাকে। ব্রাউজারের ডেটা মুছলে চলে যাবে, আর iPhone অনেকদিন ব্যবহার না হওয়া সাইটের ডেটা নিজে মুছে ফেলতে পারে। অ্যাপ হিসেবে ইনস্টল করলে এই ঝুঁকি কমে।</p>
     </div>
   );
 }
 
 export function OfflineCenter(props: { surahs: SurahInfo[]; juzs: Place[] }) {
-  return useInBrowser() ? <Center {...props} /> : <p className="text-muted">আনা হচ্ছে…</p>;
+  return useInBrowser() ? <Center {...props} /> : <Skeleton className="h-52 !rounded-2xl" />;
 }

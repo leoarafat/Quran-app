@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { addPages, daysLeft, EMPTY_KHATM, finish, goalFor, PAGES, readKhatm, setGoal, setPage } from "@/lib/tools/khatm";
+import { addPages, daysLeft, EMPTY_KHATM, finish, goalFor, PAGES, parasDone, planStatus, readKhatm, setGoal, setPage, startPlan } from "@/lib/tools/khatm";
+import { dailyDue, parseDailyReminder } from "@/lib/tools/reminders";
 import { streak } from "@/lib/tools/streak";
 
 const day = "2026-11-25";
@@ -33,6 +34,43 @@ describe("khatm log", () => {
     expect(readKhatm('{"version":2}')).toBeNull();
     expect(readKhatm('{"version":1,"page":9999,"goal":"x","log":{"2026-11-25":3,"bad":2,"2026-11-24":-1},"completed":["x","2026-01-01"]}'))
       .toEqual({ version: 1, page: PAGES, goal: 4, log: { "2026-11-25": 3 }, completed: ["2026-01-01"] });
+  });
+});
+
+describe("khatm plan", () => {
+  const plan = startPlan(EMPTY_KHATM, 30, day);
+
+  it("sets the daily goal and survives a save and load", () => {
+    expect(plan.goal).toBe(21);
+    expect(readKhatm(JSON.stringify(plan))).toEqual(plan);
+    expect(readKhatm(JSON.stringify({ ...plan, plan: { days: 0, start: day } }))?.plan).toBeUndefined();
+  });
+
+  it("counts the day and says when a full day's share is missing", () => {
+    expect(planStatus(plan, day)).toEqual({ day: 1, behind: 0, over: false });
+    // Day 2 with nothing read is exactly one share short.
+    expect(planStatus(plan, "2026-11-26")).toEqual({ day: 2, behind: 20, over: false });
+    expect(planStatus(setPage(plan, 20), "2026-11-26")?.behind).toBe(0);
+    expect(planStatus(plan, "2027-01-30")).toMatchObject({ day: 30, over: true });
+    expect(planStatus(EMPTY_KHATM, day)).toBeNull();
+  });
+
+  it("is dropped by a goal set by hand and by finishing", () => {
+    expect(setGoal(plan, 5).plan).toBeUndefined();
+    expect(finish(setPage(plan, PAGES), day).plan).toBeUndefined();
+  });
+
+  it("counts finished paras from the pages they begin on", () => {
+    const firstPages = [1, 22, 42];
+    expect([0, 20, 21, 41, PAGES].map((p) => parasDone(p, firstPages))).toEqual([0, 0, 1, 2, 3]);
+  });
+
+  it("fires the daily reading reminder only near its time", () => {
+    const at = (h: number, m: number, s = 0) => new Date(2026, 10, 25, h, m, s);
+    expect(dailyDue("06:00", at(5, 59, 59))).toBe(false);
+    expect(dailyDue("06:00", at(6, 1))).toBe(true);
+    expect(dailyDue("06:00", at(6, 2))).toBe(false);
+    expect(parseDailyReminder('{"on":true,"time":"25:00"}')).toEqual({ on: true, time: "06:00" });
   });
 });
 

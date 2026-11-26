@@ -10,6 +10,7 @@ import { toBnDigits } from "@/lib/bn";
 import { useLibrary } from "@/lib/bookmarks/store";
 import type { Layers } from "@/lib/reader/prefs";
 import type { Ayah } from "@/lib/quran/types";
+import { useLongPress } from "@/lib/useLongPress";
 import { NoteSheet } from "./NoteSheet";
 import { ShareSheet } from "./ShareSheet";
 
@@ -19,7 +20,17 @@ export function useAyahAudio(surah: number, ayah: number) {
   return { here, sounding };
 }
 
-function Action({ icon, label, onClick, pressed, filled, popup }: { icon: IconName; label: string; onClick: () => void; pressed?: boolean; filled?: boolean; popup?: boolean }) {
+type ActionProps = { icon: IconName; label: string; /** the words beside the icon in the full sheet */ text?: string; onClick: () => void; pressed?: boolean; filled?: boolean; popup?: boolean };
+
+function Action({ icon, label, text, onClick, pressed, filled, popup }: ActionProps) {
+  if (text) {
+    return (
+      <button type="button" aria-label={label} aria-pressed={pressed} aria-haspopup={popup ? "dialog" : undefined} onClick={onClick} className="flex min-h-13 w-full items-center gap-3.5 border-b border-ln px-1 text-left font-medium last:border-0">
+        <Icon name={icon} className={`size-[1.375rem] shrink-0 ${pressed || filled ? "text-ac" : "text-ink2"}`} filled={filled} />
+        {text}
+      </button>
+    );
+  }
   return (
     <button type="button" aria-label={label} title={label} aria-pressed={pressed} aria-haspopup={popup ? "dialog" : undefined} onClick={onClick} className={`grid size-11 shrink-0 place-items-center rounded-xl ${pressed || filled ? "text-ac" : ""}`}>
       <Icon name={icon} className="size-[1.375rem]" filled={filled} />
@@ -27,22 +38,24 @@ function Action({ icon, label, onClick, pressed, filled, popup }: { icon: IconNa
   );
 }
 
-/** Play, bookmark, note, copy, share and, in the reader, "I stopped here". */
-export function AyahActions({ ayah, track, credit, onMarkLast }: { ayah: Ayah; track: Track; credit: string; onMarkLast?: (a: number) => void }) {
+/** Play, bookmark, note, copy, share and, in the reader, "I stopped here". As a list, each has its name. */
+export function AyahActions({ ayah, track, credit, onMarkLast, list = false }: { ayah: Ayah; track: Track; credit: string; onMarkLast?: (a: number) => void; list?: boolean }) {
   const { here, sounding } = useAyahAudio(track.surah, ayah.a);
   const library = useLibrary();
   const saved = library.items.find((b) => b.s === track.surah && b.a === ayah.a);
   const [sheet, setSheet] = useState<"share" | "note" | null>(null);
   const name = `আয়াত ${toBnDigits(ayah.a)}`;
 
+  const words = (text: string) => (list ? text : undefined);
+
   return (
-    <div role="group" aria-label={`${name}-এর অপশন`} className="flex justify-between rounded-md border border-ln bg-sf px-1 py-0.5 shadow-[0_8px_20px_-12px_rgba(0,0,0,0.35)]">
-      <Action icon={sounding ? "pause" : "play"} label={`${name} ${sounding ? "থামান" : "শুনুন"}`} onClick={() => (here ? toggle() : playAyah(track, ayah.a))} />
-      <Action icon="bookmark" label={`${name} বুকমার্ক`} pressed={!!saved} filled={!!saved} onClick={() => toggleAyahBookmark(track.surah, ayah.a)} />
-      <Action icon="note" label={`${name}-এ নোট লিখুন`} popup onClick={() => setSheet("note")} />
-      <Action icon="copy" label={`${name} কপি করুন`} onClick={async () => showToast(await copyAyah(track, ayah, credit))} />
-      <Action icon="share" label={`${name} শেয়ার করুন`} popup onClick={() => setSheet("share")} />
-      {onMarkLast && <Action icon="flag" label={`${name} শেষ পড়া হিসেবে রাখুন`} onClick={() => onMarkLast(ayah.a)} />}
+    <div role="group" aria-label={`${name}-এর অপশন`} className={list ? "rounded-md border border-ln px-3" : "flex justify-between rounded-md border border-ln bg-sf px-1 py-0.5 shadow-[0_8px_20px_-12px_rgba(0,0,0,0.35)]"}>
+      <Action icon={sounding ? "pause" : "play"} text={words(sounding ? "থামান" : "শুনুন")} label={`${name} ${sounding ? "থামান" : "শুনুন"}`} onClick={() => (here ? toggle() : playAyah(track, ayah.a))} />
+      <Action icon="bookmark" text={words(saved ? "বুকমার্ক সরান" : "বুকমার্ক করুন")} label={`${name} বুকমার্ক`} pressed={!!saved} filled={!!saved} onClick={() => toggleAyahBookmark(track.surah, ayah.a)} />
+      <Action icon="note" text={words(saved?.note ? "নোট বদলান" : "নোট লিখুন")} label={`${name}-এ নোট লিখুন`} popup onClick={() => setSheet("note")} />
+      <Action icon="copy" text={words("কপি করুন")} label={`${name} কপি করুন`} onClick={async () => showToast(await copyAyah(track, ayah, credit))} />
+      <Action icon="share" text={words("শেয়ার করুন (লেখা বা ছবি)")} label={`${name} শেয়ার করুন`} popup onClick={() => setSheet("share")} />
+      {onMarkLast && <Action icon="flag" text={words("এখানে থামলাম (শেষ পড়া)")} label={`${name} শেষ পড়া হিসেবে রাখুন`} onClick={() => onMarkLast(ayah.a)} />}
       {sheet === "note" && <NoteSheet surah={track.surah} surahName={track.surahName} ayah={ayah.a} onClose={() => setSheet(null)} />}
       {sheet === "share" && (
         <ShareSheet
@@ -73,14 +86,18 @@ type Props = {
   selected?: boolean;
   onMarkLast?: (a: number) => void;
   numbers?: boolean;
+  /** press and hold: every action at once */
+  onHold?: (a: number) => void;
 };
 
-export const AyahCard = memo(function AyahCard({ ayah, track, layers, credit, anchor, onSelect, selected = false, onMarkLast, numbers = true }: Props) {
+export const AyahCard = memo(function AyahCard({ ayah, track, layers, credit, anchor, onSelect, selected = false, onMarkLast, numbers = true, onHold }: Props) {
   const { here, sounding } = useAyahAudio(track.surah, ayah.a);
   const selectable = onSelect !== undefined;
   const open = !selectable || selected;
   const name = `আয়াত ${toBnDigits(ayah.a)}`;
   const mark = <AyahOrnament label={numbers ? toBnDigits(ayah.a) : ""} />;
+
+  const hold = useLongPress(() => onHold?.(ayah.a));
 
   // A tap anywhere on the ayah opens its actions; text selection and inner controls are left alone.
   const tap = (event: React.MouseEvent) => {
@@ -92,7 +109,7 @@ export const AyahCard = memo(function AyahCard({ ayah, track, layers, credit, an
   return (
     <li id={anchor ?? `a${ayah.a}`} data-ayah={ayah.a} className="scroll-mt-16 border-b border-ln py-1 last:border-0 md:scroll-mt-3 [content-visibility:auto] [contain-intrinsic-size:auto_16rem]">
       {/* The number button does the same for keyboards. */}
-      <div onClick={selectable ? tap : undefined} className={`flex flex-col gap-1.5 rounded-md px-2 py-2.5 transition-colors duration-200 ${(selectable && selected) || here ? "bg-gs" : ""}`}>
+      <div onClick={selectable ? tap : undefined} {...(onHold ? hold : {})} className={`${onHold ? "pointer-coarse:select-none pointer-coarse:[-webkit-touch-callout:none]" : ""} flex flex-col gap-1.5 rounded-md px-2 py-2.5 transition-colors duration-200 ${(selectable && selected) || here ? "bg-gs" : ""}`}>
         <div className="flex min-h-11 items-center justify-between gap-2">
           {selectable ? (
             <button type="button" aria-expanded={selected} aria-label={`${name}-এর অপশন ${selected ? "বন্ধ করুন" : "খুলুন"}`} onClick={() => onSelect(ayah.a)} className="-ml-1.5 grid size-11 place-items-center rounded-full">{mark}</button>

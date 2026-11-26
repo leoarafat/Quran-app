@@ -23,10 +23,10 @@ export function QuranPassages({ passages, credit, idPrefix = "" }: { passages: S
           // Playback stays inside the passage: it never runs on into the rest of the surah.
           const track = { surah, surahName, first, total: last };
           return (
-            <li key={`${surah}:${first}`} id={`${idPrefix}d${surah}-${first}`} className="scroll-mt-4 rounded-[1.375rem] border border-line bg-surface px-3 pb-2 pt-1">
+            <li key={`${surah}:${first}`} id={`${idPrefix}d${surah}-${first}`} className="scroll-mt-20 rounded-md border border-ln bg-sf px-2 pb-1 pt-1 shadow-card">
               <div className="flex items-center justify-between gap-2 px-1">
                 <h2 className="min-w-0 truncate font-display font-semibold">সূরা {surahName} {reference}</h2>
-                <Link href={`/quran/${surah}/#a${first}`} prefetch={false} aria-label={`সূরা ${surahName} ${reference} সূরায় পড়ুন`} className="flex min-h-11 shrink-0 items-center text-sm font-semibold text-accent underline">সূরায় পড়ুন</Link>
+                <Link href={`/quran/${surah}/#a${first}`} prefetch={false} aria-label={`সূরা ${surahName} ${reference} সূরায় পড়ুন`} className="flex min-h-11 shrink-0 items-center text-sm font-semibold text-ac underline">সূরায় পড়ুন</Link>
               </div>
               <ol>
                 {ayahs.map((ayah) => <AyahCard key={ayah.a} ayah={ayah} track={track} layers={ALL_LAYERS} credit={credit} anchor={`${idPrefix}d${surah}-a${ayah.a}`} />)}

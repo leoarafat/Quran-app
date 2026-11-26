@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { PageHeader } from "@/components/PageHeader";
 import { PendingNote } from "@/components/PendingNote";
+import { ScreenHeader } from "@/components/shell/ScreenHeader";
 import { DailyRoutine } from "@/components/tools/DailyRoutine";
+import { LinkList } from "@/components/ui/LinkList";
 
 export const metadata: Metadata = { title: "সারাদিনের আমল" };
 
 export default function DailyAmalPage() {
   return (
-    <div className="mx-auto max-w-md lg:max-w-2xl space-y-4">
-      <PageHeader title="সারাদিনের আমল" subtitle="আমার আমলের খাতা" />
-      <DailyRoutine />
-      <Link href="/amal/" className="flex min-h-12 items-center justify-center rounded-full border border-line-strong bg-surface px-4 text-center font-semibold text-accent">সকাল-সন্ধ্যা, ঘুম ও অন্য দোয়া-যিকির</Link>
-      <PendingNote title="যা এখনো নেই" items={["ঘুম থেকে ওঠা থেকে রাত পর্যন্ত সাজানো আমলের রুটিন: কোন আমল কখন ও কতবার, তা আলেম যাচাইয়ের পর যোগ হবে। ততদিন তালিকাটি আপনি নিজে সাজান।"]} />
+    <div className="mx-auto max-w-md md:max-w-2xl">
+      <ScreenHeader title="দৈনিক আমল" back={{ href: "/amal/", label: "দোয়া ও আমলে ফিরে যান" }} />
+      <div className="space-y-5">
+        <DailyRoutine />
+        <LinkList items={[{ href: "/amal/", title: "দোয়া ও যিকির", hint: "সালাত, ঘুম ও অন্য দোয়া-যিকির", icon: "note" }]} />
+        <PendingNote title="যা এখনো নেই" items={["ঘুম থেকে ওঠা থেকে রাত পর্যন্ত সাজানো আমলের রুটিন: কোন আমল কখন ও কতবার, তা আলেম যাচাইয়ের পর যোগ হবে। ততদিন তালিকাটি আপনি নিজে সাজান।"]} />
+      </div>
     </div>
   );
 }

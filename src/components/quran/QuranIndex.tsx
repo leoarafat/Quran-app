@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, ViewTransition } from "react";
 import { AyahOrnament } from "@/components/ui/AyahOrnament";
 import { Chip } from "@/components/ui/Chip";
 import { EmptyState } from "@/components/ui/EmptyState";
@@ -151,7 +151,9 @@ export function QuranIndex({ surahs, juzs, sajdas, pages, rukus, hizbs, manzils 
                         <Link href={`/quran/${s.n}/`} prefetch={false} onMouseEnter={() => setPreview(s.n)} onFocus={() => setPreview(s.n)} className="flex min-h-[4.25rem] min-w-0 flex-1 items-center gap-3 py-1.5 pl-1">
                           <AyahOrnament label={toBnDigits(s.n)} className="size-10" />
                           <span className="min-w-0 flex-1 leading-snug">
-                            <span className="block truncate font-semibold">{s.bangla}</span>
+                            <ViewTransition name={`surah-${s.n}`} share="surah-morph" default="none">
+                              <span className="block w-fit max-w-full truncate font-semibold">{s.bangla}</span>
+                            </ViewTransition>
                             <span className="block truncate text-[0.8125rem] text-ink2">{REVELATION[s.revelation]} · {toBnDigits(s.ayahs)} আয়াত</span>
                           </span>
                           <span lang="ar" dir="rtl" className="shrink-0 font-arabic text-[1.375rem] leading-[1.9] max-xs:text-base">{s.arabic}</span>

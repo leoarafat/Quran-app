@@ -61,6 +61,7 @@ describe("favourites and page search", () => {
   });
 
   it("finds pages by name or by what people type", () => {
+    for (const word of ["অজু", "ওযু", "ওজু"]) expect(findPages(word).map((p) => p.href)).toContain("/namaz/oju/");
     expect(findPages("কিবলা").map((p) => p.href)).toContain("/qibla/");
     expect(findPages("qibla").map((p) => p.href)).toContain("/qibla/");
     expect(findPages("যাকাত").map((p) => p.href)).toContain("/zakat/");

@@ -7,7 +7,7 @@ import { LESSONS, lessonPath } from "@/lib/namaz";
 type Page = { title: string; href: string; words: string };
 
 const LESSON_WORDS: Record<string, string> = {
-  waqt: "ওয়াক্ত রাকাত ফজর যোহর আসর মাগরিব এশা জুমা", oju: "অজু ওযু গোসল তায়াম্মুম oju wudu", niyom: "রুকু সিজদা বৈঠক তাশাহহুদ niyom", rakat: "বিতর রাকাত rakat", surah: "ফাতিহা সূরা", doa: "সানা দরুদ তাসবিহ", masala: "সাহু কাজা কসর মাসবুক সফর",
+  waqt: "ওয়াক্ত রাকাত ফজর যোহর আসর মাগরিব এশা জুমা", oju: "অজু ওযু ওজু গোসল তায়াম্মুম oju wudu", niyom: "রুকু সিজদা বৈঠক তাশাহহুদ niyom", rakat: "বিতর রাকাত rakat", surah: "ফাতিহা সূরা", doa: "সানা দরুদ তাসবিহ", masala: "সাহু কাজা কসর মাসবুক সফর",
 };
 
 const EXTRA: Page[] = [

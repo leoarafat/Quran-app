@@ -1,57 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
-import { BottomSheet } from "@/components/ui/BottomSheet";
-import { Chip } from "@/components/ui/Chip";
 import { Icon } from "@/components/ui/Icon";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { toBnDigits } from "@/lib/bn";
-import { CITIES, clockTime, countdown, nextPrayer, PRAYERS, timesFor, calendarDay, type Place } from "@/lib/prayer";
+import { clockTime, countdown, nextPrayer, PRAYERS, timesFor, calendarDay } from "@/lib/prayer";
 import { dayArc } from "@/lib/dayArc";
-import { describePrefs } from "@/lib/tools/timetable";
 import { usePrayerPrefs } from "@/lib/usePrayerPrefs";
 import { useNow } from "@/lib/useNow";
-import { savePlace, usePlace } from "@/lib/usePlace";
-
-function PlaceSheet({ place, now, onClose }: { place: Place; now: number; onClose: () => void }) {
-  const [message, setMessage] = useState("");
-  const prefs = usePrayerPrefs();
-  const times = timesFor(place, calendarDay(new Date(now), place.timeZone), prefs);
-
-  const locate = () => {
-    if (!navigator.geolocation) return setMessage("এই ব্রাউজারে অবস্থান পাওয়া যায় না।");
-    setMessage("অবস্থান খোঁজা হচ্ছে…");
-    navigator.geolocation.getCurrentPosition(
-      ({ coords }) => {
-        savePlace({ id: "here", name: "আমার অবস্থান", lat: coords.latitude, lng: coords.longitude, timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
-        setMessage("আপনার অবস্থান নেওয়া হয়েছে।");
-      },
-      () => setMessage("অবস্থান পাওয়া যায়নি। অনুমতি দিন অথবা শহর বেছে নিন।"),
-      { timeout: 15000 },
-    );
-  };
-
-  return (
-    <BottomSheet title="আজকের নামাজের সময়" onClose={onClose}>
-      <dl className="grid grid-cols-3 gap-2 text-center">
-        {[...PRAYERS, ["sunrise", "সূর্যোদয়"] as const].map(([id, name]) => (
-          <div key={id} className="rounded-md bg-gs py-2"><dt className="text-sm text-ink2">{name}</dt><dd className="font-semibold tabular-nums">{clockTime(times[id], place.timeZone)}</dd></div>
-        ))}
-      </dl>
-      <p className="font-semibold">জায়গা বেছে নিন</p>
-      <div className="grid grid-cols-3 gap-2">
-        {CITIES.map((c) => <Chip key={c.id} aria-pressed={place.id === c.id} selected={place.id === c.id} onClick={() => { savePlace(c); setMessage(""); }}>{c.name}</Chip>)}
-      </div>
-      <Chip className="w-full" aria-pressed={place.id === "here"} selected={place.id === "here"} onClick={locate}>
-        <Icon name="pin" className="size-5" /> আমার অবস্থান ব্যবহার করুন
-      </Chip>
-      <p role="status" className="min-h-6 text-sm text-gt">{message}</p>
-      <p className="text-sm text-ink2">ফোনেই হিসাব করা ({describePrefs(prefs)})। সেহরি-ইফতারসহ আমলের আগে স্থানীয় মসজিদ বা ইসলামিক ফাউন্ডেশনের সময়ের সাথে মিলিয়ে নিন। আপনার অবস্থান এই ফোনের বাইরে যায় না।</p>
-      <Link href="/prayer-times/" className="flex min-h-12 items-center justify-center rounded-full border border-ln2 font-semibold text-ac">মাসিক সূচি, হিসাবের নিয়ম ও রিমাইন্ডার</Link>
-    </BottomSheet>
-  );
-}
+import { usePlace } from "@/lib/usePlace";
+import { PlaceSheet } from "@/components/tools/PlaceSheet";
 
 /** "০০:২৮:১৪" */
 const clockLeft = (ms: number) => countdown(ms).padStart(8, "০");
@@ -89,19 +47,30 @@ export function PrayerHero() {
           </button>
         </div>
 
-        <div className="md:flex md:items-center md:gap-10">
-          <div className="md:min-w-0 md:flex-1">
-            <div className="flex items-baseline justify-between gap-3 md:justify-start md:gap-4">
+        {/* Tablets: the name on the left and the countdown on the right, without the arc. */}
+        <div className="hidden items-end justify-between gap-6 md:flex xl:hidden">
+          <span className="min-h-[4rem] font-display text-5xl font-bold leading-[1.4]">{state?.next.name ?? <Skeleton className="mt-3 h-10 w-28 !bg-white/15" />}</span>
+          <div className="text-right">
+            <p className="text-sm text-hero-muted">শুরু হতে বাকি</p>
+            <p aria-hidden="true" className="min-h-[4.2rem] text-[3.5rem] font-semibold leading-[1.2] tabular-nums">{state && clockLeft(left)}</p>
+            <p className="min-h-7 text-lg font-semibold tabular-nums text-hero-accent">{state && clockTime(state.next.at, place.timeZone)}</p>
+          </div>
+        </div>
+
+        {/* Spoken once a minute, not every second. */}
+        <p aria-live="polite" className="sr-only">{state && `${state.next.name} শুরু হতে ${toBnDigits(Math.floor(minutes / 60))} ঘণ্টা ${toBnDigits(minutes % 60)} মিনিট বাকি`}</p>
+
+        <div className="md:hidden xl:flex xl:items-center xl:gap-10">
+          <div className="xl:min-w-0 xl:flex-1">
+            <div className="flex items-baseline justify-between gap-3 xl:justify-start xl:gap-4">
               <span className="min-h-[3.375rem] font-display text-[2.5rem] font-bold leading-[1.35] md:text-5xl md:leading-[1.4]">{state?.next.name ?? <Skeleton className="mt-2 h-9 w-24 !bg-white/15" />}</span>
               <span className="text-xl font-semibold tabular-nums text-hero-accent">{state && clockTime(state.next.at, place.timeZone)}</span>
             </div>
             <p className="text-[0.9375rem] text-hero-muted">শুরু হতে বাকি</p>
             <p aria-hidden="true" className="min-h-[3.3rem] text-[2.75rem] font-semibold leading-[1.2] tabular-nums md:text-[3.5rem]">{state && clockLeft(left)}</p>
-            {/* Spoken once a minute, not every second. */}
-            <p aria-live="polite" className="sr-only">{state && `${state.next.name} শুরু হতে ${toBnDigits(Math.floor(minutes / 60))} ঘণ্টা ${toBnDigits(minutes % 60)} মিনিট বাকি`}</p>
           </div>
 
-          <div className="mt-1.5 md:w-[26rem] md:max-w-[48%]">
+          <div className="mt-1.5 xl:w-[26rem] xl:max-w-[48%]">
             <svg viewBox="0 0 326 78" className="block w-full" role="img" aria-label={state ? `${state.previous.name} থেকে ${state.next.name}-এর পথে অগ্রগতি` : "নামাজের মাঝের অগ্রগতি"}>
               <path d={arc.whole} fill="none" stroke="currentColor" strokeOpacity=".2" strokeWidth="2" strokeLinecap="round" strokeDasharray="2 6" />
               {state && <path d={arc.done} fill="none" stroke="var(--hero-accent)" strokeWidth="2.5" strokeLinecap="round" />}
@@ -127,7 +96,7 @@ export function PrayerHero() {
           })}
         </ul>
       </div>
-      {open && now !== null && <PlaceSheet place={place} now={now} onClose={() => setOpen(false)} />}
+      {open && <PlaceSheet onClose={() => setOpen(false)} />}
     </section>
   );
 }

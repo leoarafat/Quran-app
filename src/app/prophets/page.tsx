@@ -7,23 +7,30 @@ import { PROPHET_SURAHS, TOPICS } from "@/lib/topics";
 
 export const metadata: Metadata = { title: TOPICS.prophets.title };
 
+/** The four cover colours of the design, in turn. */
+const COVERS = ["bg-tint text-on-tint", "on-deep bg-hero text-on-hero", "bg-gold-soft text-on-gold-soft", "border border-ln bg-sf"];
+
 export default function ProphetsPage() {
   const { surahs } = getIndex();
   return (
-    <TopicPage topic={TOPICS.prophets}>
-      <section>
-        <h2 className="mb-2 font-display text-lg font-semibold">নবীদের নামে সূরা</h2>
-        <ul className="grid grid-cols-2 gap-2 min-[26rem]:grid-cols-3">
-          {PROPHET_SURAHS.map((n) => (
-            <li key={n}>
-              <Link href={`/quran/${n}/`} prefetch={false} className="flex min-h-16 flex-col items-center justify-center rounded-[1.375rem] border border-line bg-surface p-2 text-center hover:border-brand">
-                <span className="font-display font-semibold leading-snug">সূরা {surahs[n - 1].bangla}</span>
-                <span className="text-sm text-muted">{toBnDigits(surahs[n - 1].ayahs)} আয়াত</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
-    </TopicPage>
+    <TopicPage
+      topic={TOPICS.prophets}
+      lead={
+        <section aria-labelledby="named">
+          <h2 id="named" className="mb-2 font-display text-lg font-semibold">নবীদের নামে সূরা</h2>
+          <ul className="grid grid-cols-2 gap-3 md:grid-cols-3">
+            {PROPHET_SURAHS.map((n, i) => (
+              <li key={n}>
+                <Link href={`/quran/${n}/`} prefetch={false} className={`flex h-32 flex-col justify-between rounded-md p-3.5 ${COVERS[i % COVERS.length]}`}>
+                  {/* The Arabic name comes from the Quran data, never typed. */}
+                  <span lang="ar" dir="rtl" className="font-arabic text-[1.75rem] leading-[1.9]">{surahs[n - 1].arabic}</span>
+                  <span className="leading-snug"><span className="block font-display font-semibold">সূরা {surahs[n - 1].bangla}</span><span className="block text-[0.8125rem] opacity-90">{toBnDigits(surahs[n - 1].ayahs)} আয়াত</span></span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      }
+    />
   );
 }

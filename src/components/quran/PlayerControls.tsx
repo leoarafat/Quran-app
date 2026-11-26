@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { LoaderCircle, RotateCcw } from "lucide-react";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { Toggle } from "@/components/ui/Toggle";
 import { setOptions, setReciter, setSleep, skip, stop, toggle, useClock, usePlayer, useProgress, type PlayerState } from "@/lib/audio/player";
@@ -21,8 +20,8 @@ export const isBusy = (status: PlayerState["status"]) => status === "playing" ||
 export const reciterName = (id: string) => RECITERS.find((r) => r.id === id)!.name;
 
 export function PlayIcon({ status, className }: { status: PlayerState["status"]; className: string }) {
-  if (status === "loading") return <LoaderCircle aria-hidden className={`${className} animate-spin`} />;
-  if (status === "error") return <RotateCcw aria-hidden className={className} />;
+  if (status === "loading") return <Icon name="timer" className={`${className} animate-spin`} />;
+  if (status === "error") return <Icon name="undo" className={className} />;
   return <Icon name={isBusy(status) ? "pause" : "play"} className={className} />;
 }
 

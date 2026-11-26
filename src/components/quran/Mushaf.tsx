@@ -5,14 +5,17 @@ import { playAyah, toggle, type Track } from "@/lib/audio/player";
 import { toBnDigits } from "@/lib/bn";
 import { byPage } from "@/lib/reader/prefs";
 import type { Ayah } from "@/lib/quran/types";
+import { useLongPress } from "@/lib/useLongPress";
 import { useAyahAudio } from "./AyahCard";
 
 function Verse({ ayah, track, onOpen }: { ayah: Ayah; track: Track; onOpen: (a: number) => void }) {
   const { here, sounding } = useAyahAudio(track.surah, ayah.a);
   const open = () => { if (!window.getSelection()?.toString()) onOpen(ayah.a); };
+  const hold = useLongPress(() => onOpen(ayah.a));
   return (
     <>
       <span
+        {...hold}
         id={`a${ayah.a}`}
         data-ayah={ayah.a}
         role="button"
@@ -20,7 +23,7 @@ function Verse({ ayah, track, onOpen }: { ayah: Ayah; track: Track; onOpen: (a: 
         aria-haspopup="dialog"
         onClick={open}
         onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } }}
-        className={`cursor-pointer scroll-mt-28 rounded-lg ${here ? "bg-gs" : ""}`}
+        className={`pointer-coarse:select-none pointer-coarse:[-webkit-touch-callout:none] cursor-pointer scroll-mt-28 rounded-lg ${here ? "bg-gs" : ""}`}
       >
         {ayah.ar}
       </span>

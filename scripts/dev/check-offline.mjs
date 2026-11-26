@@ -42,7 +42,7 @@ try {
   await send("Page.enable");
 
   await go("/about/");
-  await evaluate(`const d=new Date(); localStorage.setItem('noor.welcome.v1', d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()); 1`);
+  await evaluate(`const d=new Date(); localStorage.setItem('noor.onboarded.v1','1'); localStorage.setItem('noor.welcome.v1', d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()); 1`);
   await go("/", 2000);
   console.log("worker:", await evaluate(`Promise.race([navigator.serviceWorker.ready.then(()=>'ready'), new Promise(r=>setTimeout(()=>r('timeout'),90000))])`));
   await go("/", 4000);

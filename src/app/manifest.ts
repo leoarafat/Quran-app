@@ -13,7 +13,8 @@ export default function manifest(): MetadataRoute.Manifest {
     scope: "/",
     display: "standalone",
     orientation: "portrait-primary",
-    background_color: "#06130e",
+    // The system draws the splash screen from this colour and the icon.
+    background_color: "#0a1511",
     theme_color: "#06130e",
     icons: [
       { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },

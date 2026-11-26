@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { Mic, MicOff } from "lucide-react";
+import { Icon } from "@/components/ui/Icon";
 
 type Recognition = {
   lang: string;
@@ -59,7 +59,7 @@ export function VoiceButton({ onText }: { onText: (text: string) => void }) {
   return (
     <div className="contents">
       <button type="button" onClick={press} aria-pressed={listening} aria-label={listening ? "শোনা বন্ধ করুন" : "ভয়েস সার্চ"} className={`grid size-14 shrink-0 place-items-center rounded-[1.125rem] border text-ac ${listening ? "border-gd bg-gs" : "border-ln2 bg-sf"}`}>
-        {listening ? <MicOff aria-hidden className="size-5" /> : <Mic aria-hidden className="size-5" />}
+        {listening ? <Icon name="micoff" className="size-5" /> : <Icon name="mic" className="size-5" />}
       </button>
       <p role="status" className="order-last w-full text-sm text-ink2 empty:hidden">{message}</p>
     </div>

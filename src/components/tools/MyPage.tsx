@@ -1,12 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { Chip } from "@/components/ui/Chip";
+import { Icon } from "@/components/ui/Icon";
+import { LinkList } from "@/components/ui/LinkList";
+import { ProgressRing } from "@/components/ui/ProgressRing";
+import { Skeleton } from "@/components/ui/Skeleton";
+import { showToast } from "@/components/ui/Toast";
+import { weekFromSaturday } from "@/lib/tools/week";
 import { toBnDigits } from "@/lib/bn";
 import { useLibrary } from "@/lib/bookmarks/store";
 import { parseRecent, RECENT_KEY } from "@/lib/quran/recent";
 import { EMPTY_KHATM, PAGES, readKhatm } from "@/lib/tools/khatm";
-import { parseScores, QUESTIONS } from "@/lib/tools/quiz";
+import { badges, parseScores, QUESTIONS } from "@/lib/tools/quiz";
 import { dayKey, EMPTY_ROUTINE, lastDays, progress, readRoutine } from "@/lib/tools/routine";
 import { streak } from "@/lib/tools/streak";
 import { parseTasbih } from "@/lib/tools/tasbih";
@@ -15,20 +21,8 @@ import { useInBrowser, useStored } from "@/lib/useStored";
 
 const raw = (value: string | null) => value;
 
-function Row({ href, title, detail, percent }: { href: string; title: string; detail: string; percent?: number }) {
-  return (
-    <li>
-      <Link href={href} className="flex min-h-16 items-center gap-3 rounded-[1.375rem] border border-line bg-surface px-4 py-3 hover:border-brand">
-        <span className="min-w-0 flex-1">
-          <span className="block font-display font-semibold">{title}</span>
-          <span className="block text-sm text-muted">{detail}</span>
-          {percent !== undefined && <span aria-hidden className="mt-1.5 block h-1.5 rounded bg-line-strong"><span className="block h-1.5 rounded bg-accent" style={{ width: `${Math.min(100, percent)}%` }} /></span>}
-        </span>
-        <ChevronRight aria-hidden className="size-5 shrink-0 text-accent" />
-      </Link>
-    </li>
-  );
-}
+const card = "rounded-md border border-ln bg-sf p-4 shadow-card";
+const LETTERS = ["শনি", "রবি", "সোম", "মঙ্গল", "বুধ", "বৃহঃ", "শুক্র"];
 
 function Inner({ now, names }: { now: number; names: string[] }) {
   const today = new Date(now);
@@ -48,40 +42,97 @@ function Inner({ now, names }: { now: number; names: string[] }) {
   const weekTicks = week.reduce((n, d) => n + progress(routine, d).done, 0);
   const notes = [...library.items, ...library.hadiths].filter((b) => b.note).length;
   const marked = [...library.items].sort((a, b) => b.updated - a.updated).slice(0, 3);
-  const pill = "flex min-h-11 items-center rounded-full border border-line-strong bg-surface px-4 hover:border-brand";
+  const prayerRun = streak(today, (d) => progress(routine, d).prayers === 5);
+  const share = khatm.page / PAGES;
+  const days = weekFromSaturday(today);
+  const most = Math.max(1, ...days.map((d) => khatm.log[d] ?? 0));
+  const quizRun = streak(today, (d) => scores.daily[d] !== undefined);
+
+  const shareProgress = async () => {
+    const text = `নূর কুরআন-এ আমার অগ্রগতি\nখতম: ${toBnDigits(khatm.page)}/${toBnDigits(PAGES)} পৃষ্ঠা\nপাঁচ ওয়াক্তের ধারা: ${toBnDigits(prayerRun)} দিন`;
+    try {
+      if (navigator.share) await navigator.share({ text });
+      else {
+        await navigator.clipboard.writeText(text);
+        showToast("কপি হয়েছে");
+      }
+    } catch (error) {
+      if ((error as DOMException).name !== "AbortError") showToast("শেয়ার করা যায়নি");
+    }
+  };
 
   return (
-    <div className="space-y-5">
-      <section>
-        <h2 className="mb-2 font-display text-lg font-semibold">আজ</h2>
-        <ul className="space-y-2">
-          <Row href="/amal/daily/" title="নামাজ ও আমল" detail={`${toBnDigits(amal.done)}/${toBnDigits(amal.total)} টিক · ওয়াক্ত ${toBnDigits(amal.prayers)}/৫`} percent={(amal.done / amal.total) * 100} />
-          <Row href="/amal/khatm/" title="তিলাওয়াতের লক্ষ্য" detail={`${toBnDigits(khatm.log[day] ?? 0)}/${toBnDigits(khatm.goal)} পৃষ্ঠা`} percent={((khatm.log[day] ?? 0) / khatm.goal) * 100} />
-          <Row href="/tasbih/" title="তাসবিহ" detail={`আজ ${toBnDigits(tasbih.today)} বার`} />
-          <Row href="/quiz/" title="দৈনিক কুইজ" detail={scores.daily[day] === undefined ? "আজ এখনো খেলা হয়নি" : `আজ ${toBnDigits(scores.daily[day])}/${toBnDigits(QUESTIONS)}`} />
-        </ul>
-      </section>
-      <section>
-        <h2 className="mb-2 font-display text-lg font-semibold">গত ৭ দিন ও অগ্রগতি</h2>
-        <ul className="space-y-2">
-          <Row href="/amal/khatm/" title="চলতি খতম" detail={`${toBnDigits(khatm.page)}/${toBnDigits(PAGES)} পৃষ্ঠা · সম্পন্ন ${toBnDigits(khatm.completed.length)}`} percent={(khatm.page / PAGES) * 100} />
-          <Row href="/amal/khatm/" title="সাপ্তাহিক তিলাওয়াত" detail={`${toBnDigits(weekPages)} পৃষ্ঠা · টানা ${toBnDigits(streak(today, (d) => (khatm.log[d] ?? 0) > 0))} দিন`} />
-          <Row href="/amal/daily/" title="সাপ্তাহিক আমল" detail={`${toBnDigits(weekTicks)}টি টিক · পাঁচ ওয়াক্ত পূর্ণ টানা ${toBnDigits(streak(today, (d) => progress(routine, d).prayers === 5))} দিন`} />
-          <Row href="/bookmarks/" title="বুকমার্ক ও নোট" detail={`আয়াত ${toBnDigits(library.items.length)} · হাদিস ${toBnDigits(library.hadiths.length)} · নোট ${toBnDigits(notes)}`} />
-        </ul>
-      </section>
-      {recent.length > 0 && (
-        <section>
-          <h2 className="mb-2 font-display text-lg font-semibold">সম্প্রতি পড়া সূরা</h2>
-          <ul className="flex flex-wrap gap-2">{recent.map((n) => <li key={n}><Link href={`/quran/${n}/`} className={pill}>{names[n - 1]}</Link></li>)}</ul>
+    <div className="space-y-5 lg:grid lg:grid-cols-2 lg:items-start lg:gap-6 lg:space-y-0">
+      <div className="space-y-5">
+        <div className="grid grid-cols-2 gap-3">
+          <Link href="/amal/daily/" className={`${card} flex flex-col items-center`}>
+            <ProgressRing value={amal.done / amal.total} size={96} label={`আজকের আমল ${toBnDigits(amal.total)}-এর মধ্যে ${toBnDigits(amal.done)}`}><b className="text-2xl tabular-nums">{toBnDigits(amal.done)}/{toBnDigits(amal.total)}</b><span className="text-[0.6875rem] text-ink2">আজকের আমল</span></ProgressRing>
+          </Link>
+          <Link href="/amal/khatm/" className={`${card} flex flex-col items-center`}>
+            <ProgressRing value={share} size={96} label={`খতমের ${toBnDigits(Math.floor(share * 100))} শতাংশ`}><b className="text-2xl tabular-nums">{toBnDigits(Math.floor(share * 100))}%</b><span className="text-[0.6875rem] text-ink2">খতম</span></ProgressRing>
+          </Link>
+        </div>
+
+        <section aria-label="ধারা" className={`${card} flex items-center gap-3.5`}>
+          <Icon name="flame" className="size-7 shrink-0 text-gd" />
+          <p className="min-w-0 flex-1 leading-snug"><b className="block font-display text-lg">পাঁচ ওয়াক্তের ধারা {toBnDigits(prayerRun)} দিন</b><span className="block text-[0.8125rem] text-ink2">তিলাওয়াতে টানা {toBnDigits(streak(today, (d) => (khatm.log[d] ?? 0) > 0))} দিন</span></p>
+          <Chip className="!bg-gs !text-gt" onClick={() => void shareProgress()}>শেয়ার</Chip>
         </section>
-      )}
-      {marked.length > 0 && (
-        <section>
-          <h2 className="mb-2 font-display text-lg font-semibold">সাম্প্রতিক বুকমার্ক</h2>
-          <ul className="flex flex-wrap gap-2">{marked.map((b) => <li key={`${b.s}:${b.a}`}><Link href={`/quran/${b.s}/#a${b.a}`} className={pill}>{names[b.s - 1]} {toBnDigits(b.s)}:{toBnDigits(b.a)}</Link></li>)}</ul>
+
+        <section aria-labelledby="week" className={card}>
+          <div className="mb-3 flex items-baseline justify-between gap-3"><h2 id="week" className="font-display font-semibold">সাপ্তাহিক রিপোর্ট</h2><span className="text-[0.8125rem] text-ink2">পড়া পৃষ্ঠা</span></div>
+          <ul className="grid grid-cols-7 items-end gap-2 text-center">
+            {days.map((d, i) => {
+              const pages = khatm.log[d] ?? 0;
+              return (
+                <li key={d}>
+                  <span aria-hidden="true" className="flex h-20 items-end"><span className={`block w-full rounded-md ${pages ? "bg-gd" : "bg-ln"}`} style={{ height: pages ? `${(pages / most) * 100}%` : "4px" }} /></span>
+                  <span aria-hidden="true" className={`mt-1 block text-[0.6875rem] ${d === day ? "font-bold text-ac" : "text-ink2"}`}>{LETTERS[i]}</span>
+                  <span className="sr-only">{LETTERS[i]}: {toBnDigits(pages)} পৃষ্ঠা</span>
+                </li>
+              );
+            })}
+          </ul>
+          <p className="mt-2 text-[0.8125rem] text-ink2">গত ৭ দিনে {toBnDigits(weekPages)} পৃষ্ঠা ও আমলে {toBnDigits(weekTicks)}টি টিক · সম্পন্ন খতম {toBnDigits(khatm.completed.length)}</p>
         </section>
-      )}
+
+        <section aria-labelledby="badges">
+          <h2 id="badges" className="mb-2 font-display text-lg font-semibold">কুইজের ব্যাজ</h2>
+          <ul className="grid grid-cols-3 gap-x-2 gap-y-4 text-center xs:grid-cols-4">
+            {badges(scores, quizRun).map((b) => (
+              <li key={b.name} className="flex flex-col items-center gap-1.5">
+                <span aria-hidden="true" className={`grid size-14 place-items-center rounded-full border-[1.5px] ${b.earned ? "border-gd bg-gs text-gt" : "border-ln2 text-ink2"}`}><Icon name={b.earned ? "star" : "lock"} /></span>
+                <span className="text-xs leading-snug">{b.name}<span className="sr-only">{b.earned ? " (পেয়েছেন)" : " (বাকি)"}</span></span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </div>
+
+      <div className="space-y-5">
+        <LinkList
+          items={[
+            { href: "/amal/daily/", title: "নামাজ ও আমল", hint: `আজ ${toBnDigits(amal.done)}/${toBnDigits(amal.total)} টিক · ওয়াক্ত ${toBnDigits(amal.prayers)}/৫`, icon: "deeds" },
+            { href: "/amal/khatm/", title: "তিলাওয়াতের লক্ষ্য", hint: `আজ ${toBnDigits(khatm.log[day] ?? 0)}/${toBnDigits(khatm.goal)} পৃষ্ঠা`, icon: "mushaf" },
+            { href: "/tasbih/", title: "তাসবিহ", hint: `আজ ${toBnDigits(tasbih.today)} বার`, icon: "tasbih" },
+            { href: "/quiz/", title: "দৈনিক কুইজ", hint: scores.daily[day] === undefined ? "আজ এখনো খেলা হয়নি" : `আজ ${toBnDigits(scores.daily[day])}/${toBnDigits(QUESTIONS)}`, icon: "trophy" },
+            { href: "/bookmarks/", title: "বুকমার্ক ও নোট", hint: `আয়াত ${toBnDigits(library.items.length)} · হাদিস ${toBnDigits(library.hadiths.length)} · নোট ${toBnDigits(notes)}`, icon: "bookmark" },
+            { href: "/data/", title: "আমার ডেটা", hint: "ব্যাকআপ ও রিস্টোর", icon: "download" },
+          ]}
+        />
+        {recent.length > 0 && (
+          <section>
+            <h2 className="mb-2 font-display text-lg font-semibold">সম্প্রতি পড়া সূরা</h2>
+            <ul className="flex flex-wrap gap-2">{recent.map((n) => <li key={n}><Chip href={`/quran/${n}/`}>{names[n - 1]}</Chip></li>)}</ul>
+          </section>
+        )}
+        {marked.length > 0 && (
+          <section>
+            <h2 className="mb-2 font-display text-lg font-semibold">সাম্প্রতিক বুকমার্ক</h2>
+            <ul className="flex flex-wrap gap-2">{marked.map((b) => <li key={`${b.s}:${b.a}`}><Chip href={`/quran/${b.s}/#a${b.a}`}>{names[b.s - 1]} {toBnDigits(b.s)}:{toBnDigits(b.a)}</Chip></li>)}</ul>
+          </section>
+        )}
+      </div>
     </div>
   );
 }
@@ -89,5 +140,5 @@ function Inner({ now, names }: { now: number; names: string[] }) {
 export function MyPage({ names }: { names: string[] }) {
   const ready = useInBrowser();
   const now = useNow();
-  return ready && now !== null ? <Inner now={now} names={names} /> : <p className="text-muted">আনা হচ্ছে…</p>;
+  return ready && now !== null ? <Inner now={now} names={names} /> : <Skeleton className="h-52 !rounded-2xl" />;
 }

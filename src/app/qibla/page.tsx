@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import { PageHeader } from "@/components/PageHeader";
+import { ScreenHeader } from "@/components/shell/ScreenHeader";
 import { QiblaCompass } from "@/components/tools/QiblaCompass";
 
 export const metadata: Metadata = { title: "কিবলা" };
 
 export default function QiblaPage() {
   return (
-    <div className="mx-auto max-w-md lg:max-w-2xl">
-      <PageHeader title="কিবলা" subtitle="কাবার দিক নির্ণয়" />
+    <div className="mx-auto max-w-md md:max-w-lg">
+      <ScreenHeader title="কিবলা" back={{ href: "/more/", label: "আরও পাতায় ফিরে যান" }} />
       <QiblaCompass />
     </div>
   );

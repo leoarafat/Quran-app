@@ -1,6 +1,8 @@
 // What can be done with one ayah, wherever it is shown.
 import { showToast } from "@/components/ui/Toast";
 import { toBnDigits } from "@/lib/bn";
+import { askFolder } from "@/lib/bookmarks/folderPrompt";
+import { haptic } from "@/lib/haptic";
 import { add, remove, restore } from "@/lib/bookmarks/model";
 import { getLibrary, update } from "@/lib/bookmarks/store";
 
@@ -32,13 +34,16 @@ export async function shareAyahText(where: Where, ayah: Text, credit: string): P
   }
 }
 
-/** Adds or removes the bookmark and says so. A removal can be undone. */
+/** Adds the bookmark and asks for its folder, or removes it. A removal can be undone. */
 export function toggleAyahBookmark(surah: number, ayah: number) {
   const existing = getLibrary().items.find((b) => b.s === surah && b.a === ayah);
   // A note would be lost with the bookmark, so that is removed only from the bookmarks page.
   if (existing?.note) return showToast("এতে নোট আছে, মুছতে বুকমার্ক পাতায় যান");
   const saved = update((library) => (existing ? remove(library, surah, ayah) : add(library, surah, ayah, Date.now())));
   if (!saved) return showToast("ফোনে সেভ করা যায়নি");
-  if (!existing) return showToast("বুকমার্ক হয়েছে");
+  if (!existing) {
+    haptic();
+    return askFolder({ surah, ayah });
+  }
   showToast("বুকমার্ক সরানো হয়েছে", { label: "ফিরিয়ে আনুন", run: () => update((library) => restore(library, existing)) });
 }

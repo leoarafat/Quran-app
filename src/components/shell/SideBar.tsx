@@ -22,7 +22,7 @@ export function SideBar() {
             const active = isActivePath(href, pathname);
             return (
               <li key={href}>
-                <Link href={href} aria-label={label} title={label} aria-current={active ? "page" : undefined} className={`flex min-h-11 items-center justify-center gap-3 rounded-xl text-[0.9375rem] lg:justify-start lg:px-3 ${active ? "bg-ac/10 font-semibold text-ink" : "text-ink2 hover:bg-ln"}`}>
+                <Link href={href} transitionTypes={["tab"]} aria-label={label} title={label} aria-current={active ? "page" : undefined} className={`flex min-h-11 items-center justify-center gap-3 rounded-xl text-[0.9375rem] lg:justify-start lg:px-3 ${active ? "bg-ac/10 font-semibold text-ink" : "text-ink2 hover:bg-ln"}`}>
                   <Icon name={icon} className={`size-[1.375rem] ${active ? "text-ac" : ""}`} />
                   <span className="hidden lg:inline">{label}</span>
                 </Link>

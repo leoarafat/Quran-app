@@ -35,10 +35,10 @@ function Quick() {
 
 export { Quick };
 
-/** Phones and small tablets: a list, a block layout and a rail, as on the phone design. */
+/** Phones: a list, a block layout and a rail, as on the phone design. */
 export function ExploreSmall() {
   return (
-    <div className="space-y-7 xl:hidden">
+    <div className="space-y-7 md:hidden">
       <section aria-labelledby="x-reading">
         <h2 id="x-reading" className={`${title} mb-1.5`}>{reading.title}</h2>
         <ul className="rounded-md border border-ln bg-sf px-4 py-1 shadow-card">
@@ -83,6 +83,24 @@ export function ExploreSmall() {
           ))}
         </ul>
       </section>
+    </div>
+  );
+}
+
+/** Tablets: one compact card a group, as on the tablet design. Every page stays linked. */
+export function ExploreTablet() {
+  return (
+    <div className="hidden grid-cols-2 gap-5 md:grid xl:hidden">
+      {FEATURE_GROUPS.map((group, i) => (
+        <section key={group.title} aria-labelledby={`x-tab-${i}`} className={`rounded-md border border-ln bg-sf px-4.5 pb-1.5 pt-4 shadow-card ${i === 2 ? "col-span-2" : ""}`}>
+          <h2 id={`x-tab-${i}`} className="font-display text-[1.0625rem] font-semibold">{group.title}</h2>
+          <ul className="flex flex-wrap gap-x-4">
+            {pages(group.items).map((f) => (
+              <li key={f.href}><Link href={f.href} className="flex min-h-11 items-center text-sm text-ink2 hover:text-ink hover:underline">{f.title}</Link></li>
+            ))}
+          </ul>
+        </section>
+      ))}
     </div>
   );
 }
