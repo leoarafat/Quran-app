@@ -174,7 +174,7 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
           <li key={item.id} role="presentation">
             {item.group && item.group !== items[i - 1]?.group && <p aria-hidden className="px-1.5 pb-1 pt-2 text-xs text-ink2">{item.group}</p>}
             {/* The keyboard works from the box above; this is for the pointer. */}
-            <div id={`${listId}-${i}`} role="option" aria-selected={i === chosen} onClick={() => open(item)} onMouseMove={() => setActive(i)} className={`min-h-11 cursor-pointer rounded-md border px-4 py-2.5 ${i === chosen ? "border-transparent bg-gs" : "border-ln"}`}>
+            <div id={`${listId}-${i}`} role="option" aria-selected={i === chosen} onClick={() => open(item)} onMouseMove={() => setActive(i)} className={`min-h-11 cursor-pointer rounded-md border px-4 py-2.5 ${i === chosen ? "border-ac bg-tint ring-1 ring-ac" : "border-ln"}`}>
               {item.node}
             </div>
           </li>

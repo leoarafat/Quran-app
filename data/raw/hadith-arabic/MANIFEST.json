@@ -1,0 +1,20 @@
+{
+ "source": "https://github.com/fawazahmed0/hadith-api (repository licence: Unlicense). Arabic text only; its Bangla editions are not used because they name no translator.",
+ "fetched": "2026-11-25",
+ "files": {
+  "ara-bukhari.min.json": {
+   "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-bukhari.min.json",
+   "fetched": "2026-11-25",
+   "bytes": 9409647,
+   "sha256": "f887d8724f75fb6e1d5d29342a173af5346ad9b933173c85e6e3cb570063ea33",
+   "packedBytes": 1477714
+  },
+  "ara-muslim.min.json": {
+   "url": "https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-muslim.min.json",
+   "fetched": "2026-11-25",
+   "bytes": 8329204,
+   "sha256": "2cb296f3455ff8a3da9f6a0ca3de75da675788b2fb446ad316df297838e48217",
+   "packedBytes": 1179257
+  }
+ }
+}

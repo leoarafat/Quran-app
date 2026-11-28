@@ -4,8 +4,8 @@ import "@fontsource/tiro-bangla/400.css";
 import "./globals.css";
 import { fontVariables } from "./fonts";
 import { SideBar } from "@/components/shell/SideBar";
-import { TabBar } from "@/components/shell/TabBar";
 import { TopBar } from "@/components/shell/TopBar";
+import { TabBar } from "@/components/shell/TabBar";
 import { IconSprite } from "@/components/ui/Icon";
 import { Toaster } from "@/components/ui/Toast";
 import { FolderPrompt } from "@/components/bookmarks/FolderPrompt";
@@ -25,7 +25,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#06130e",
+  themeColor: "#0f4c3a",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -42,7 +42,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <SideBar />
           <div className="min-w-0 flex-1">
             <TopBar surahNames={getIndex().surahs.map((x) => x.bangla)} />
-            <main id="main" className="mx-auto max-w-5xl px-4 pb-32 pt-[calc(1.5rem+var(--safe-top))] md:px-6 md:pb-16 md:pt-7 lg:max-w-[75rem] lg:px-8">
+            <main id="main" className="mx-auto max-w-5xl px-4 pb-32 pt-[calc(1.5rem+var(--safe-top))] md:px-6 md:pb-16 md:pt-6 lg:max-w-[75rem] lg:px-8">
               {/* Moving between the main tabs fades one page into the next. */}
               <ViewTransition default={{ tab: "tab-fade", default: "none" }}>
                 <div>{children}</div>

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState, ViewTransition } from "react";
 import { BottomSheet } from "@/components/ui/BottomSheet";
 import { Chip } from "@/components/ui/Chip";
@@ -64,7 +65,7 @@ function Dock({ track, current, playing, previous, next, onSheet }: { track: Tra
     );
   return (
     <>
-      <div aria-hidden="true" className="pointer-events-none fixed inset-x-0 bottom-0 z-20 h-32 bg-linear-to-b from-transparent to-bg to-70% md:left-[18.5rem] lg:hidden" />
+      <div aria-hidden="true" className="pointer-events-none fixed inset-x-0 bottom-0 z-20 h-32 bg-linear-to-b from-transparent to-bg to-70% md:left-[13.75rem] lg:hidden" />
       <nav aria-label="রিডার নিয়ন্ত্রণ" className="fixed inset-x-3 bottom-[calc(1rem+env(safe-area-inset-bottom))] z-30 mx-auto flex max-w-lg items-center justify-between rounded-[1.625rem] border border-ln bg-sf px-2.5 py-1.5 shadow-float md:left-[calc(18.5rem+0.75rem)] lg:hidden">
         {around(previous, "prev", "আগের সূরা")}
         <button type="button" aria-haspopup="dialog" onClick={() => onSheet("jump")} className="flex h-11 items-center gap-2 whitespace-nowrap rounded-xl px-2.5 text-[0.9375rem] font-semibold max-xs:px-1">
@@ -101,6 +102,15 @@ export function Reader({ data, surahs, credit }: { data: SurahData; surahs: Sura
   /** set once the visitor marks the stopping place, so scrolling on does not move it */
   const marked = useRef(false);
   const playing = usePlayerValue((s) => (s.track?.surah === data.n && s.status !== "idle" ? s.position.ayah : null));
+  // When this surah ends and the next one starts by itself, the page moves on with the voice.
+  const sounding = usePlayerValue((s) => (s.track && !s.track.list ? s.track.surah : 0));
+  const wasSounding = useRef(sounding);
+  const router = useRouter();
+  useEffect(() => {
+    const before = wasSounding.current;
+    wasSounding.current = sounding;
+    if (prefs.follow && before === data.n && sounding === data.n + 1) router.push(`/quran/${sounding}/`);
+  }, [sounding, data.n, prefs.follow, router]);
   const library = useLibrary();
 
   const shown = playing ?? current;
@@ -268,8 +278,8 @@ export function Reader({ data, surahs, credit }: { data: SurahData; surahs: Sura
           </PinchArea>
 
           <nav aria-label="অন্য সূরা" className="mt-6 flex gap-3 px-2">
-            {previous ? <Link href={`/quran/${previous.n}/`} className="flex min-h-14 flex-1 items-center gap-2 rounded-full border border-ln2 bg-sf px-4 font-display font-semibold"><Icon name="back" className="size-5 text-ac" /><span className="truncate">{previous.bangla}</span></Link> : <span className="flex-1" />}
-            {next ? <Link href={`/quran/${next.n}/`} className="flex min-h-14 flex-1 items-center justify-end gap-2 rounded-full border border-ln2 bg-sf px-4 font-display font-semibold"><span className="truncate">{next.bangla}</span><Icon name="chev" className="size-5 text-ac" /></Link> : <span className="flex-1" />}
+            {previous ? <Link href={`/quran/${previous.n}/`} className="flex min-h-14 min-w-0 flex-1 items-center gap-2 rounded-full border border-ln2 bg-sf px-4 font-display font-semibold"><Icon name="back" className="size-5 text-ac" /><span className="truncate">{previous.bangla}</span></Link> : <span className="flex-1" />}
+            {next ? <Link href={`/quran/${next.n}/`} className="flex min-h-14 min-w-0 flex-1 items-center justify-end gap-2 rounded-full border border-ln2 bg-sf px-4 font-display font-semibold"><span className="truncate">{next.bangla}</span><Icon name="chev" className="size-5 text-ac" /></Link> : <span className="flex-1" />}
           </nav>
           <p className="mt-4 px-2 text-center text-sm text-ink2">{credit} · <Link href="/about/" className="underline">উৎস ও শর্ত</Link></p>
         </div>

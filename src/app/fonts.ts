@@ -23,6 +23,46 @@ const amiriLatin = localFont({
   src: [{ path: "../../node_modules/@fontsource/amiri-quran/files/amiri-quran-latin-400-normal.woff2", weight: "400" }],
 });
 
+// Bangla digits only, from the book face. It stands first in every font stack, so numbers read
+// like print whichever Bangla face is chosen (Hind Siliguri's ১ is easily mistaken).
+const bnDigits = localFont({
+  variable: "--f-digits",
+  display: "swap",
+  adjustFontFallback: false,
+  declarations: [{ prop: "unicode-range", value: "U+09E6-09EF" }],
+  src: [
+    { path: "../../node_modules/@fontsource/noto-serif-bengali/files/noto-serif-bengali-bengali-400-normal.woff2", weight: "400" },
+    { path: "../../node_modules/@fontsource/noto-serif-bengali/files/noto-serif-bengali-bengali-500-normal.woff2", weight: "500" },
+    { path: "../../node_modules/@fontsource/noto-serif-bengali/files/noto-serif-bengali-bengali-600-normal.woff2", weight: "600" },
+    { path: "../../node_modules/@fontsource/noto-serif-bengali/files/noto-serif-bengali-bengali-700-normal.woff2", weight: "700" },
+  ],
+});
+
+const anek = localFont({
+  variable: "--f-anek",
+  display: "swap",
+  adjustFontFallback: false,
+  declarations: [{ prop: "unicode-range", value: "U+0951-0952,U+0964-0965,U+0980-09FE,U+1CD0,U+1CD2,U+1CD5-1CD6,U+1CD8,U+1CE1,U+1CEA,U+1CED,U+1CF2,U+1CF5-1CF7,U+200C-200D,U+20B9,U+25CC,U+A8F1" }],
+  src: [
+    { path: "../../node_modules/@fontsource/anek-bangla/files/anek-bangla-bengali-500-normal.woff2", weight: "500" },
+    { path: "../../node_modules/@fontsource/anek-bangla/files/anek-bangla-bengali-600-normal.woff2", weight: "600" },
+    { path: "../../node_modules/@fontsource/anek-bangla/files/anek-bangla-bengali-700-normal.woff2", weight: "700" },
+  ],
+});
+
+const anekLatin = localFont({
+  variable: "--f-anek-latin",
+  display: "swap",
+  adjustFontFallback: false,
+  preload: false,
+  declarations: [{ prop: "unicode-range", value: "U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD" }],
+  src: [
+    { path: "../../node_modules/@fontsource/anek-bangla/files/anek-bangla-latin-500-normal.woff2", weight: "500" },
+    { path: "../../node_modules/@fontsource/anek-bangla/files/anek-bangla-latin-600-normal.woff2", weight: "600" },
+    { path: "../../node_modules/@fontsource/anek-bangla/files/anek-bangla-latin-700-normal.woff2", weight: "700" },
+  ],
+});
+
 const hind = localFont({
   variable: "--f-hind",
   display: "swap",
@@ -75,4 +115,4 @@ const notoSerifLatin = localFont({
   ],
 });
 
-export const fontVariables = [amiri, amiriLatin, hind, hindLatin, notoSerif, notoSerifLatin].map((f) => f.variable).concat(hindRestVariable).join(" ");
+export const fontVariables = [bnDigits, anek, anekLatin, amiri, amiriLatin, hind, hindLatin, notoSerif, notoSerifLatin].map((f) => f.variable).concat(hindRestVariable).join(" ");

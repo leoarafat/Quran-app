@@ -8,6 +8,7 @@ export const BACKUP_KEYS: Record<string, string> = {
   "noor.lastRead.v1": "শেষ পড়ার জায়গা",
   "noor.recent.v1": "সম্প্রতি পড়া সূরা",
   "noor.khatm.v1": "খতম ও দৈনিক লক্ষ্য",
+  "noor.plans.v1": "কুরআন প্ল্যানার",
   "noor.routine.v1": "আমলের খাতা",
   "noor.tasbih.v1": "তাসবিহ",
   "noor.quiz.v1": "কুইজের ফল",
@@ -26,7 +27,7 @@ export const BACKUP_KEYS: Record<string, string> = {
 };
 
 /** Copies kept aside or bookkeeping: not worth backing up, but removed by "delete everything". */
-export const OTHER_KEYS = ["noor.bookmarks.unreadable", "noor.khatm.unreadable", "noor.fasts.unreadable", "noor.routine.unreadable", "noor.reminder.shown", "noor.onboarded.v1", "noor.khatm.reminder.shown", "noor.welcome.v1"];
+export const OTHER_KEYS = ["noor.bookmarks.unreadable", "noor.khatm.unreadable", "noor.plans.unreadable", "noor.fasts.unreadable", "noor.routine.unreadable", "noor.reminder.shown", "noor.onboarded.v1", "noor.khatm.reminder.shown", "noor.welcome.v1"];
 
 type Store = Pick<Storage, "getItem" | "setItem" | "removeItem">;
 export type Backup = { app: "noor-quran"; kind: "full"; version: 1; made: string; data: Record<string, string> };

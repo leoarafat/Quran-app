@@ -8,22 +8,26 @@ export const TABS: NavItem[] = [
   { href: "/", label: "হোম", icon: "home" },
   { href: "/quran/", label: "কুরআন", icon: "quran" },
   { href: "/amal/", label: "আমল", icon: "deeds" },
-  { href: "/search/", label: "খুঁজুন", icon: "search" },
+  { href: "/namaz/", label: "নামাজ", icon: "clock" },
   { href: "/more/", label: "আরও", icon: "more" },
 ];
 
-export const SIDE_LINKS: NavItem[] = [
-  { href: "/", label: "হোম", icon: "home" },
-  { href: "/quran/", label: "কুরআন", icon: "quran" },
-  { href: "/hadith/", label: "হাদিস", icon: "hadith" },
-  { href: "/amal/", label: "আমল ও দোয়া", icon: "deeds" },
-  { href: "/namaz/", label: "নামাজ শিক্ষা", icon: "mosque" },
-  { href: "/arabic/", label: "আরবি শিখুন", icon: "book" },
-  { href: "/prayer-times/", label: "নামাজের সময়", icon: "clock" },
-  { href: "/bookmarks/", label: "বুকমার্ক", icon: "bookmark" },
-  { href: "/me/", label: "আমার পাতা", icon: "user" },
-  { href: "/more/", label: "সব টুল", icon: "more" },
-  { href: "/settings/", label: "সেটিংস", icon: "settings" },
+/** The side bar of wide screens, in two groups. */
+export const MAIN_LINKS: { href: string; label: string }[] = [
+  { href: "/", label: "হোম" },
+  { href: "/quran/", label: "কুরআন" },
+  { href: "/amal/surah/", label: "আমলের সূরা" },
+  { href: "/hadith/", label: "হাদিস" },
+  { href: "/amal/", label: "দোয়া ও আমল" },
+  { href: "/namaz/", label: "নামাজ শিক্ষা" },
+  { href: "/prayer-times/", label: "নামাজের সময়" },
+  { href: "/arabic/", label: "আরবি শিখুন" },
+];
+export const MY_LINKS: { href: string; label: string }[] = [
+  { href: "/planner/", label: "প্ল্যানার" },
+  { href: "/bookmarks/", label: "বুকমার্ক" },
+  { href: "/me/", label: "আমার পাতা" },
+  { href: "/more/", label: "সব টুল" },
 ];
 
 const EXTRA_TITLES: [string, string][] = [["/search/", "খুঁজুন"], ["/more/", "আরও"], ["/settings/", "সেটিংস"], ["/about/", "উৎস ও শর্ত"], ["/offline/", "অ্যাপ ইনস্টল"]];

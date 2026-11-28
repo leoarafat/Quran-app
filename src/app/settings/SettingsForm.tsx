@@ -95,7 +95,7 @@ export function SettingsForm({ sample }: { sample: Ayah }) {
       <nav aria-label="সেটিংসের বিভাগ" className="hidden self-start border-r border-ln pr-4 lg:sticky lg:top-[calc(var(--header-h)+var(--safe-top)+1.5rem)] lg:block">
         <ul className="space-y-1">
           {SECTIONS.map(([id, title]) => (
-            <li key={id}><button type="button" aria-current={open === id ? "true" : undefined} onClick={() => setOpen(id)} className={`flex min-h-11 w-full items-center rounded-xl px-3 text-left text-[0.9375rem] ${open === id ? "bg-ac/10 font-semibold" : "text-ink2 hover:bg-ln"}`}>{title}</button></li>
+            <li key={id}><button type="button" aria-current={open === id ? "true" : undefined} onClick={() => setOpen(id)} className={`flex min-h-11 w-full items-center rounded-xl px-3 text-left text-[0.9375rem] ${open === id ? "bg-ac font-semibold text-on-ac shadow-card" : "text-ink2 hover:bg-tint hover:text-ink"}`}>{title}</button></li>
           ))}
         </ul>
       </nav>

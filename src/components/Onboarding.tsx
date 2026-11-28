@@ -98,7 +98,7 @@ function GoalStep({ finish }: { finish: (goal: number | null) => void }) {
       <div className="flex-1 space-y-4">
         <p className="text-ink2">প্রতিদিন কত পৃষ্ঠা তিলাওয়াত করতে চান? ঐচ্ছিক, পরে বদলানো যাবে।</p>
         <div role="group" aria-label="দৈনিক লক্ষ্য" className="grid grid-cols-3 gap-3">
-          {PAGE_GOALS.map((g) => <button key={g} type="button" aria-pressed={goal === g} onClick={() => setChosen(g)} className={`flex min-h-24 flex-col items-center justify-center rounded-md border bg-sf ${goal === g ? "border-ac ring-1 ring-ac" : "border-ln"}`}><b className="text-2xl tabular-nums">{toBnDigits(g)}</b><span className="text-[0.8125rem] text-ink2">পৃষ্ঠা/দিন</span></button>)}
+          {PAGE_GOALS.map((g) => <button key={g} type="button" aria-pressed={goal === g} onClick={() => setChosen(g)} className={`flex min-h-24 flex-col items-center justify-center rounded-md border bg-sf ${goal === g ? "border-ac bg-tint ring-2 ring-ac" : "border-ln"}`}><b className="text-2xl tabular-nums">{toBnDigits(g)}</b><span className="text-[0.8125rem] text-ink2">পৃষ্ঠা/দিন</span></button>)}
         </div>
         <p className="text-[0.8125rem] text-ink2">পুরো কুরআন {toBnDigits(604)} পৃষ্ঠা। দিনে {toBnDigits(goal)} পৃষ্ঠা পড়লে {toBnDigits(Math.ceil(604 / goal))} দিনে এক খতম।</p>
       </div>

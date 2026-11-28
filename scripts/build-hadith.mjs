@@ -1,6 +1,6 @@
 // Publisher file -> the JSON the app reads. Texts are copied exactly as published.
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { gradeClass } from "./lib/hadith.mjs";
+import { BOOK_TITLES, booksNamed, gradeClass } from "./lib/hadith.mjs";
 import { readHadithSource } from "./lib/hadith-source.mjs";
 
 const root = new URL("../", import.meta.url);
@@ -65,8 +65,17 @@ for (const h of published) {
     match, ...(bukhari ? { bukhari } : {}),
   }));
 }
+// Which collections the publisher's attribution line names. A hadith can be in several.
+// This is the publisher's selection grouped by book, never the complete printed book.
+const named = published.map((h) => [h.id, booksNamed(h.attribution)]);
+const books = Object.entries(BOOK_TITLES).map(([slug, title]) => ({
+  slug, title, hadiths: named.filter(([, list]) => list.includes(slug)).map(([id]) => id).sort(order),
+}));
+
 writeFileSync(new URL("index.json", out), JSON.stringify({
   meta,
+  books,
+  bukhariNumbers: Object.fromEntries(published.filter((h) => checks[h.id].bukhari).map((h) => [h.id, checks[h.id].bukhari])),
   categories: list,
   titles: Object.fromEntries(published.map((h) => [h.id, [h.title, h.cls]])),
 }));

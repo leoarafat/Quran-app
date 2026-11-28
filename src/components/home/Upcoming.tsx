@@ -1,14 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { Icon } from "@/components/ui/Icon";
 import { toBnDigits } from "@/lib/bn";
 import { parseAdjust, upcomingSpecialDays } from "@/lib/tools/hijri";
 import { useNow } from "@/lib/useNow";
 import { useInBrowser, useStored } from "@/lib/useStored";
 
 /** The next fixed day of the Hijri calendar, from the same list as the calendar page. */
-export function Upcoming() {
+export function Upcoming({ tone = "soft" }: { /** the green card of the phone home page, or the cream one of the side bar */ tone?: "soft" | "deep" }) {
   const ready = useInBrowser();
   const now = useNow();
   const adjust = useStored("noor.hijri.adjust.v1", parseAdjust);
@@ -17,15 +16,10 @@ export function Upcoming() {
   if (!next) return null;
   const date = new Intl.DateTimeFormat("bn-BD", { day: "numeric", month: "long" }).format(next.date);
   return (
-    <Link href="/calendar/" className="block rounded-md border border-ln bg-sf p-4 shadow-card hover:border-ac">
-      <h2 className="font-display text-base font-semibold">আসন্ন</h2>
-      <span className="mt-2 flex gap-2.5">
-        <Icon name="moon" className="size-[1.375rem] text-gd" />
-        <span>
-          <b className="block text-[0.9375rem]">{next.name}</b>
-          <span className="block text-[0.8125rem] text-ink2">{next.inDays === 0 ? "আজ" : `${toBnDigits(next.inDays)} দিন পর`} · {date} (চাঁদ দেখা সাপেক্ষে)</span>
-        </span>
-      </span>
+    <Link href="/calendar/" className={`flex shrink-0 flex-col gap-0.5 p-4 ${tone === "deep" ? "on-deep rounded-[1.25rem] bg-hero p-4.5 text-on-hero" : "rounded-2xl bg-gold-soft"}`}>
+      <span className={`text-xs font-semibold ${tone === "deep" ? "text-hero-accent" : "text-gt"}`}>আসন্ন</span>
+      <span className="font-display text-lg font-semibold">{next.name}</span>
+      <span className={`text-[0.8125rem] ${tone === "deep" ? "text-hero-muted" : "text-on-gold-soft"}`}>{next.inDays === 0 ? "আজ" : `${toBnDigits(next.inDays)} দিন পর`} · {date} (চাঁদ দেখা সাপেক্ষে)</span>
     </Link>
   );
 }

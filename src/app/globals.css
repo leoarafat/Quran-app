@@ -9,23 +9,25 @@
  */
 :root,
 :root[data-theme="paper"] {
-  --bg: #f6f1e6;
-  --sf: #fffdf8;
-  --ink: #12201a;
-  --ink2: #4a5a52;
-  --ln: rgba(18, 32, 26, 0.09);
-  --ac: #1f6048;
-  --gd: #b08d3c;
-  --gt: #7a5c14;
-  --gs: rgba(176, 141, 60, 0.18);
-  --ln2: rgba(18, 32, 26, 0.14);
-  --rail: #fbf8f0;
+  --bg: #f5f7f4;
+  --sf: #ffffff;
+  --ink: #14231d;
+  --ink2: #55665e;
+  --ln: #e3e8e2;
+  --ac: #0f4c3a;
+  --gd: #c4932f;
+  --gt: #7a5410;
+  --gs: rgba(15, 76, 58, 0.10);
+  --ln2: #dce3dc;
+  --rail: #ffffff;
   --on-ac: #ffffff;
-  --tint: #d6eadf;
-  --on-tint: #0a2419;
-  --gold-soft: #f1e6c8;
-  --on-gold-soft: #3b2b05;
-  --card-line: #d9d5cc;
+  --tint: #e8f1ec;
+  --on-tint: #0f4c3a;
+  --gold-soft: #f6eedc;
+  --on-gold-soft: #5c4a24;
+  --card-line: #e3e8e2;
+  --bar: #0f4c3a;
+  --on-bar: #ffffff;
   color-scheme: light;
 }
 
@@ -47,28 +49,36 @@
   --gold-soft: #e3cf98;
   --on-gold-soft: #33260a;
   --card-line: #cfbd97;
+  --bar: #2e5a3f;
+  --on-bar: #ffffff;
   color-scheme: light;
 }
 
 :root[data-theme="night"] {
-  --bg: #0a1511;
-  --sf: #111f19;
-  --ink: #e7efe8;
-  --ink2: #9db1a5;
-  --ln: rgba(231, 239, 232, 0.09);
-  --ac: #5fb08a;
-  --gd: #cdaa5b;
-  --gt: #d9bc77;
-  --gs: rgba(205, 170, 91, 0.18);
-  --ln2: rgba(231, 239, 232, 0.17);
-  --rail: #0d1a15;
-  --on-ac: #06130e;
-  --tint: #17352a;
-  --on-tint: #d6eadf;
-  --gold-soft: #332c16;
-  --on-gold-soft: #f1e6c8;
-  --card-line: #2c3a33;
+  --bg: #0e1525;
+  --sf: #172136;
+  --ink: #e9eff9;
+  --ink2: #a6b4cc;
+  --ln: rgba(233, 239, 249, 0.09);
+  --ac: #4fd6a2;
+  --gd: #d9b262;
+  --gt: #e3c584;
+  --gs: rgba(79, 214, 162, 0.14);
+  --ln2: rgba(233, 239, 249, 0.17);
+  --rail: #121b2e;
+  --on-ac: #04160f;
+  --tint: #1f3352;
+  --on-tint: #dbe8ff;
+  --gold-soft: #33301f;
+  --on-gold-soft: #f3e8c9;
+  --card-line: #2b3750;
+  --bar: #18253f;
+  --on-bar: #eef3fc;
+  --hero: #1b5878;
+  --hero2: #1d3866;
+  --hero-muted: #b9d5c8;
   color-scheme: dark;
+  --hero-tile: rgba(255, 255, 255, 0.1);
 }
 
 :root[data-theme="amoled"] {
@@ -77,10 +87,10 @@
   --ink: #edede8;
   --ink2: #a3b0a8;
   --ln: rgba(255, 255, 255, 0.1);
-  --ac: #5fb08a;
+  --ac: #4fc593;
   --gd: #cdaa5b;
   --gt: #d9bc77;
-  --gs: rgba(205, 170, 91, 0.18);
+  --gs: rgba(79, 197, 147, 0.15);
   --ln2: rgba(255, 255, 255, 0.18);
   --rail: #050807;
   --on-ac: #06130e;
@@ -89,6 +99,8 @@
   --gold-soft: #292311;
   --on-gold-soft: #f1e6c8;
   --card-line: #2b302d;
+  --bar: #000000;
+  --on-bar: #edede8;
   color-scheme: dark;
 }
 
@@ -100,16 +112,21 @@
 
 :root {
   /* The deep emerald card (next prayer, daily deeds) and its gold: the same in every theme. */
-  --hero: #0f3527;
-  --on-hero: #eef6f1;
-  --hero-accent: #d9bc77;
-  --hero-muted: #aed4c1;
-  --gold: #d9bc77;
-  --on-gold: #0a1511;
+  --hero: #0f4c3a;
+  --hero2: #0f4c3a;
+  /* the small squares of prayer times that lie on the green card */
+  --hero-tile: #175a47;
+  --on-hero: #ffffff;
+  --hero-accent: #f0cb7a;
+  --hero-muted: #cdeade;
+  --gold: #f0cb7a;
+  --on-gold: #2a1d02;
 
   /* Font stacks. The --f-* families come from next/font (src/app/fonts.ts). */
-  --ff-sans: var(--f-hind), var(--f-hind-latin), var(--f-amiri), system-ui, sans-serif;
-  --ff-display: var(--f-serif), var(--f-serif-latin), var(--f-hind), var(--f-amiri), serif;
+  --ff-sans: var(--f-digits), var(--f-hind), var(--f-hind-latin), var(--f-amiri), system-ui, sans-serif;
+  /* headings and the big clock keep Anek's own digits, which are clear */
+  --ff-display: var(--f-anek), var(--f-anek-latin), var(--f-hind), var(--f-amiri), sans-serif;
+  --ff-hind: var(--f-digits), var(--f-hind), var(--f-hind-latin), var(--f-amiri), sans-serif;
   --ff-arabic: var(--f-amiri), var(--f-amiri-latin), serif;
 
   --ar-scale: 1;
@@ -120,7 +137,6 @@
 
 /* The height of the top bar on tablets and computers; phones have none. */
 :root { --header-h: 0px; }
-@media (min-width: 48rem) { :root { --header-h: 4.25rem; } }
 
 /* An anchor or a scrolled-to ayah must not stop behind the status bar or the top bar. */
 html { scroll-padding-top: calc(var(--safe-top) + var(--header-h)); }
@@ -135,14 +151,48 @@ html { scroll-padding-top: calc(var(--safe-top) + var(--header-h)); }
   inset: 0 0 auto;
   z-index: 60;
   height: var(--safe-top);
-  background: var(--bg);
+  background: var(--bar);
 }
-:root[data-theme="paper"] .status-bar,
-:root[data-theme="sepia"] .status-bar { background: var(--hero); }
+
+/* The deep card fades a little towards one corner. */
+.on-deep.bg-hero { background-image: linear-gradient(140deg, var(--hero) 35%, var(--hero2)); }
+
+@media (max-width: 47.999rem) {
+  /* continues the title bar: one flat colour with a deeply rounded foot */
+  .home-hero {
+    margin: 0 -1rem;
+    padding: 0 1.25rem 1.5rem;
+    border-radius: 0 0 2rem 2rem;
+    background: var(--bar);
+    background-image: linear-gradient(180deg, var(--bar), var(--hero));
+    color: var(--on-hero);
+  }
+}
+
+/*
+ * The green title bar of a phone screen. The wide shadow, cut off above and below, carries the
+ * colour to both edges of the screen from inside a narrower column.
+ */
+@media (max-width: 47.999rem) {
+  .app-bar {
+    position: sticky;
+    top: var(--safe-top);
+    z-index: 30;
+    margin-top: -1.5rem;
+    background: var(--bar);
+    color: var(--on-bar);
+    box-shadow: 0 0 0 100vmax var(--bar);
+    clip-path: inset(0 -100vmax);
+  }
+  .app-bar :focus-visible { outline-color: var(--on-bar); }
+}
+/* A header button on the green bar of the home page. */
+.bar-square { background: var(--hero-tile); }
 
 /* The visitor's choice of Bangla typeface for Quran pronunciation and translation. */
 .reading { font-family: var(--font-sans); }
-:root[data-bnfont="noto"] .reading { font-family: var(--font-display); }
+:root[data-bnfont="hind"] .reading { font-family: var(--ff-hind); }
+:root[data-bnfont="noto"] .reading { font-family: var(--f-digits), var(--f-serif), var(--f-serif-latin), serif; }
 :root[data-bnfont="tiro"] .reading { font-family: var(--font-welcome); }
 
 /* Short phones, such as 320 x 568. */
@@ -158,6 +208,8 @@ html { scroll-padding-top: calc(var(--safe-top) + var(--header-h)); }
 }
 
 @theme inline {
+  --color-bar: var(--bar);
+  --color-on-bar: var(--on-bar);
   --color-sf: var(--sf);
   --color-ink: var(--ink);
   --color-ink2: var(--ink2);
@@ -173,10 +225,11 @@ html { scroll-padding-top: calc(var(--safe-top) + var(--header-h)); }
   --color-on-tint: var(--on-tint);
   --color-gold-soft: var(--gold-soft);
   --color-on-gold-soft: var(--on-gold-soft);
-  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.05), 0 10px 28px -16px rgba(0, 0, 0, 0.2);
+  --shadow-card: 0 1px 2px rgba(16, 40, 30, 0.05), 0 6px 18px -14px rgba(16, 40, 30, 0.22);
   --shadow-float: 0 12px 28px -10px rgba(0, 0, 0, 0.4);
   --color-bg: var(--bg);
   --color-hero: var(--hero);
+  --color-hero-tile: var(--hero-tile);
   --color-on-hero: var(--on-hero);
   --color-gold: var(--gold);
   --color-on-gold: var(--on-gold);
@@ -184,7 +237,7 @@ html { scroll-padding-top: calc(var(--safe-top) + var(--header-h)); }
   --color-hero-muted: var(--hero-muted);
   --font-sans: var(--ff-sans);
   --font-display: var(--ff-display);
-  --font-welcome: "Tiro Bangla", var(--f-serif), serif;
+  --font-welcome: var(--f-digits), "Tiro Bangla", var(--f-serif), serif;
   --font-arabic: var(--ff-arabic);
 }
 
@@ -207,6 +260,17 @@ body {
 }
 
 :focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; }
+
+/*
+ * Whatever can be clicked shows the hand. (The reset leaves buttons with the plain arrow.)
+ * In the base layer, so a class such as cursor-crosshair on one element still wins.
+ */
+@layer base {
+  a[href], button, summary, select, [role="button"], [role="checkbox"], [role="switch"], [role="tab"], [role="option"],
+  input:is([type="checkbox"], [type="radio"], [type="range"], [type="date"], [type="time"], [type="file"], [type="submit"], [type="button"]),
+  label:has(input:is([type="checkbox"], [type="radio"], [type="file"]), select) { cursor: pointer; }
+  :is(button, select, input):disabled, [aria-disabled="true"] { cursor: default; }
+}
 /* On the deep emerald card the accent would disappear. */
 .on-deep :focus-visible { outline-color: var(--hero-accent); }
 /* A box inside a framed field: the frame shows the focus. (Tailwind's outline-none loses to the rule above.) */

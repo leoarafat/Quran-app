@@ -12,9 +12,9 @@ const TALL = 1920;
 
 /** The app's own theme colours (see globals.css; a test keeps them equal). */
 export const CARD_COLORS: Record<Theme, { bg: string; surface: string; text: string; soft: string; muted: string; accent: string; line: string }> = {
-  paper: { bg: "#f6f1e6", surface: "#fffdf8", text: "#12201a", soft: "#12201a", muted: "#4a5a52", accent: "#7a5c14", line: "#d9d5cc" },
+  paper: { bg: "#f5f7f4", surface: "#ffffff", text: "#14231d", soft: "#14231d", muted: "#55665e", accent: "#7a5410", line: "#e3e8e2" },
   sepia: { bg: "#eaddbf", surface: "#f3e8ce", text: "#33281a", soft: "#33281a", muted: "#5e4e36", accent: "#6b4e0e", line: "#cfbd97" },
-  night: { bg: "#0a1511", surface: "#111f19", text: "#e7efe8", soft: "#e7efe8", muted: "#9db1a5", accent: "#d9bc77", line: "#2c3a33" },
+  night: { bg: "#0e1525", surface: "#172136", text: "#e9eff9", soft: "#e9eff9", muted: "#a6b4cc", accent: "#e3c584", line: "#2b3750" },
   amoled: { bg: "#000000", surface: "#0b0f0d", text: "#edede8", soft: "#edede8", muted: "#a3b0a8", accent: "#d9bc77", line: "#2b302d" },
 };
 
@@ -64,7 +64,7 @@ export function wrapText(text: string, maxWidth: number, measure: (s: string) =>
 type Role = "brand" | "reference" | "arabic" | "pronunciation" | "translation" | "note" | "credit";
 type Style = { family: string; weight: number; size: number; height: number; color: keyof (typeof CARD_COLORS)["paper"]; scales: boolean; rtl?: boolean };
 
-const BANGLA = '"Hind Siliguri", sans-serif';
+const BANGLA = '"Noto Serif Bengali", serif';
 const DISPLAY = '"Noto Serif Bengali", "Hind Siliguri", serif';
 const ARABIC = '"Amiri Quran", serif';
 const STYLES: Record<Role, Style> = {

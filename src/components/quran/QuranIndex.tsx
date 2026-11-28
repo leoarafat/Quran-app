@@ -106,7 +106,7 @@ export function QuranIndex({ surahs, juzs, sajdas, pages, rukus, hizbs, manzils 
   }, [surahs, query, filter, favourites, recent]);
   const quick = view === "surah" && filter === "all" && !query;
 
-  const tab = (on: boolean) => `flex min-h-11 shrink-0 grow items-center justify-center rounded-[0.625rem] px-4 text-sm ${on ? "bg-sf font-semibold text-ink shadow-[0_1px_2px_rgba(0,0,0,0.18),inset_0_0_0_1px_var(--ln2)]" : "text-ink2"}`;
+  const tab = (on: boolean) => `flex min-h-11 shrink-0 grow items-center justify-center rounded-[0.625rem] px-4 text-sm ${on ? "bg-ac font-semibold text-on-ac shadow-card" : "text-ink2 hover:bg-sf hover:text-ink"}`;
   const empty = filter === "favourite" && !query ? "সূরার পাশের তারকা চাপলে এখানে আসবে।" : filter === "recent" && !query ? "কোনো সূরা খুললে এখানে আসবে।" : "বানান বা নম্বর বদলে দেখুন।";
 
   const buttons = (
@@ -147,7 +147,7 @@ export function QuranIndex({ surahs, juzs, sajdas, pages, rukus, hizbs, manzils 
                   {list.map((s) => {
                     const favourite = favourites.includes(s.n);
                     return (
-                      <li key={s.n} id={`surah-${s.n}`} className={`flex scroll-mt-24 items-center border-b border-ln last:border-0 ${preview === s.n ? "xl:rounded-xl xl:bg-gs" : ""}`}>
+                      <li key={s.n} id={`surah-${s.n}`} className={`flex scroll-mt-24 items-center border-b border-ln last:border-0 ${preview === s.n ? "xl:rounded-xl xl:bg-tint xl:ring-2 xl:ring-inset xl:ring-ac" : ""}`}>
                         <Link href={`/quran/${s.n}/`} prefetch={false} onMouseEnter={() => setPreview(s.n)} onFocus={() => setPreview(s.n)} className="flex min-h-[4.25rem] min-w-0 flex-1 items-center gap-3 py-1.5 pl-1">
                           <AyahOrnament label={toBnDigits(s.n)} className="size-10" />
                           <span className="min-w-0 flex-1 leading-snug">

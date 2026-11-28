@@ -31,7 +31,7 @@ export function SurahList({ surahs, current, onPick }: { surahs: SurahInfo[]; cu
       <ul ref={box} className="relative min-h-0 flex-1 space-y-0.5 overflow-y-auto overscroll-contain">
         {found.map((s) => (
           <li key={s.n}>
-            <Link href={`/quran/${s.n}/`} prefetch={false} onClick={onPick} aria-current={s.n === current ? "page" : undefined} className={`flex min-h-13 items-center gap-2.5 rounded-xl px-2.5 ${s.n === current ? "bg-gs" : "hover:bg-ln"}`}>
+            <Link href={`/quran/${s.n}/`} prefetch={false} onClick={onPick} aria-current={s.n === current ? "page" : undefined} className={`flex min-h-13 items-center gap-2.5 rounded-xl px-2.5 ${s.n === current ? "bg-ac text-on-ac shadow-card [&_*]:!text-on-ac" : "hover:bg-tint"}`}>
               <AyahOrnament label={toBnDigits(s.n)} text="text-[0.6875rem]" />
               <span className="min-w-0 flex-1 leading-snug">
                 <span className={`block truncate text-[0.9375rem] ${s.n === current ? "font-semibold" : "font-medium"}`}>{s.bangla}</span>

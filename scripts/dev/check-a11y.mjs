@@ -10,7 +10,7 @@ import { join } from "node:path";
 
 const BASE = "http://127.0.0.1:5377";
 const themes = process.argv.slice(2).length ? process.argv.slice(2) : ["paper"];
-const ROUTES = process.env.ROUTES ? process.env.ROUTES.split(",") : ["/", "/quran/", "/quran/1/", "/search/", "/bookmarks/", "/settings/", "/more/", "/prayer-times/", "/amal/", "/amal/daily/", "/amal/after-salah/", "/amal/khatm/", "/amal/quran/", "/amal/fasting/", "/ramadan/", "/tasbih/", "/qibla/", "/calendar/", "/hadith/", "/hadith/c/486/", "/namaz/", "/namaz/oju/", "/arabic/", "/prophets/", "/hajj/", "/zakat/", "/quiz/", "/me/", "/data/", "/about/", "/offline/"];
+const ROUTES = process.env.ROUTES ? process.env.ROUTES.split(",") : ["/", "/quran/", "/quran/1/", "/planner/", "/search/", "/bookmarks/", "/settings/", "/more/", "/prayer-times/", "/amal/", "/amal/daily/", "/amal/after-salah/", "/amal/khatm/", "/amal/quran/", "/amal/fasting/", "/ramadan/", "/tasbih/", "/qibla/", "/calendar/", "/hadith/", "/hadith/c/486/", "/namaz/", "/namaz/oju/", "/arabic/", "/prophets/", "/hajj/", "/zakat/", "/quiz/", "/me/", "/data/", "/about/", "/offline/"];
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 const PORT = 9379;
 const profile = mkdtempSync(join(tmpdir(), "a11y-"));

@@ -2,39 +2,42 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Icon } from "@/components/ui/Icon";
-import { isActivePath } from "@/lib/nav";
-import { SIDE_LINKS } from "@/lib/shell";
+import { Upcoming } from "@/components/home/Upcoming";
+import { Logo } from "@/components/ui/Logo";
+import { isActivePath, isReaderPath } from "@/lib/nav";
+import { MAIN_LINKS, MY_LINKS } from "@/lib/shell";
 
-/** Icons only from tablet width; with names from desktop width. */
+/** The white side bar of wide screens. On a tablet it steps aside while a surah is being read. */
 export function SideBar() {
   const pathname = usePathname();
-  const foot = "flex min-h-11 items-center justify-center rounded-xl text-ink2 hover:text-ac lg:justify-start lg:px-2 lg:text-[0.8125rem]";
+  // Only the closest menu entry is marked, so /amal/surah/ does not also light up /amal/.
+  const found = [...MAIN_LINKS, ...MY_LINKS].filter((l) => isActivePath(l.href, pathname)).sort((a, b) => b.href.length - a.href.length)[0]?.href;
+  // the top bar marks these itself
+  const here = found ?? (/^\/(settings|offline|search)\/?$/.test(pathname) ? undefined : "/more/");
+  const list = (links: typeof MAIN_LINKS) => (
+    <ul className="space-y-1">
+      {links.map(({ href, label }) => (
+        <li key={href}>
+          <Link href={href} transitionTypes={["tab"]} aria-current={href === here ? "page" : undefined} className={`flex min-h-11 items-center rounded-xl px-3.5 text-[0.9375rem] ${href === here ? "bg-ac font-semibold text-on-ac shadow-card" : "text-ink hover:bg-tint"}`}>{label}</Link>
+        </li>
+      ))}
+    </ul>
+  );
   return (
-    <aside data-site="sidebar" className="sticky top-0 hidden h-dvh w-[4.75rem] shrink-0 flex-col gap-1 overflow-y-auto border-r border-ln bg-rail px-2.5 pb-3 pt-[calc(1rem+var(--safe-top))] md:flex lg:w-[15.5rem] lg:px-3">
-      <Link href="/" aria-label="নূর কুরআন, হোম" className="mb-3 flex min-h-11 shrink-0 items-center justify-center gap-2.5 lg:justify-start lg:px-2">
-        <span className="grid size-9 place-items-center rounded-xl bg-hero text-hero-accent"><Icon name="quran" className="size-[1.375rem]" /></span>
-        <span className="hidden font-display text-xl font-bold lg:inline">নূর কুরআন</span>
+    <aside data-site="sidebar" className={`sticky top-0 hidden h-dvh w-52 shrink-0 flex-col gap-5 overflow-y-auto border-r border-ln bg-rail px-3 pb-4 pt-[calc(1.5rem+var(--safe-top))] lg:flex lg:w-[15.5rem] lg:px-4 ${isReaderPath(pathname) ? "" : "md:flex"}`}>
+      <Link href="/" aria-label="নূর কুরআন, হোম" className="flex shrink-0 items-center gap-3 px-2">
+        <Logo />
+        <span className="leading-tight">
+          <span className="block font-display text-[1.375rem] font-bold">নূর কুরআন</span>
+          <span className="block text-xs text-ink2">বাংলা ইবাদতের সঙ্গী</span>
+        </span>
       </Link>
-      <nav aria-label="ওয়েবসাইট মেনু">
-        <ul className="space-y-1">
-          {SIDE_LINKS.map(({ href, label, icon }) => {
-            const active = isActivePath(href, pathname);
-            return (
-              <li key={href}>
-                <Link href={href} transitionTypes={["tab"]} aria-label={label} title={label} aria-current={active ? "page" : undefined} className={`flex min-h-11 items-center justify-center gap-3 rounded-xl text-[0.9375rem] lg:justify-start lg:px-3 ${active ? "bg-ac/10 font-semibold text-ink" : "text-ink2 hover:bg-ln"}`}>
-                  <Icon name={icon} className={`size-[1.375rem] ${active ? "text-ac" : ""}`} />
-                  <span className="hidden lg:inline">{label}</span>
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
+      <nav aria-label="ওয়েবসাইট মেনু">{list(MAIN_LINKS)}</nav>
+      <nav aria-label="ব্যক্তিগত মেনু" className="border-t border-ln pt-4">
+        <p className="px-3.5 pb-1 text-xs text-ink2">ব্যক্তিগত</p>
+        {list(MY_LINKS)}
       </nav>
-      <ul className="mt-auto flex flex-col pt-2 lg:flex-row lg:gap-1">
-        <li><Link href="/about/" aria-label="উৎস ও শর্ত" title="উৎস ও শর্ত" className={foot}><Icon name="info" className="size-5 lg:hidden" /><span className="hidden lg:inline">উৎস ও শর্ত</span></Link></li>
-        <li><Link href="/offline/" aria-label="অ্যাপ ইনস্টল" title="অ্যাপ ইনস্টল" className={foot}><Icon name="download" className="size-5 lg:hidden" /><span className="hidden lg:inline">অ্যাপ ইনস্টল</span></Link></li>
-      </ul>
+      <Upcoming />
     </aside>
   );
 }

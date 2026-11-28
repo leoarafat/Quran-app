@@ -19,6 +19,8 @@ export const FEATURE_GROUPS: FeatureGroup[] = [
       { title: "কুরআন", hint: "আরবি, উচ্চারণ, অর্থ", icon: "quran", href: "/quran/" },
       { title: "বুকমার্ক", hint: "আয়াত, হাদিস, নোট", icon: "bookmark", href: "/bookmarks/" },
       { title: "হাদিস", hint: "ব্যাখ্যাসহ", icon: "hadith", href: "/hadith/" },
+      { title: "আমলের সূরা", hint: "ফজিলত ও তিলাওয়াত", icon: "note", href: "/amal/surah/" },
+      { title: "কুরআন প্ল্যানার", hint: "দিন ভাগ করে পড়া", icon: "cal", href: "/planner/" },
       { title: "খতম ও লক্ষ্য", hint: "দৈনিক তিলাওয়াত", icon: "mushaf", href: "/amal/khatm/" },
       { title: "আরবি শিখুন", hint: "হরফ ও হরকত", icon: "book", href: "/arabic/", badge: "আংশিক" },
     ],

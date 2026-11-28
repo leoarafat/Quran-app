@@ -43,3 +43,33 @@ export function readRange(from: string, to: string, ayahs: number): { from: numb
   const [a, b] = [from, to].map((text) => (/^\d+$/.test(text.trim()) ? Number(text.trim()) : NaN));
   return a >= 1 && b >= a && b <= ayahs ? { from: a, to: b } : null;
 }
+
+export type Track = {
+  surah: number;
+  surahName: string;
+  /** last ayah this track may reach: the end of the surah, or of a chosen passage */
+  total: number;
+  /** first ayah of a chosen passage; the whole surah when absent */
+  first?: number;
+  /** set when the visitor asked to hear first..total repeatedly; 0 means until stopped */
+  loop?: number;
+  /** a playlist this track belongs to, heard one after another, and its place in it */
+  list?: Track[];
+  place?: number;
+};
+
+/**
+ * What to recite after a track is finished: the next item of its playlist, or the next surah.
+ * A passage chosen to be repeated, or a piece of a surah on its own, ends where it ends.
+ */
+export function followingTrack(track: Track, surahs: readonly { bangla: string; ayahs: number }[] | null): Track | null {
+  if (track.loop !== undefined) return null;
+  if (track.list) {
+    const place = (track.place ?? 0) + 1;
+    const item = track.list[place];
+    return item ? { ...item, list: track.list, place } : null;
+  }
+  if (track.first !== undefined || !surahs || track.total !== surahs[track.surah - 1]?.ayahs) return null;
+  const next = surahs[track.surah];
+  return next ? { surah: track.surah + 1, surahName: next.bangla, total: next.ayahs } : null;
+}

@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { DailyAyah, type DailyItem } from "@/components/home/DailyAyah";
-import { ExploreSmall, ExploreTablet, ExploreWide, Quick } from "@/components/home/Explore";
-import { Greeting } from "@/components/home/Greeting";
-import { MySnapshot, TodayDeeds } from "@/components/home/MySnapshot";
+import { FeatureTiles, QuickSurahs } from "@/components/home/Explore";
+import { HomeSurahs } from "@/components/home/HomeSurahs";
 import { PrayerHero } from "@/components/home/PrayerHero";
+import { KhatmCard, TodayAmal } from "@/components/home/TodayAmal";
 import { Upcoming } from "@/components/home/Upcoming";
 import { ContinueReading } from "@/components/quran/ContinueReading";
 import { Icon } from "@/components/ui/Icon";
+import { Logo } from "@/components/ui/Logo";
 import { Onboarding } from "@/components/Onboarding";
 import { Welcome } from "@/components/Welcome";
 import { DAILY_REFS } from "@/lib/quran/daily";
@@ -19,53 +20,39 @@ export default function HomePage() {
     return { s, a, surah: surahs[s - 1].bangla, ar, tr, bn };
   });
   const credit = `অনুবাদ: রুওয়্যাদ অনুবাদ কেন্দ্র (QuranEnc.com v${sources.translation.version}) · আরবি: Tanzil.net`;
-  const icon = "grid size-11 place-items-center rounded-xl";
+  const square = "bar-square grid size-11 place-items-center rounded-[0.875rem]";
 
   return (
     <>
       <Welcome />
       <Onboarding sample={{ ar: getSurah(1).ayahs[1].ar, bn: getSurah(1).ayahs[1].bn }} />
-      <div className="mx-auto max-w-md space-y-7 md:max-w-none">
-        <div className="-mt-3 !mb-2 flex items-center justify-between md:hidden">
-          <p className="font-display text-[1.375rem] font-bold">নূর কুরআন</p>
-          <div className="-mr-2.5 flex gap-1">
-            <Link href="/search/" aria-label="খুঁজুন" className={icon}><Icon name="search" /></Link>
-            <Link href="/settings/" aria-label="সেটিংস" className={icon}><Icon name="settings" /></Link>
+      <div className="flex flex-col gap-5">
+        <div className="app-bar flex min-h-17 items-center justify-between gap-3 md:hidden">
+          <h1 className="flex items-center gap-2.5 font-display text-[1.3125rem] font-bold"><Logo light className="size-10" />নূর কুরআন</h1>
+          <div className="flex gap-2">
+            <Link href="/search/" aria-label="খুঁজুন" className={square}><Icon name="search" className="size-5" /></Link>
+            <Link href="/settings/" aria-label="সেটিংস" className={square}><Icon name="settings" className="size-5" /></Link>
           </div>
         </div>
 
-        {/* One order in the page; wide screens move the right column up beside the rest. */}
-        <div className="grid grid-cols-1 gap-7 xl:grid-cols-[minmax(0,1fr)_21.25rem] xl:items-start">
-          <div className="min-w-0 space-y-7 xl:space-y-5">
-            <Greeting basmalah={getSurah(1).ayahs[0].ar} />
-            <div className="-mt-4 xl:mt-0"><PrayerHero /></div>
-            <Link href="/search/" className="-mt-3 flex h-13 items-center gap-3 rounded-md border border-ln2 bg-sf px-4 text-ink2 md:hidden">
-              <Icon name="search" /> কুরআন ও হাদিসে খুঁজুন
-            </Link>
-            <div className="-mt-1 grid grid-cols-1 gap-7 md:grid-cols-[1.3fr_1fr] md:items-stretch md:gap-5 xl:mt-0">
+        {/* One column on phones, in the order given by `order-*`; two columns from desktop width. */}
+        <div className="flex flex-col gap-6 max-md:-mt-5 xl:grid xl:grid-cols-[minmax(0,1fr)_21rem] xl:items-start">
+          <div className="contents xl:flex xl:min-w-0 xl:flex-col xl:gap-6">
+            <div className="home-hero"><PrayerHero /></div>
+            <div className="order-2 xl:order-none"><FeatureTiles /></div>
+            <div className="order-1 grid gap-4 md:grid-cols-[2fr_1fr] md:items-stretch xl:order-none">
               <ContinueReading surahs={surahs.map((s) => ({ name: s.bangla, arabic: s.arabic, ayahs: s.ayahs }))} />
-              <div className="order-2 min-w-0 md:order-none"><MySnapshot /></div>
-              <div className="order-1 min-w-0 md:hidden"><Quick /></div>
+              <div className="hidden md:block"><KhatmCard /></div>
             </div>
-            <ExploreSmall />
-            <ExploreTablet />
-            <ExploreWide />
+            <div className="order-5 xl:order-none"><QuickSurahs surahs={surahs} /></div>
+            <div className="order-6 xl:order-none"><HomeSurahs surahs={surahs.map(({ n, bangla, arabic, ayahs, revelation }) => ({ n, bangla, arabic, ayahs, revelation }))} /></div>
           </div>
-          <div className="space-y-5">
-            <DailyAyah items={daily} credit={credit} />
-            <div className="hidden xl:block"><TodayDeeds /></div>
-            <Upcoming />
+          <div className="contents xl:flex xl:min-w-0 xl:flex-col xl:gap-5">
+            <div className="order-3 xl:order-none"><DailyAyah items={daily} credit={credit} /></div>
+            <div className="order-4 xl:order-none"><TodayAmal /></div>
+            <div className="order-7 md:hidden"><Upcoming tone="deep" /></div>
           </div>
         </div>
-
-        <footer className="border-t border-ln pt-4 md:hidden">
-          <p className="font-display text-[1.0625rem] font-bold">নূর কুরআন</p>
-          <p className="text-[0.8125rem] text-ink2">কুরআন, হাদিস ও দৈনিক ইবাদতের বাংলা সঙ্গী।</p>
-          <p className="flex gap-4 text-sm font-medium text-ac">
-            <Link href="/about/" className="inline-flex min-h-11 items-center">উৎস ও শর্ত</Link>
-            <Link href="/offline/" className="inline-flex min-h-11 items-center">অ্যাপ ইনস্টল</Link>
-          </p>
-        </footer>
       </div>
     </>
   );

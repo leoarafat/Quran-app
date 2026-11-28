@@ -31,8 +31,8 @@ export default async function CategoryPage({ params }: PageProps<"/hadith/c/[id]
     <div className="mx-auto max-w-2xl lg:max-w-5xl space-y-4">
       <ScreenHeader title={category.title} back={{ href: trail.length ? `/hadith/c/${trail.at(-1)!.id}/` : "/hadith/", label: "আগের বিভাগে ফিরে যান" }} />
       <nav aria-label="বিষয়ের পথ" className="flex flex-wrap items-center gap-x-2 text-sm">
-        <Link href="/hadith/" className="inline-flex min-h-11 items-center text-gt underline">হাদিস</Link>
-        {trail.map((c) => <span key={c.id} className="flex items-center gap-2"><span aria-hidden>›</span><Link href={`/hadith/c/${c.id}/`} className="inline-flex min-h-11 items-center text-gt underline">{c.title}</Link></span>)}
+        <Link href="/hadith/" className="inline-flex min-h-11 min-w-11 items-center text-gt underline">হাদিস</Link>
+        {trail.map((c) => <span key={c.id} className="flex items-center gap-2"><span aria-hidden>›</span><Link href={`/hadith/c/${c.id}/`} className="inline-flex min-h-11 min-w-11 items-center text-gt underline">{c.title}</Link></span>)}
       </nav>
       <p className="font-display text-xl font-semibold leading-relaxed max-md:hidden">{category.title}</p>
       {video && <LessonPlayer video={video} />}

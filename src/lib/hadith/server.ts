@@ -25,3 +25,17 @@ export function categoryPath(id: number): HadithCategory[] {
   for (let c = categories.get(id); c && !path.includes(c); c = c.parent ? categories.get(c.parent) : undefined) path.unshift(c);
   return path;
 }
+
+/** Top-level topics that have hadiths of this book, each with those ids in the book's order. */
+export function bookTopics(slug: string) {
+  const { index, categories } = getHadithIndex();
+  const book = index.books.find((b) => b.slug === slug);
+  if (!book) return null;
+  const topics = index.categories.filter((c) => !c.parent).map((root) => {
+    const under = new Set<number>();
+    const walk = (id: number) => { const c = categories.get(id); if (!c) return; c.hadiths.forEach((h) => under.add(h)); c.children.forEach(walk); };
+    walk(root.id);
+    return { id: root.id, title: root.title, hadiths: book.hadiths.filter((h) => under.has(h)) };
+  }).filter((t) => t.hadiths.length > 0);
+  return { book, topics };
+}

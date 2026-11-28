@@ -9,9 +9,9 @@ export const headerButton = "grid size-11 shrink-0 place-items-center rounded-xl
  */
 export function ScreenHeader({ title, back, children }: { title: string; /** where the back arrow leads */ back?: { href: string; label: string }; /** buttons on the right */ children?: React.ReactNode }) {
   return (
-    <header className="-mt-3 mb-4 flex min-h-14 items-center gap-1 md:sr-only">
+    <header className="app-bar mb-4 flex min-h-14 items-center gap-1 md:sr-only">
       {back && <Link href={back.href} aria-label={back.label} className={`${headerButton} -ml-2.5`}><Icon name="back" /></Link>}
-      <h1 className="min-w-0 flex-1 truncate font-display text-[1.375rem] font-bold">{title}</h1>
+      <h1 className="min-w-0 flex-1 truncate font-display text-[1.1875rem] font-semibold">{title}</h1>
       <div className="-mr-2.5 flex md:hidden">{children}</div>
     </header>
   );

@@ -6,6 +6,11 @@ const BOOK_NAMES = [
   ["nasai", /নাসা(ঈ|য়ী|ই)/], ["ibnmajah", /ইবন[েু]?\s*মাজাহ/],
 ];
 
+export const BOOK_TITLES = {
+  bukhari: "সহিহ বুখারী", muslim: "সহিহ মুসলিম", abudawud: "সুনানে আবূ দাউদ",
+  tirmidhi: "জামে তিরমিযী", nasai: "সুনানে নাসাঈ", ibnmajah: "সুনানে ইবনে মাজাহ",
+};
+
 export function booksNamed(attribution) {
   const text = attribution.normalize("NFC");
   const books = BOOK_NAMES.filter(([, pattern]) => pattern.test(text)).map(([book]) => book);

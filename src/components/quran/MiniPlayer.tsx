@@ -49,8 +49,8 @@ export function MiniPlayer() {
 
   // Above the reader's dock or the tab bar on small screens; clear of the reader's side panes on wide ones.
   const place = reading
-    ? "bottom-[calc(5.5rem+env(safe-area-inset-bottom))] md:left-[calc(18.5rem+0.75rem)] lg:bottom-5 lg:left-[15.5rem] lg:right-[20rem] reading:left-[32.5rem]"
-    : "bottom-[calc(6.25rem+env(safe-area-inset-bottom))] md:bottom-5 md:left-[4.75rem] lg:left-[15.5rem]";
+    ? "bottom-[calc(5.5rem+env(safe-area-inset-bottom))] md:left-[calc(13.75rem+0.75rem)] lg:bottom-5 lg:left-[15.5rem] lg:right-[20rem] reading:left-[32.5rem]"
+    : "bottom-[calc(6.25rem+env(safe-area-inset-bottom))] md:bottom-5 md:left-52 lg:left-[15.5rem]";
 
   return (
     <>

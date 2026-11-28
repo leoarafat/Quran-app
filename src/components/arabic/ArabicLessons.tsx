@@ -5,10 +5,13 @@ import { useState } from "react";
 import { LETTERS, letterForms, makeQuestion, MARK_CARRIER, MARKS, type Example } from "@/lib/arabic/letters";
 import { toBnDigits } from "@/lib/bn";
 import { Icon } from "@/components/ui/Icon";
+import { LetterAudio } from "./LetterAudio";
+import { NewBadge } from "@/components/NewBadge";
+import { WritingBoard } from "./WritingBoard";
 
 export type ShownExample = Example & { surahName: string };
 
-const TABS = [["letters", "হরফ"], ["marks", "হরকত"], ["practice", "অনুশীলন"]] as const;
+const TABS = [["letters", "হরফ"], ["marks", "হরকত"], ["practice", "অনুশীলন"], ["write", "লেখা"]] as const;
 const chip = (on: boolean) => `min-h-11 rounded-full border px-3 ${on ? "border-ac bg-ac font-semibold text-on-ac" : "border-ln2 bg-sf"}`;
 const card = "rounded-md border border-ln bg-sf p-4";
 // Amiri Quran reaches far below its line, so every glyph is given room underneath.
@@ -39,6 +42,7 @@ function Letters({ examples }: { examples: Record<string, ShownExample[]> }) {
         <p lang="ar" dir="rtl" className={`${arabic} pb-12 text-8xl`}>{letter.ch}</p>
         <h2 className="font-display text-2xl font-semibold">{letter.name}</h2>
         <p className="text-sm text-ink2">{toBnDigits(open + 1)}/{toBnDigits(LETTERS.length)}</p>
+        <LetterAudio key={letter.ch} letter={letter.ch} name={letter.name} />
       </section>
       <section className={card}>
         <h3 className="mb-2 font-display font-semibold">শব্দের ভেতরে চেহারা</h3>
@@ -126,10 +130,10 @@ export function ArabicLessons({ examples }: { examples: Record<string, ShownExam
   const [tab, setTab] = useState<(typeof TABS)[number][0]>("letters");
   return (
     <div className="space-y-4">
-      <div role="group" aria-label="পাঠ" className="grid grid-cols-3 gap-2">
-        {TABS.map(([key, label]) => <button key={key} type="button" aria-pressed={tab === key} className={chip(tab === key)} onClick={() => setTab(key)}>{label}</button>)}
+      <div role="group" aria-label="পাঠ" className="grid grid-cols-4 gap-2">
+        {TABS.map(([key, label]) => <button key={key} type="button" aria-pressed={tab === key} className={`relative ${chip(tab === key).replace("px-3", "px-1 max-[23rem]:text-sm")}`} onClick={() => setTab(key)}>{label}{key === "write" && <span className="absolute -right-1 -top-2.5"><NewBadge /></span>}</button>)}
       </div>
-      {tab === "letters" ? <Letters examples={examples} /> : tab === "marks" ? <Marks /> : <Practice />}
+      {tab === "letters" ? <Letters examples={examples} /> : tab === "marks" ? <Marks /> : tab === "practice" ? <Practice /> : <WritingBoard />}
     </div>
   );
 }

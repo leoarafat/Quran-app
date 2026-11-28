@@ -44,6 +44,14 @@ describe("published hadith data", () => {
     }
     for (const id of [301, 293, 465, 303, 306, 307, 308, 313, 302, 5]) expect(byId.has(id), `topic ${id}`).toBe(true);
   });
+  it("groups by the books the attribution line names", () => {
+    expect(index.books.map((b) => b.slug)).toEqual(["bukhari", "muslim", "abudawud", "tirmidhi", "nasai", "ibnmajah"]);
+    for (const book of index.books) {
+      expect(book.hadiths.length).toBeGreaterThan(0);
+      expect([...book.hadiths].sort((a, b) => a - b)).toEqual(ids.filter((id) => booksNamed(item(id).attribution).includes(book.slug)).sort((a, b) => a - b));
+    }
+    for (const [id, numbers] of Object.entries(index.bukhariNumbers)) expect(item(id).bukhari).toEqual(numbers);
+  });
   it("shows a Bukhari number only after a strong machine match", () => {
     expect(item(5503).bukhari).toContain(6306);
     for (const id of ids) {

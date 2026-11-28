@@ -14,12 +14,12 @@ import { dailyIndex } from "@/lib/quran/daily";
 export type DailyItem = { s: number; a: number; surah: string; ar: string; tr: string; bn: string };
 
 const subscribe = () => () => {};
-const card = "rounded-lg border border-ln bg-sf px-5 pb-4 pt-5 shadow-card";
+const card = "rounded-3xl bg-gold-soft p-5 max-md:text-ink md:border md:border-ln md:bg-sf md:p-6";
 
 function Card({ item, credit }: { item: DailyItem; credit: string }) {
   const [sharing, setSharing] = useState(false);
   const bookmarked = useIsBookmarked(item.s, item.a);
-  const button = "flex h-11 flex-1 items-center justify-center gap-2 rounded-full border border-ln2 text-[0.9375rem] font-medium";
+  const button = "flex min-h-11.5 flex-1 items-center justify-center gap-2 rounded-[0.875rem] bg-sf text-[0.9375rem] font-semibold text-ac md:rounded-xl md:bg-tint md:text-on-tint";
   return (
     <section aria-label="আজকের আয়াত" className={`${card} flex flex-col gap-3`}>
       <Link href={`/quran/${item.s}/#a${item.a}`} className="flex flex-col gap-3 rounded-sm">
@@ -29,11 +29,11 @@ function Card({ item, credit }: { item: DailyItem; credit: string }) {
         </span>
         <span lang="ar" dir="rtl" className="block pt-1.5 font-arabic text-[1.875rem] leading-[2.3]">{item.ar}</span>
         <span className="block text-[0.9375rem] leading-[1.7] text-gt">{item.tr}</span>
-        <span className="block text-[1.0625rem] leading-[1.75]">{item.bn}</span>
+        <span className="block leading-[1.8] md:border-t md:border-ln md:pt-3.5">{item.bn}</span>
       </Link>
       <div className="flex gap-2">
         <button type="button" aria-haspopup="dialog" onClick={() => setSharing(true)} className={button}><Icon name="share" className="size-5" /> শেয়ার</button>
-        <button type="button" aria-pressed={bookmarked} onClick={() => toggleAyahBookmark(item.s, item.a)} className={`${button} ${bookmarked ? "bg-gs" : ""}`}><Icon name="bookmark" className="size-5" filled={bookmarked} /> বুকমার্ক</button>
+        <button type="button" aria-pressed={bookmarked} onClick={() => toggleAyahBookmark(item.s, item.a)} className={`${button} ${bookmarked ? "ring-2 ring-ac" : ""}`}><Icon name="bookmark" className="size-5" filled={bookmarked} /> বুকমার্ক</button>
       </div>
       {sharing && (
         <ShareSheet

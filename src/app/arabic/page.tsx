@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArabicLessons, type ShownExample } from "@/components/arabic/ArabicLessons";
 import { LearnedMark } from "@/components/Learned";
 import { ScreenHeader } from "@/components/shell/ScreenHeader";
+import { NewBadge } from "@/components/NewBadge";
 import { PendingNote } from "@/components/PendingNote";
 import { findExamples } from "@/lib/arabic/letters";
 import { QAIDA, qaidaPath } from "@/lib/arabic/qaida";
@@ -32,7 +33,7 @@ export default function ArabicPage() {
               <Link href={qaidaPath(lesson.slug)} className="flex min-h-16 items-center gap-3 rounded-md border border-ln2 bg-sf px-4 py-2 hover:border-ac">
                 <span aria-hidden className="flex size-9 shrink-0 items-center justify-center rounded-full border border-ln2 font-semibold text-gt">{toBnDigits(i + 1)}</span>
                 <span className="min-w-0 flex-1">
-                  <span className="block font-display font-semibold leading-snug">{lesson.title}</span>
+                  <span className="block font-display font-semibold leading-snug">{lesson.title}{lesson.isNew && <NewBadge />}</span>
                   <span className="block text-sm text-ink2">{lesson.hint}</span>
                 </span>
                 <LearnedMark href={qaidaPath(lesson.slug)} />
@@ -41,6 +42,12 @@ export default function ArabicPage() {
           ))}
         </ol>
       </section>
+      <Link href="/arabic/practice/" className="flex min-h-16 items-center gap-3 rounded-md border border-ln2 bg-sf px-4 py-2 hover:border-ac">
+        <span className="min-w-0 flex-1">
+          <span className="block font-display font-semibold leading-snug">মিশিয়ে পড়ার অনুশীলন<NewBadge /></span>
+          <span className="block text-sm text-ink2">কুরআনের শব্দে তিন ধাপ</span>
+        </span>
+      </Link>
       <PendingNote title="যা এখনো নেই" items={["আলাদা হরফ ও অনুশীলনের অডিও নেই। উচ্চারণ কোনো শিক্ষকের কাছে শুনে শিখুন।", "হরফের বাংলা নাম, মাখরাজ ও তাজবিদের বর্ণনা: ক্বারীর যাচাই বাকি।"]} />
     </div>
   );

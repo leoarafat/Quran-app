@@ -5,18 +5,9 @@
 import { useSyncExternalStore } from "react";
 import { toBnDigits } from "@/lib/bn";
 import { ayahAudioUrl, RECITERS } from "./reciters";
-import { DEFAULT_OPTIONS, GAP_CHOICES, nextStep, RATE_CHOICES, REPEAT_CHOICES, type PlayOptions, type Position } from "./sequence";
+import { DEFAULT_OPTIONS, followingTrack, GAP_CHOICES, nextStep, RATE_CHOICES, REPEAT_CHOICES, type PlayOptions, type Position, type Track } from "./sequence";
 
-export type Track = {
-  surah: number;
-  surahName: string;
-  /** last ayah this track may reach: the end of the surah, or of a chosen passage */
-  total: number;
-  /** first ayah of a chosen passage; the whole surah when absent */
-  first?: number;
-  /** set when the visitor asked to hear first..total repeatedly; 0 means until stopped */
-  loop?: number;
-};
+export type { Track };
 
 export type PlayerState = {
   track: Track | null;
@@ -176,11 +167,38 @@ export function setSleep(minutes: number) {
   sleepTimer = setTimeout(sleepNow, minutes * 60_000);
 }
 
+/** Surah names and lengths, for carrying on into the next surah. Fetched once, early. */
+let surahs: { bangla: string; ayahs: number }[] | null = null;
+let surahsRequest: Promise<void> | null = null;
+function loadSurahs(): Promise<void> {
+  surahsRequest ??= fetch("/data/quran/index.json")
+    .then((r) => (r.ok ? r.json() : Promise.reject(new Error(String(r.status)))))
+    .then((data) => { surahs = data.surahs; })
+    .catch(() => { surahsRequest = null; });
+  return surahsRequest;
+}
+
+/** What would be recited after this track, or null if recitation ends with it. */
+const after = (track: Track) => (state.options.mode === "single" && !track.list ? null : followingTrack(track, surahs));
+
 function advance() {
-  if (!state.track) return;
-  const { total, first = 1, loop } = state.track;
-  const next = nextStep(state.position, total, state.options, loop === undefined ? undefined : { first, times: loop });
-  if (!next) return stop();
+  const track = state.track;
+  if (!track) return;
+  const { total, first = 1, loop, list } = track;
+  // A playlist is always played through, like a chosen passage.
+  let next = nextStep(state.position, total, list ? { ...state.options, mode: "continue" } : state.options, loop === undefined ? undefined : { first, times: loop });
+  if (!next) {
+    // The surah list may still be on its way after a very short surah.
+    if (!list && loop === undefined && track.first === undefined && !surahs && state.options.mode !== "single") {
+      const wait = loadSurahs();
+      void wait.then(() => { if (state.track === track && surahs) advance(); else if (state.track === track) stop(); });
+      return;
+    }
+    const following = after(track);
+    if (!following) return stop();
+    set({ track: following });
+    next = { ayah: following.first ?? 1, plays: 1 };
+  }
   if (state.sleep && Date.now() >= state.sleep.at) {
     // Ready to carry on from the next ayah when the listener returns.
     element?.removeAttribute("src");
@@ -195,6 +213,7 @@ function advance() {
 
 export function playAyah(track: Track, ayah: number) {
   restore();
+  void loadSurahs();
   set({ track });
   load({ ayah, plays: 1 });
 }
@@ -219,8 +238,16 @@ export function toggle() {
 export function skip(delta: 1 | -1) {
   if (!state.track) return;
   const ayah = state.position.ayah + delta;
-  if (ayah >= (state.track.first ?? 1) && ayah <= state.track.total) load({ ayah, plays: 1, round: state.position.round });
+  if (ayah >= (state.track.first ?? 1) && ayah <= state.track.total) return load({ ayah, plays: 1, round: state.position.round });
+  const following = delta === 1 ? followingTrack(state.track, surahs) : null;
+  if (following) {
+    set({ track: following });
+    load({ ayah: following.first ?? 1, plays: 1 });
+  }
 }
+
+/** Whether "next" has somewhere to go beyond the last ayah of the track. */
+export const hasFollowing = (track: Track) => followingTrack(track, surahs) !== null;
 
 export function stop() {
   clearTimeout(gapTimer);

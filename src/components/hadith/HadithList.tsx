@@ -11,7 +11,7 @@ import { GradeBadge } from "./GradeBadge";
 const PAGE = 40;
 const FILTERS = [["all", "সব"], ["sahih", "সহিহ"], ["hasan", "হাসান"]] as const;
 
-export function HadithList({ items }: { items: { id: number; title: string; grade: GradeClass }[] }) {
+export function HadithList({ items }: { items: { id: number; title: string; grade: GradeClass; note?: string }[] }) {
   const [grade, setGrade] = useState<"all" | GradeClass>("all");
   const [limit, setLimit] = useState(PAGE);
   const list = items.filter((i) => grade === "all" || i.grade === grade);
@@ -26,7 +26,10 @@ export function HadithList({ items }: { items: { id: number; title: string; grad
         {list.slice(0, limit).map((h) => (
           <li key={h.id}>
             <Link href={`/hadith/${h.id}/`} prefetch={false} className="flex h-full items-start gap-3 rounded-md border border-ln bg-sf p-4 shadow-card">
-              <span className="line-clamp-3 min-w-0 flex-1 leading-relaxed">{h.title}</span>
+              <span className="min-w-0 flex-1">
+                <span className="line-clamp-3 leading-relaxed">{h.title}</span>
+                {h.note && <span className="mt-1 block text-[0.8125rem] text-ink2">{h.note}</span>}
+              </span>
               <GradeBadge cls={h.grade} />
             </Link>
           </li>

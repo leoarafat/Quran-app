@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { Toggle } from "@/components/ui/Toggle";
-import { setOptions, setReciter, setSleep, skip, stop, toggle, useClock, usePlayer, useProgress, type PlayerState } from "@/lib/audio/player";
+import { hasFollowing, setOptions, setReciter, setSleep, skip, stop, toggle, useClock, usePlayer, useProgress, type PlayerState } from "@/lib/audio/player";
 import { RECITERS } from "@/lib/audio/reciters";
 import { GAP_CHOICES, RATE_CHOICES, REPEAT_CHOICES, SLEEP_CHOICES } from "@/lib/audio/sequence";
 import { toBnDigits } from "@/lib/bn";
@@ -103,7 +103,7 @@ export function PlayerControls({ fallback, words = false, onLeave }: { /** shown
       <div className="flex items-center justify-center gap-8">
         <button type="button" aria-label="আগের আয়াত" className={side} onClick={() => skip(-1)} disabled={position.ayah <= (track.first ?? 1)}><Icon name="prev" className="size-7" /></button>
         <button type="button" aria-label={playLabel(status)} onClick={toggle} className="grid size-[4.75rem] place-items-center rounded-full bg-gold text-on-gold"><PlayIcon status={status} className="size-8" /></button>
-        <button type="button" aria-label="পরের আয়াত" className={side} onClick={() => skip(1)} disabled={position.ayah >= track.total}><Icon name="next" className="size-7" /></button>
+        <button type="button" aria-label="পরের আয়াত" className={side} onClick={() => skip(1)} disabled={position.ayah >= track.total && !hasFollowing(track)}><Icon name="next" className="size-7" /></button>
       </div>
       <div className="grid grid-cols-2 gap-2.5">
         <Tile icon="timer" label="গতি" value={options.rate} options={RATE_CHOICES} text={(r) => `${toBnDigits(r)}×`} onChange={(rate) => setOptions({ rate })} />
@@ -117,7 +117,7 @@ export function PlayerControls({ fallback, words = false, onLeave }: { /** shown
       <div className="divide-y divide-ln border-y border-ln">
         <Toggle label="হাইলাইট অনুসরণ করুক" hint="রিডারে চলমান আয়াতে পাতা চলে যাবে" checked={prefs.follow} onChange={(follow) => writeStored(READER_KEY, JSON.stringify({ ...prefs, follow }))} />
         {/* A chosen passage is always played through, so the choice does not apply to it. */}
-        <Toggle label="পরের আয়াত নিজে থেকে চলবে" hint={passage ? "বাছাই করা অংশ পুরোটাই চলবে" : undefined} disabled={!!passage} checked={!!passage || options.mode === "continue"} onChange={(on) => setOptions({ mode: on ? "continue" : "single" })} />
+        <Toggle label="পরের আয়াত ও সূরা নিজে থেকে চলবে" hint={passage ? "বাছাই করা অংশ পুরোটাই চলবে" : track.list ? "তালিকা পরপর চলবে" : "একটি সূরা শেষ হলে পরেরটি শুরু হবে"} disabled={!!passage || !!track.list} checked={!!passage || !!track.list || options.mode === "continue"} onChange={(on) => setOptions({ mode: on ? "continue" : "single" })} />
       </div>
       <div className="grid grid-cols-2 gap-2">
         <Link href={`/quran/${track.surah}/#a${position.ayah}`} onClick={onLeave} className={row}>চলমান আয়াতে যান</Link>

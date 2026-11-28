@@ -9,7 +9,7 @@ import { BN_FONTS, SCALE_MAX, SCALE_MIN, THEME_LABELS, THEMES, type Theme } from
 import { updateSettings, useSettings } from "@/lib/useSettings";
 
 /** Each swatch shows its own theme, whichever one is on. */
-const SWATCH: Record<Theme, string> = { paper: "bg-[#f6f1e6] text-[#12201a]", sepia: "bg-[#eaddbf] text-[#33281a]", night: "bg-[#0a1511] text-[#e7efe8]", amoled: "bg-black text-[#edede8]" };
+const SWATCH: Record<Theme, string> = { paper: "bg-[#f5f7f4] text-[#14231d]", sepia: "bg-[#eaddbf] text-[#33281a]", night: "bg-[#0e1525] text-[#e9eff9]", amoled: "bg-black text-[#edede8]" };
 const GAPS = [{ value: "tight", text: "কম" }, { value: "normal", text: "মাঝারি" }, { value: "wide", text: "বেশি" }] as const;
 
 function Slider({ label, value, onChange }: { label: string; value: number; onChange: (v: number) => void }) {
@@ -38,7 +38,7 @@ export function ReaderSettings({ prefs, onChange, sample, compact = false }: { p
       {group("পড়ার ধরন", (
         <div role="group" aria-label="পড়ার ধরন" className="grid grid-cols-2 gap-1 rounded-xl bg-ln p-[3px]">
           {READING_MODES.map((m) => (
-            <button key={m.id} type="button" aria-pressed={mode === m.id} onClick={() => onChange({ ...prefs, ...m.prefs })} className={`min-h-11 rounded-[0.625rem] px-1 text-sm ${mode === m.id ? "bg-sf font-semibold shadow-[0_1px_2px_rgba(0,0,0,0.18),inset_0_0_0_1px_var(--ln2)]" : "text-ink2"}`}>{m.label}</button>
+            <button key={m.id} type="button" aria-pressed={mode === m.id} onClick={() => onChange({ ...prefs, ...m.prefs })} className={`min-h-11 rounded-[0.625rem] px-1 text-sm ${mode === m.id ? "bg-ac font-semibold text-on-ac shadow-card" : "text-ink2 hover:bg-sf"}`}>{m.label}</button>
           ))}
         </div>
       ))}

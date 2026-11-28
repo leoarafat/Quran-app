@@ -65,7 +65,7 @@ export default async function QaidaPage({ params }: PageProps<"/arabic/[lesson]"
       {lesson.drills?.map((drill) => (
         <section key={drill.title} className="space-y-2">
           <h2 className="font-display text-lg font-semibold">{drill.title}</h2>
-          <ul dir="rtl" className="grid grid-cols-4 gap-2 min-[30rem]:grid-cols-6 sm:grid-cols-7">
+          <ul dir="rtl" className={`grid gap-2 ${drill.rows ? "grid-cols-3" : "grid-cols-4 min-[30rem]:grid-cols-6 sm:grid-cols-7"}`}>
             {drill.cells.map((cell, i) => <li key={i} lang="ar" className="rounded-2xl border border-ln bg-sf pb-4 pt-1 text-center font-arabic text-3xl leading-[2]">{cell}</li>)}
           </ul>
         </section>

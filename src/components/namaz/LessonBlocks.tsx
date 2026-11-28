@@ -50,7 +50,7 @@ export function LessonBlock({ block, anchor }: { block: Block; anchor: string })
           <div className={block.pose ? "space-y-3 lg:grid lg:grid-cols-[12rem_minmax(0,1fr)] lg:items-start lg:gap-6 lg:space-y-0" : ""}>
           {block.pose && (
             <figure className="mx-auto w-44 max-w-full text-center">
-              <Figure pose={block.pose} />
+              <Figure pose={block.pose} woman={block.woman} />
               <figcaption className="text-sm text-ink2">{POSE_NAMES[block.pose]}</figcaption>
             </figure>
           )}
@@ -59,6 +59,21 @@ export function LessonBlock({ block, anchor }: { block: Block; anchor: string })
           {block.say?.map((key) => <DuaCard key={key} id={key} />)}
           {block.tip && <p className="reading rounded-2xl border border-dashed border-ln2 px-3 py-2 text-sm leading-relaxed text-ink2">{block.tip}</p>}
           </div>
+          </div>
+        </article>
+      );
+    case "compare":
+      return (
+        <article className="space-y-3 rounded-md border border-ln2 bg-sf p-4">
+          <h3 className="font-display text-lg font-semibold leading-snug">{block.title}</h3>
+          <div className="grid grid-cols-2 gap-3">
+            {([["✓ শুদ্ধ", block.right, undefined], ["✕ ভুল", block.wrong, block.mistake]] as const).map(([head, text, mistake]) => (
+              <figure key={head} className={`min-w-0 rounded-2xl border p-2 ${mistake ? "border-dashed border-ln2" : "border-ac"}`}>
+                <p className={`text-center text-sm font-semibold ${mistake ? "text-ink2" : "text-gt"}`}>{head}</p>
+                <div className="mx-auto max-w-48"><Figure pose={block.pose} mistake={mistake} elbowUp={!mistake && block.mistake === "sujudElbows"} label={`${head}: ${text}`} /></div>
+                <figcaption className="reading mt-1 text-center text-sm leading-relaxed">{text}</figcaption>
+              </figure>
+            ))}
           </div>
         </article>
       );

@@ -11,11 +11,13 @@ const FATHATAN = "ً", DAMMATAN = "ٌ", KASRATAN = "ٍ";
 
 /** `pattern` is searched in a single word, or in two neighbouring words when `pair` is set. */
 export type ExampleRule = { label: string; pattern: RegExp; pair?: true; limit?: number };
-export type Drill = { title: string; cells: string[] };
+/** `rows` fixes three cells to a row, so each row is one letter with its three vowels. */
+export type Drill = { title: string; cells: string[]; rows?: true };
 export type QaidaLesson = {
   slug: string;
   title: string;
   hint: string;
+  isNew?: true;
   intro: string;
   points?: string[];
   tables?: { title: string; rows: [string, string][] }[];
@@ -26,6 +28,17 @@ export type QaidaLesson = {
 /** Every letter with one sign. A bare alif cannot carry a vowel, so hamza stands in for it. */
 const each = (mark: string) => LETTERS.map((l) => (l.ch === "ا" ? (mark === KASRA || mark === KASRATAN ? "إ" : "أ") : l.ch) + mark);
 const consonants = LETTERS.filter((l) => !"اوي".includes(l.ch)).map((l) => l.ch);
+
+/** The start of the name of Allah, in the order the Quran data stores its marks: shadda before the vowel. */
+const ALLAH = "\u0671\u0644\u0644\u0651\u064E\u0647";
+/** Letters whose sounds are easy to mix up; where each comes from is in the makhraj lesson. */
+const ALIKE: [string, string][] = [["ءع", "হামযা ও আইন"], ["حه", "হা ও গোল হা"], ["تط", "তা ও ত্ব"], ["ثسص", "ছা, সীন ও সোয়াদ"], ["ذزظ", "যাল, যা ও য"], ["دض", "দাল ও দোয়াদ"], ["قك", "ক্বফ ও কাফ"]];
+const alike = ALIKE.map(([letters, title]) => ({ title, rows: true as const, cells: [...letters].flatMap((c) => [FATHA, KASRA, DAMMA].map((m) => c + m)) }));
+
+/** A whole word written only with plain letters and the three short vowels, using `must` at least once. */
+const shortVowelWord = (must: string) => new RegExp(`^(?=.*${must})(?:[ءأإؤئب-غف-نهوي][${FATHA}${KASRA}${DAMMA}]){3,5}$`, "u");
+/** heavy letters, which keep a sakin ra thick even after a kasra */
+const HEAVY = "خصضغطقظ";
 
 /** Any letter that can follow, including the hamza forms. */
 const THROAT = "ءأإؤئآهعحغخ";
@@ -50,6 +63,12 @@ export const QAIDA: readonly QaidaLesson[] = [
     drills: [{ title: "মাখরাজ অনুশীলন: আগে হামযা, পরে সাকিন হরফ", cells: LETTERS.filter((l) => l.ch !== "ا").map((l) => `أَ${l.ch}${SUKUN}`) }],
   },
   {
+    slug: "tamiz", title: "কাছাকাছি আওয়াজের হরফের পার্থক্য", hint: "তামিজে হরফ: ت ط, س ص, ق ك …", isNew: true,
+    intro: "কিছু হরফের আওয়াজ কানে প্রায় এক রকম লাগে, কিন্তু মাখরাজ বা উচ্চারণের ধরন আলাদা। একটির জায়গায় অন্যটি পড়লে শব্দের অর্থ বদলে যেতে পারে। প্রতিটি দল পাশাপাশি পড়ে পার্থক্য অনুশীলন করুন।",
+    points: ["আগে মাখরাজের পাঠে হরফগুলোর জায়গা দেখে নিন।", "প্রতিটি দলে আগে যবর, তারপর যের, তারপর পেশ দিয়ে হরফগুলো সাজানো আছে।", "পার্থক্যটি কানে শুনে শিখতে হয়; শিক্ষককে শুনিয়ে ঠিক করুন।"],
+    drills: alike,
+  },
+  {
     slug: "joda", title: "যুক্ত হরফ চেনা", hint: "শব্দে হরফের চেহারা বদলায়",
     intro: "আরবি ডান থেকে বামে লেখা হয়। শব্দের ভেতরে হরফ জোড়া লেগে চেহারা বদলায়, তবে নুকতা একই থাকে। ছয়টি হরফ (ا د ذ ر ز و) পরের হরফের সাথে জোড়া লাগে না।",
     points: ["প্রতিটি যুক্ত শব্দে আঙুল রেখে ডান থেকে হরফের নাম একটি একটি করে বলুন।"],
@@ -63,6 +82,15 @@ export const QAIDA: readonly QaidaLesson[] = [
     intro: "যবর, যের ও পেশকে হরকত বলে। হরকতওয়ালা হরফ তাড়াতাড়ি পড়তে হয়, টানা যাবে না।",
     points: ["যবর হরফের ওপরে: “আ” কারের মতো, যেমন بَ = বা (না টেনে)।", "যের হরফের নিচে: “ই” কারের মতো, যেমন بِ = বি।", "পেশ হরফের ওপরে ছোট ওয়াওয়ের মতো: “উ” কারের মতো, যেমন بُ = বু।", "মোটা হরফ (خ ص ض ط ظ غ ق) যবর দিলেও মুখ ভরে মোটা উচ্চারণ হয়।"],
     drills: [{ title: "যবর", cells: each(FATHA) }, { title: "যের", cells: each(KASRA) }, { title: "পেশ", cells: each(DAMMA) }, { title: "মিশিয়ে পড়ুন", cells: ["كَتَبَ", "خَلَقَ", "جَعَلَ", "سَمِعَ", "عَلِمَ", "خُلِقَ", "كُتِبَ", "نَصَرَ"] }],
+  },
+  {
+    slug: "mashq", title: "যবর, যের, পেশের শব্দ মাশক", hint: "কুরআনের শব্দে বানান করে পড়া", isNew: true,
+    intro: "হরকত চেনার পর আসল শব্দে অনুশীলন করুন। নিচের শব্দগুলোতে শুধু যবর, যের ও পেশ আছে। প্রতিটি হরফ হরকতসহ আলাদা বলুন, তারপর না টেনে মিলিয়ে পড়ুন।",
+    examples: [
+      { label: "শুধু যবরের শব্দ", pattern: new RegExp(`^(?:[ءأب-غف-نهوي]${FATHA}){3,5}$`, "u"), limit: 12 },
+      { label: "যেরসহ শব্দ", pattern: shortVowelWord(KASRA), limit: 12 },
+      { label: "পেশসহ শব্দ", pattern: shortVowelWord(DAMMA), limit: 12 },
+    ],
   },
   {
     slug: "tanween", title: "তানবীন: দুই যবর, দুই যের, দুই পেশ", hint: "শেষে নূনের আওয়াজ",
@@ -142,12 +170,52 @@ export const QAIDA: readonly QaidaLesson[] = [
     examples: [{ label: "লাম পড়া হয় (কামারি)", pattern: new RegExp(`^ٱلْ`, "u") }, { label: "লাম মিলে যায় (শামসি)", pattern: new RegExp(`^ٱل(?!ل)\\p{L}[${FATHA}${DAMMA}${KASRA}]?${SHADDA}`, "u") }],
   },
   {
+    slug: "allah-lam", title: "আল্লাহ শব্দের লাম", hint: "কখন মোটা, কখন পাতলা", isNew: true,
+    intro: "আল্লাহ শব্দের লাম তার ঠিক আগের হরকত দেখে পড়তে হয়।",
+    points: ["আগে যবর বা পেশ থাকলে লাম মোটা (পুর) করে পড়ুন।", "আগে যের থাকলে লাম পাতলা (বারিক) করে পড়ুন।"],
+    examples: [
+      { label: "আগে যবর: মোটা", pattern: new RegExp(`${FATHA} ${ALLAH}`, "u"), pair: true, limit: 4 },
+      { label: "আগে পেশ: মোটা", pattern: new RegExp(`${DAMMA} ${ALLAH}`, "u"), pair: true, limit: 4 },
+      { label: "আগে যের: পাতলা", pattern: new RegExp(`${KASRA} ${ALLAH}`, "u"), pair: true, limit: 4 },
+    ],
+  },
+  {
+    slug: "ra", title: "রা (ر) হরফের উচ্চারণ", hint: "মোটা ও পাতলা রা", isNew: true,
+    intro: "রা কখনো মোটা (পুর), কখনো পাতলা (বারিক) পড়তে হয়। রা-তে হরকত থাকলে সেই হরকত দেখুন; রা সাকিন হলে সাধারণত আগের হরকত দেখুন।",
+    points: ["রা-তে যবর বা পেশ থাকলে মোটা।", "রা-তে যের থাকলে পাতলা।", "সাকিন রা-র আগে যবর বা পেশ থাকলে মোটা।", "সাকিন রা-র আগে একই শব্দে আসল যের থাকলে সাধারণত পাতলা। তবে একই শব্দে রা-র পরে মোটা হরফ এলে মোটা হয়।", "আরও কিছু অবস্থা (থামার সময়, অস্থায়ী যের, ব্যতিক্রম শব্দ) শিক্ষকের কাছে শিখুন।"],
+    examples: [
+      { label: "যবরওয়ালা রা: মোটা", pattern: new RegExp(`ر${SHADDA}?${FATHA}`, "u"), limit: 4 },
+      { label: "পেশওয়ালা রা: মোটা", pattern: new RegExp(`ر${SHADDA}?${DAMMA}`, "u"), limit: 4 },
+      { label: "যেরওয়ালা রা: পাতলা", pattern: new RegExp(`ر${SHADDA}?${KASRA}`, "u"), limit: 4 },
+      { label: "যবর বা পেশের পরে সাকিন রা: মোটা", pattern: new RegExp(`[${FATHA}${DAMMA}]ر${SUKUN}`, "u"), limit: 4 },
+      { label: "যেরের পরে সাকিন রা: পাতলা", pattern: new RegExp(`${KASRA}ر${SUKUN}(?!${MARK}*[${HEAVY}]|ا[${HEAVY}])`, "u"), limit: 4 },
+    ],
+  },
+  {
     slug: "waqf", title: "থামার নিয়ম ও চিহ্ন", hint: "ওয়াকফ: কোথায় থামবেন",
     intro: "থামাকে ওয়াকফ বলে। থামলে সাধারণত শেষ হরফ সাকিন হয়ে যায়। কুরআনের ছোট চিহ্নগুলো বলে দেয় কোথায় থামা ভালো।",
     points: ["দুই যবরে থামলে এক আলিফ টান দিয়ে থামুন।", "গোল তা (ة)-তে থামলে সেটি “হ্” উচ্চারণ হয়।"],
     tables: [{ title: "প্রচলিত চিহ্ন (মুসহাফভেদে ভিন্ন হতে পারে)", rows: [["ۘ", "থামা জরুরি"], ["ۙ", "থামবেন না"], ["ۚ", "থামা ও না থামা দুটোই চলে"], ["ۖ", "না থেমে পড়া ভালো"], ["ۗ", "থামা ভালো"], ["ۛ", "জোড়া তিন নুকতা: দুই জায়গার যেকোনো এক জায়গায় থামুন"], ["ۜ", "ছোট সীন: নিঃশ্বাস না ছেড়ে সামান্য বিরতি বা সীন উচ্চারণ; জায়গাভেদে শিক্ষকের কাছে শিখুন"]] }],
   },
 ];
+
+/** Mixed reading practice: words for the rules of each group of lessons. */
+export const PRACTICE: readonly { title: string; hint: string; lessons: string[] }[] = [
+  { title: "অনুশীলন ১", hint: "যবর, যের, পেশ", lessons: ["mashq"] },
+  { title: "অনুশীলন ২", hint: "জযম, ক্বলক্বলা, তাশদীদ, ওয়াজিব গুন্নাহ", lessons: ["sakin", "qalqalah", "tashdid", "gunnah"] },
+  { title: "অনুশীলন ৩", hint: "মদ, লীন, নূন ও মীম সাকিন, আল্লাহ শব্দ, রা", lessons: ["madd", "leen", "noon", "meem", "allah-lam", "ra"] },
+];
+
+/** Different words only, in an order that keeps one rule from sitting together. */
+export function practiceWords(ayahs: readonly { s: number; a: number; ar: string }[], lessons: readonly string[]): WordExample[] {
+  const rules = QAIDA.filter((l) => lessons.includes(l.slug)).flatMap((l) => l.examples ?? []);
+  const lists = findRuleExamples(ayahs, rules.map((r) => ({ ...r, limit: lessons.length === 1 ? 14 : 5 })));
+  const seen = new Map<string, WordExample>();
+  for (let i = 0; lists.some((list) => i < list.length); i++) {
+    for (const list of lists) if (list[i] && !seen.has(list[i].text)) seen.set(list[i].text, list[i]);
+  }
+  return [...seen.values()];
+}
 
 export const qaidaPath = (slug: string) => `/arabic/${slug}/`;
 

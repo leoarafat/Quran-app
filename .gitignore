@@ -43,8 +43,13 @@ next-env.d.ts
 # Hadith collections used only to cross-check references (about 42 MB, never published)
 /data/verify/*.json
 
+# Original letter recordings (about 10 MB, see MANIFEST.json); only the chosen MP3s are published
+/data/raw/commons-letters/*.wav
+/data/raw/commons-letters/review.html
+
 # Generated from data/raw by "npm run data:build" (also runs before test, dev and build)
 /public/data/hadith/
+/public/data/books/
 
 # Lesson video project: dependencies, generated voice clips and renders (the videos live on R2)
 /video/node_modules
